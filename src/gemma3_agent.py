@@ -10,7 +10,6 @@ from segment import file_index
 class VLM_gemma(VLM):
     def __init__(self, model: str, gestures: list, descriptions, samples: int):
         super().__init__(model, gestures, samples)
-        self.rng = np.random.default_rng(1)
         self.descriptions = descriptions
         self.system_msgs = self.__system_prompt()
     
@@ -36,11 +35,9 @@ class VLM_gemma(VLM):
             "content" : "You are an state of the art hand gesture classifier. You are given images of different hand gestures wtih a short description of their characteristics for training and then you need to respond to the user requests with only what class the user image belongs to"
         }
         msgs = [start]
-        img_id = self.rng.choice(5,self.samples,replace=False)
         for index, ges in enumerate(self.gestures):
-            for i in range(self.samples):
-                msg = self.__create_system_msg(self.descriptions[ges], index)
-                msgs.append(msg)
+            msg = self.__create_system_msg(self.descriptions[ges], index)
+            msgs.append(msg)
         return msgs
 
 if __name__ == "__main__":

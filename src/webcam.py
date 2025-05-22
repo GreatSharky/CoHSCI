@@ -9,6 +9,8 @@ class Webcam():
         self.__cap = cv2.VideoCapture(cam)
         self.__bb = [90,200,128,128]
         self.cap_time = True
+        self.show_mask = False
+        self.show_class = False
         self.webcam_sender = MessageQueue("webcam-segmentor")
         self.segment_reciever = MessageQueue("segmentor-webcam")
         self.classifier_reciever = MessageQueue("classifier-webcam")
@@ -20,15 +22,17 @@ class Webcam():
             # Do capture, add box, add latest mask
             if self.cap_time and 99 == i %100:
                 capture = self.capture()
-                img = cv2.imencode(".jpg", capture)
-                self.webcam_sender.add_msg(img)
+                self.webcam_sender.add_msg(capture)
                 self.cap_time = False
                 print("Capture made")
             method, header, body = self.segment_reciever.get_msg()
             if method:
                 print("segmentation done")
                 img = cv2.imdecode(np.frombuffer(body, dtype=np.uint8), cv2.IMREAD_ANYCOLOR)
-                self.__add_image(img)
+                self.__add_image(1,1,img)
+                self.show_mask = True
+            elif self.show_mask:
+                self.__add_image(1,1,img)
                 
 
             self.frame = self.__add_red_rectangle()

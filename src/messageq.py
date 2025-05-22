@@ -9,6 +9,7 @@ class MessageQueue():
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue=queue_name)
+        print(f"Queue named {queue_name} declared")
     
     def get_msg(self, queue_name=""):
         return self.channel.basic_get(queue=self.queue, auto_ack=True)
@@ -35,13 +36,10 @@ class MessageQueue():
         self.channel[queue_name] = self.connection.channel()
         self.channel[queue_name].queue_declare(queue=queue_name)
 
-class BlockingMessageQueue(MessageQueue):
-    def __init__(self, queue_name, callback):
-        super().__init__(queue_name)
-        self.callback = callback
-
-    def get_msg(self):
-        return self.channel.basic_consume(queue=self.queue, on_message_callback=self.callback, auto_ack=True)
+    def get_blocking_msg(self, callback):
+        self.channel.basic_consume(queue=self.queue, on_message_callback=callback, auto_ack=True)
+        print("starting consume")
+        return self.channel.start_consuming()
 
 if __name__ == "__main__":
     rq = MessageQueue("hello")
