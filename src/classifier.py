@@ -1,8 +1,12 @@
 """This one will classify the segmented image"""
 from gemma3_agent import VLM_gemma
 import os
+import cv2
+import numpy as np
 from segment import file_index
 import socket
+
+from messageq import BlockingMessageQueue
 
 
 if __name__ == "__main__":
@@ -16,31 +20,26 @@ if __name__ == "__main__":
     }
     vlm1 = VLM_gemma("gemma3:12b", ["ok","1","2","3","4", "5"], descriptions, 1)
     vlm2 = VLM_gemma("gemma3:12b", ["ok","1","2","3","4", "5"], descriptions, 1)
-    path = "tmp"
-    files = [f for f in os.listdir(path) if "_mask.jpg"in f]
+    def callback_1(ch, method, header, body):
+        return cv2.imdecode(np.frombuffer(body, dtype=np.uint8), cv2.IMREAD_COLOR)
+    reciever = BlockingMessageQueue("segmentor-classifier", callback=callback_1)
+    sender = BlockingMessageQueue("classifier-webcam", callback=None)
     file = ""
     HOST="192.168.125.1"
     PORT = 5000
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((HOST,PORT))
+    #s.connect((HOST,PORT))
     print("TCP client initialized")
     while True:
-        files = [f for f in os.listdir(path) if "_mask.jpg"in f]
-        if files:
-            latest_mask = max(files, key=file_index)
-            if file != file_index(latest_mask):
-                print(latest_mask)
-                file = file_index(latest_mask)
-                file_name = f"tmp/{latest_mask}"
-                vlm1.create_user_msg(file_name)
-                result1 = vlm1.inference()
-                vlm2.create_user_msg(file_name)
-                result2 = vlm2.inference()
-                if result1.message.content == result2.message.content:
-                    response = f"Class {result1.message.content}"
-                else:
-                    response = f"Unclear: res {result1.message.content} and {result2.message.content}"
-                print(response)
-                with open(f"tmp/{file}.tmp", "+w") as tmpfile:
-                    tmpfile.write(response)
-                s.sendall(response.encode())
+        segmented_image = reciever.get_msg()
+        vlm1.create_user_msg(segmented_image)
+        result1 = vlm1.inference()
+        vlm2.create_user_msg(segmented_image)
+        result2 = vlm2.inference()
+        if result1.message.content == result2.message.content:
+            response = f"Class {result1.message.content}"
+        else:
+            response = f"Unclear: res {result1.message.content} and {result2.message.content}"
+        print(response)
+        sender.add_msg(response)
+        #s.sendall(response.encode())

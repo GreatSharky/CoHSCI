@@ -1,19 +1,29 @@
 import pika
 import time
+import numpy as np
+import cv2
 
 class MessageQueue():
-    def __init__(self, queue_name, blocking=False):
+    def __init__(self, queue_name):
         self.queue = queue_name
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
         self.channel = self.connection.channel()
-        print("Starting queue")
         self.channel.queue_declare(queue=queue_name)
     
     def get_msg(self, queue_name=""):
         return self.channel.basic_get(queue=self.queue, auto_ack=True)
     
-    def add_msg(self, body, queue_name=""):
-        self.channel.basic_publish(exchange="", routing_key=self.queue, body=body)
+    def add_msg(self, body, queue_name="") -> bool:
+        if type(body) == str:
+            # String message
+            self.channel.basic_publish(exchange="", routing_key=self.queue, body=body)
+            return True
+        if type(body) == np.ndarray:
+            # JPG message
+            encoded = cv2.imencode(".jpg", body)[1].tobytes()
+            self.channel.basic_publish(exchange="", routing_key=self.queue, body=encoded)
+            return True
+        return False
 
     def add_queue(self, queue_name) -> bool:
         if queue_name == self.queue:
@@ -25,7 +35,13 @@ class MessageQueue():
         self.channel[queue_name] = self.connection.channel()
         self.channel[queue_name].queue_declare(queue=queue_name)
 
+class BlockingMessageQueue(MessageQueue):
+    def __init__(self, queue_name, callback):
+        super().__init__(queue_name)
+        self.callback = callback
 
+    def get_msg(self):
+        return self.channel.basic_consume(queue=self.queue, on_message_callback=self.callback, auto_ack=True)
 
 if __name__ == "__main__":
     rq = MessageQueue("hello")
@@ -33,5 +49,13 @@ if __name__ == "__main__":
         method_frame, header_frame, body = rq.get_msg()
         print(method_frame, header_frame, body)
         if method_frame:
-            print("MSG RECIEVED")
+            img = cv2.imdecode(np.frombuffer(body, dtype=np.uint8), cv2.IMREAD_COLOR)
+            print(img)
+
         time.sleep(2)
+
+    # Sending message 
+    # numpy jpg array: jpg
+    # encoded = cv2.imencode(".jpg", jpg)[1].tobytes()
+    # mq.add_msg(encoded)
+    # decoded = cv2.imdecode(np.frombuffer(body, dtype=np.uint8), cv2.IMREAD_COLOR)

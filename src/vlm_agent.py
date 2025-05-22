@@ -16,8 +16,7 @@ class VLM():
         response = ollama.chat(model=self.model, messages=response)
         return response
 
-    def get_image(self, file):
-        jpg = cv2.imread(f"{file}")
-        _, jpg = cv2.imencode(".jpg", jpg)
+    def get_image(self, image):
+        _, jpg = cv2.imencode(".jpg", image)
         b64 = base64.b64encode(jpg).decode("utf-8")
         return b64
