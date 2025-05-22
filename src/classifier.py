@@ -18,6 +18,7 @@ class Classifier():
 
     def classify(self, ch, method, properties, body):
         print("Message recieved")
+        print("Classifying...")
         buffer = np.frombuffer(body, dtype=np.uint8)
         image = cv2.imdecode(buffer, cv2.IMREAD_COLOR)
         self.vlm1.create_user_msg(image)
