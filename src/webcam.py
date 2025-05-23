@@ -2,7 +2,18 @@
 import cv2
 import os
 import numpy as np
+from dataclasses import dataclass
+
 from messageq import MessageQueue
+
+@dataclass
+class TextOptions():
+    font: int = 1
+    textSize: float = 1.0
+    textThickness: int = 2
+    lineType: int = 1
+    textColor: tuple = (0,0,0)
+    textLocation: tuple = (300, 250)
 
 class Webcam():
     def __init__(self, cam: str):
@@ -35,7 +46,7 @@ class Webcam():
                 self.__add_image(1,1,img)
                 
 
-            self.frame = self.__add_red_rectangle()
+            self.frame = self.__add_rectangle()
             self.frame = cv2.flip(self.frame, 1) # Flip for more inuitivness
             # Add text
             method, header, body = self.classifier_reciever.get_msg()
@@ -50,6 +61,17 @@ class Webcam():
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
+    def set_frame(self, text, text_options, box_color, mask):
+        if self.show_mask:
+            self.__add_image(mask)
+        self.__add_rectangle(1,box_color)
+        self.__flip()
+        self.__add_text(text, text_options)
+        return
+    
+    def __flip(self):
+        self.frame = cv2.flip(self.frame, 1)
+
     def __add_image(self, x, y, img):
         self.frame[y:y+img.shape[1], x:x+img.shape[0],:] = img
 
@@ -57,32 +79,31 @@ class Webcam():
         box = self.__bb
         return self.frame[box[1]:box[1]+box[2], box[0]:box[0]+box[3],:]
     
-    def __add_red_rectangle(self, l=1):
+    def __add_rectangle(self, l=1, color=[0,0,255]):
         x = self.__bb[0]
         y = self.__bb[1]
         w = self.__bb[2]
         h = self.__bb[3]
-        self.frame[y:y+h, x:x+l, :] = [0,0,255]
-        self.frame[y:y+l, x:x+w, :] = [0,0,255]
-        self.frame[y:y+h+l, x+w:x+w+l, :] = [0,0,255]
-        self.frame[y+h:y+h+l, x:x+w+l, :] = [0,0,255]
+        self.frame[y:y+h, x:x+l, :] = color
+        self.frame[y:y+l, x:x+w, :] = color
+        self.frame[y:y+h+l, x+w:x+w+l, :] = color
+        self.frame[y+h:y+h+l, x:x+w+l, :] = color
         return self.frame
     
-    def __add_text(self, frame, text, corner=(300,250)):
-        font                   = cv2.FONT_HERSHEY_SIMPLEX
-        bottomLeftCornerOfText = corner
-        fontScale              = 1
-        fontColor              = (0,0,0)
-        thickness              = 2
-        lineType               = 1
-        cv2.putText(frame, text, 
+    def __add_text(self, text: str, textoptions: TextOptions):
+        font                   = textoptions.font
+        bottomLeftCornerOfText = textoptions.textLocation
+        fontScale              = textoptions.textSize
+        fontColor              = textoptions.textColor
+        thickness              = textoptions.textThickness
+        lineType               = textoptions.lineType
+        cv2.putText(self.frame, text, 
             bottomLeftCornerOfText, 
             font, 
             fontScale,
             fontColor,
             thickness,
             lineType)
-        return frame
 
 
 if __name__ == "__main__":
