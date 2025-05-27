@@ -2,6 +2,16 @@ import pika
 import time
 import numpy as np
 import cv2
+from dataclasses import dataclass
+
+@dataclass
+class TextOptions():
+    font: int = 3
+    textSize: float = 1.2
+    textThickness: int = 2
+    lineType: int = 1
+    textColor: tuple = (0,0,0)
+    textLocation: tuple = (10,40)
 
 class MessageQueue():
     def __init__(self, queue_name):
