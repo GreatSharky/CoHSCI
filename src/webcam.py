@@ -14,15 +14,17 @@ class Webcam():
         self.webcam_sender = MessageQueue("webcam-segmentor")
         self.segment_reciever = MessageQueue("segmentor-webcam")
         self.classifier_reciever = MessageQueue("classifier-webcam")
+        self.control_queue = MessageQueue("control-webcam")
 
     def start(self):
         text = ""
         for i in range(20000):
             ret, self.frame = self.__cap.read()
             # Do capture, add box, add latest mask
-            if self.cap_time and 99 == i %100:
+            if self.cap_time and 99 == i %200:
                 capture = self.capture()
                 self.webcam_sender.add_msg(capture)
+                self.control_queue.add_msg("Capture made")
                 self.cap_time = False
                 print("Capture made")
             method, header, body = self.segment_reciever.get_msg()
@@ -42,6 +44,7 @@ class Webcam():
             if method:
                 print("classificaion done")
                 self.cap_time = True
+                self.control_queue.add_msg("Ready for capture")
                 classification = body.decode("utf-8")
                 text = f"Classified as {classification}"
 
