@@ -16,6 +16,7 @@ class Webcam():
         self.webcam_sender = MessageQueue("webcam-segmentor")
         self.segment_reciever = MessageQueue("segmentor-webcam")
         self.classifier_reciever = MessageQueue("classifier-webcam")
+        self.control_queue = MessageQueue("control-webcam")
 
     def start(self):
         text = ""
@@ -23,9 +24,10 @@ class Webcam():
         for i in range(20000):
             ret, self.frame = self.__cap.read()
             # Do capture, add box, add latest mask
-            if self.cap_time and 99 == i %100:
+            if self.cap_time and 99 == i %200:
                 capture = self.capture()
                 self.webcam_sender.add_msg(capture)
+                self.control_queue.add_msg("Capture made")
                 self.cap_time = False
                 print("Capture made")
             method, header, body = self.segment_reciever.get_msg()
@@ -34,6 +36,21 @@ class Webcam():
                 img = cv2.imdecode(np.frombuffer(body, np.uint8), cv2.IMREAD_COLOR)
             self.set_frame("test text", self.to, [0,0,255], img)
 
+<<<<<<< HEAD
+=======
+            self.frame = self.__add_red_rectangle()
+            self.frame = cv2.flip(self.frame, 1) # Flip for more inuitivness
+            # Add text
+            method, header, body = self.classifier_reciever.get_msg()
+            if method:
+                print("classificaion done")
+                self.cap_time = True
+                self.control_queue.add_msg("Ready for capture")
+                classification = body.decode("utf-8")
+                text = f"Classified as {classification}"
+
+            self.frame = self.__add_text(self.frame, text)
+>>>>>>> state_machine
             cv2.imshow("win", self.frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
