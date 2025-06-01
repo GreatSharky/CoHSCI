@@ -21,7 +21,15 @@ class Control():
         self.webcam = MessageQueue("control-webcam")
         self.segmentor = MessageQueue("control-segmentor")
         self.classifier = MessageQueue("control-classifier")
+        self.validator = MessageQueue("control-validator")
+        self.robot = MessageQueue("control-robot")
         
+        self.classifier_status = ""
+        self.webcam_status = ""
+        self.segmentor_status = ""
+        self.validator_status = ""
+        self.robot_status = ""
+        self.system_status = ""
         self.do_capture = False
 
     def control_cycle(self):
@@ -31,12 +39,27 @@ class Control():
         self.segmentor_callback(None, sg_method, sg_props, sg_body)
         cl_method, cl_props, cl_body = self.classifier.get_msg()
         self.classifier_callback(None, cl_method, cl_props, cl_body)
+        val_method, val_props, val_body = self.validator.get_msg()
+        self.validator_callback(None, val_method, val_props, val_body)
+        rob_method, rob_props, rob_body = self.robot.get_msg()
+        self.robot_callback(None, rob_method, rob_props, rob_body)
+        self.update_system()
+        self.message_segmentor()
+        self.message_classifier()
+        self.message_validator()
+        self.message_robot()
+        self.message_weacam()
+        return
+    
+    def update_system(self):
+        return
 
     def classifier_callback(self, ch, method, properties, body):
         if method != None:
             # Classifier status changed
             # Possible classifier statuses: image recieved, classifing, waiting for validation,
             # validation failed, validated
+            self.segmentor_status = body.decode("utf-8")
             return
         
     def validator_callback(self, ch, method, properties, body):
@@ -55,7 +78,10 @@ class Control():
     def segmentor_callback(self, ch, method, properties, body):
         if method != None:
             # segmentor status changed
-            # Possible segmentor statuses: image recieved, mask ready
+            # Possible segmentor statuses: image recieved, mask ready 
+            # Could check if segmentation has smart amount of non black pixels and get the pixel value
+            # Dont have to do the analysis in the classifier#
+            self.segmentor_status = body.decode("utf-8")
             return
     
     def webcam_callback(self, ch, method, properties, body):
@@ -63,10 +89,10 @@ class Control():
             # Webcam status changed
             # Possible webcam status: Capture made, Capture requested, User ready
             msg = body.decode("utf-8")
+            self.webcam_status = msg
             
-
     def message_classifier(self, body):
-        return
+        return 
     
     def message_segmentor(self):
         return
@@ -74,6 +100,19 @@ class Control():
     def message_weacam(self):
         # Status changes in the system are relayed to the operator with text added to the webcam screen 
         # #
+        message = {"state" : self.system_status,
+                   "webcam" : self.webcam_status,
+                   "segmentor" : self.segmentor_status,
+                   "classifier" : self.classifier_status,
+                   "validator" : self.validator_status,
+                   "robot" : self.robot_status}
+        self.webcam.add_msg(message)
+        return 
+    
+    def message_robot(self):
+        return
+    
+    def message_validator(self):
         return
 
 if __name__ == "__main__":

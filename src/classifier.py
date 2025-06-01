@@ -14,16 +14,19 @@ class Classifier():
         self.vlm2 = VLM_gemma(model, gestures, descriptions, 1)
         self.segmentor_reciever = MessageQueue("segmentor-classifier")
         self.webcam_sender = MessageQueue("classifier-webcam")
+        self.control = MessageQueue("control-classifier")
         self.segmentor_reciever.get_blocking_msg(self.classify)
 
     def classify(self, ch, method, properties, body):
         print("Message recieved")
         print("Classifying...")
+        self.control.add_msg("Image recieved")
         buffer = np.frombuffer(body, dtype=np.uint8)
         image = cv2.imdecode(buffer, cv2.IMREAD_COLOR)
         self.vlm1.create_user_msg(image)
         result1 = self.vlm1.inference()
         self.webcam_sender.add_msg(f"Class {result1.message.content}")
+        self.control.add_msg(f"{result1.message.content}")
         print(f"Class {result1.message.content}")
         return
 

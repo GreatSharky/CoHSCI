@@ -17,9 +17,11 @@ class Segmentor():
         self.webcam_reciever = MessageQueue("webcam-segmentor")
         self.classifier_sender = MessageQueue("segmentor-classifier")
         self.webcam_sender = MessageQueue("segmentor-webcam")
+        self.control = MessageQueue("control-segmentor")
         self.webcam_reciever.get_blocking_msg(callback)
 
     def segment(self, ch, method, properties, body):
+        self.control.add_msg("Image recieved")
         buffer = np.frombuffer(body, dtype=np.uint8)
         image = cv2.imdecode(buffer, cv2.IMREAD_COLOR)
         masks = self.sam(image, points=[[64,80]], labels=[1])
@@ -30,6 +32,7 @@ class Segmentor():
         masked_image = image*mask
         self.webcam_sender.add_msg(masked_image)
         self.classifier_sender.add_msg(masked_image)
+        self.control.add_msg("Mask ready")
         print("masked_image sent")
         return masked_image
     

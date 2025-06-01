@@ -2,6 +2,7 @@ import pika
 import time
 import numpy as np
 import cv2
+import json
 
 class MessageQueue():
     def __init__(self, queue_name):
@@ -25,6 +26,9 @@ class MessageQueue():
             encoded = cv2.imencode(".jpg", body)[1].tobytes()
             self.channel.basic_publish(exchange="", routing_key=self.queue, body=encoded)
             return True
+        if type(body) == dict:
+            body = json.dumps(body)
+            self.channel.basic_publish( exchange="", routing_key=self.queue, body=body)
         return False
 
     def add_queue(self, queue_name) -> bool:
