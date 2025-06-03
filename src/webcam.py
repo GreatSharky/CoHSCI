@@ -2,13 +2,23 @@
 import cv2
 import os
 import numpy as np
+import json
+from messageq import MessageQueue
+from dataclasses import dataclass
 
-from messageq import MessageQueue, TextOptions
+@dataclass
+class TextOptions():
+    font: int = 3
+    textSize: float = 1.2
+    textThickness: int = 2
+    lineType: int = 1
+    textColor: tuple = (0,0,0)
+    textLocation: tuple = (10,40)
 
 class Webcam():
-    def __init__(self, cam: str, text_options: TextOptions):
+    def __init__(self, cam: str):
         self.__cap = cv2.VideoCapture(cam)
-        self.to = text_options
+        self.to = TextOptions
         self.__bb = [90,200,128,128]
         self.cap_time = True
         self.show_mask = False
@@ -34,18 +44,22 @@ class Webcam():
             if method:
                 self.show_mask = True
                 img = cv2.imdecode(np.frombuffer(body, np.uint8), cv2.IMREAD_COLOR)
-            self.set_frame("test text", self.to, [0,0,255], img)
 
-            cv2.imshow("win", self.frame)
+            method, header, body = self.control_queue.get_msg()
+            if method:
+                text = json.loads(body)
+            self.set_frame(text, [0,0,255], img)
+
+            cv2.imshow("webcam", self.frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-    def set_frame(self, text, text_options, box_color, mask):
+    def set_frame(self, text, box_color, mask):
         if self.show_mask:
             self.__add_image(300, 400,mask)
         self.__add_rectangle(1,box_color)
         self.__flip()
-        self.__add_text(text, text_options)
+        self.__add_text(text)
         return
     
     def __flip(self):
@@ -69,20 +83,25 @@ class Webcam():
         self.frame[y+h:y+h+l, x:x+w+l, :] = color
         return self.frame
     
-    def __add_text(self, text: str, textoptions: TextOptions):
-        self.frame = cv2.putText(self.frame, text, 
-            textoptions.textLocation, 
-            textoptions.font, 
-            textoptions.textSize,
-            textoptions.textColor,
-            textoptions.textThickness,
-            textoptions.lineType)
+    def __add_text(self, information: dict):
+        for index, title in enumerate(information):
+            textoptions = self.to()
+            textoptions.textLocation(10,40+index*10)
+            text = f"{title}: {information[title]}" 
+            self.frame = cv2.putText(self.frame, text, 
+                textoptions.textLocation, 
+                textoptions.font, 
+                textoptions.textSize,
+                textoptions.textColor,
+                textoptions.textThickness,
+                textoptions.lineType)
 
 
 if __name__ == "__main__":
     cam_ip = os.getenv("CAM_IP")
-    t = TextOptions()
-
-    cam = Webcam("/dev/video0", t)
+    if cam_ip != "":
+        cam_ip = "/dev/video0"
+    print(cam_ip)
+    cam = Webcam(cam_ip)
 
     cam.start()

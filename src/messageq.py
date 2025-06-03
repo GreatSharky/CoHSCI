@@ -3,16 +3,6 @@ import time
 import numpy as np
 import cv2
 import json
-from dataclasses import dataclass
-
-@dataclass
-class TextOptions():
-    font: int = 3
-    textSize: float = 1.2
-    textThickness: int = 2
-    lineType: int = 1
-    textColor: tuple = (0,0,0)
-    textLocation: tuple = (10,40)
 
 class MessageQueue():
     def __init__(self, queue_name):
@@ -39,6 +29,7 @@ class MessageQueue():
         if type(body) == dict:
             body = json.dumps(body)
             self.channel.basic_publish( exchange="", routing_key=self.queue, body=body)
+            return True
         return False
 
     def add_queue(self, queue_name) -> bool:
