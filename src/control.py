@@ -1,3 +1,4 @@
+import time
 from messageq import MessageQueue
 
 # Write control/state machine that tracks program state.
@@ -91,7 +92,7 @@ class Control():
             msg = body.decode("utf-8")
             self.webcam_status = msg
             
-    def message_classifier(self, body):
+    def message_classifier(self):
         return 
     
     def message_segmentor(self):
@@ -100,6 +101,7 @@ class Control():
     def message_weacam(self):
         # Status changes in the system are relayed to the operator with text added to the webcam screen 
         # #
+        print("send message")
         message = {"state" : self.system_status,
                    "webcam" : self.webcam_status,
                    "segmentor" : self.segmentor_status,
@@ -118,6 +120,7 @@ class Control():
 if __name__ == "__main__":
     state_machine = Control()
     while True:
-        x = state_machine.webcam.get_msg()
-        if x[0] != None:
-            print(x)
+        x = state_machine.control_cycle()
+        time.sleep(1)
+        
+

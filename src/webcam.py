@@ -9,7 +9,7 @@ from dataclasses import dataclass
 @dataclass
 class TextOptions():
     font: int = 3
-    textSize: float = 1.2
+    textSize: float = .8
     textThickness: int = 2
     lineType: int = 1
     textColor: tuple = (0,0,0)
@@ -26,7 +26,8 @@ class Webcam():
         self.webcam_sender = MessageQueue("webcam-segmentor")
         self.segment_reciever = MessageQueue("segmentor-webcam")
         self.classifier_reciever = MessageQueue("classifier-webcam")
-        self.control_queue = MessageQueue("control-webcam")
+        self.control_sender = MessageQueue("webcam-control")
+        self.control_reciever = MessageQueue("control-webcam")
 
     def start(self):
         text = ""
@@ -37,7 +38,7 @@ class Webcam():
             if self.cap_time and 99 == i %200:
                 capture = self.capture()
                 self.webcam_sender.add_msg(capture)
-                self.control_queue.add_msg("Capture made")
+                self.control_sender.add_msg("Capture made")
                 self.cap_time = False
                 print("Capture made")
             method, header, body = self.segment_reciever.get_msg()
@@ -45,7 +46,7 @@ class Webcam():
                 self.show_mask = True
                 img = cv2.imdecode(np.frombuffer(body, np.uint8), cv2.IMREAD_COLOR)
 
-            method, header, body = self.control_queue.get_msg()
+            method, header, body = self.control_reciever.get_msg()
             if method:
                 text = json.loads(body)
             self.set_frame(text, [0,0,255], img)
@@ -85,8 +86,8 @@ class Webcam():
     
     def __add_text(self, information: dict):
         for index, title in enumerate(information):
-            textoptions = self.to()
-            textoptions.textLocation(10,40+index*10)
+            textoptions = TextOptions()
+            textoptions.textLocation = (10, 40 + index*22)
             text = f"{title}: {information[title]}" 
             self.frame = cv2.putText(self.frame, text, 
                 textoptions.textLocation, 
