@@ -7,8 +7,8 @@ from vlm_agent import VLM
 
 
 class Validator(VLM):
-    def __init__(self, model, gestures, samples):
-        super().__init__(model, gestures, samples)
+    def __init__(self, model):
+        super().__init__(model, [])
         self.control_sender = MessageQueue("validator-control")
         self.control_reciever = MessageQueue("control-validator")
         self.classifier = MessageQueue("classifier-validator")
@@ -33,6 +33,7 @@ class Validator(VLM):
 
     def classifier_callback(self, ch, method, properties, body):
         self.control_sender.add_msg("Classfication recieved")
+        print("msg")
         description, img = self.parse_body(body)
         self.create_user_prompt(description, img)
         result = self.inference()
@@ -41,6 +42,9 @@ class Validator(VLM):
         return
 
     def parse_body(self, body):
-        img = cv2.imload("99_cap.jpg")
-        description = "Horse on top of a rainbow"
+        img = cv2.imread("99_cap.jpg")
+        description = "all five fingers are extended and separated from each other. The palm is facing the camera.n"
         return description, img
+
+if __name__ == "__main__":
+    val = Validator("gemma3:12b")

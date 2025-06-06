@@ -4,9 +4,8 @@ import cv2
 import numpy as np
 
 class VLM():
-    def __init__(self, model: str, gestures: list, samples: int):
+    def __init__(self, model: str, gestures: list):
         self.gestures = gestures
-        self.samples = samples
         self.model = model
         self.system_msgs = []
         self.user_msgs = []
