@@ -27,6 +27,7 @@ class MessageQueue():
             if "img" in body:
                 array = cv2.imencode(".jpg", body["img"])[1]
                 body["img"] = [int(x) for x in array]
+
         pkg = json.dumps(body)
         return self.channel.basic_publish(exchange="", routing_key=self.queue, body=pkg)
         

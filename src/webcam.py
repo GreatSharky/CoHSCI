@@ -39,6 +39,9 @@ class Webcam():
             # Do capture, add box, add latest mask
             if self.cap_time and 99 == i %200:
                 capture = self.capture()
+                self.webcam_sender.add_msg(capture)
+                self.control_sender.add_msg("Capture made")
+                self.cap_time = False
                 print("Capture made")
                 data = {"img" : capture}
                 self.webcam_sender.add_msg(data)
