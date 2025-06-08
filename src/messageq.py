@@ -15,11 +15,7 @@ class MessageQueue():
     def get_msg(self):
         method, properties, body = self.channel.basic_get(self.queue, auto_ack=True)
         if method != None:
-            body = json.loads(body)
-            if type(body) == dict:
-                if "img" in body:
-                    array = np.array([np.uint8(x) for x in body["img"]])
-                    body["img"] = cv2.imdecode(array, cv2.IMREAD_COLOR)
+            body = self.body_parse_util(body)
             print(self.queue, "recieved msg")
         return method, properties, body
     
@@ -33,12 +29,20 @@ class MessageQueue():
         pkg = json.dumps(body)
         return self.channel.basic_publish(exchange="", routing_key=self.queue, body=pkg)
         
-
     def get_blocking_msg(self, callback):
         self.channel.basic_consume(queue=self.queue, on_message_callback=callback, auto_ack=True)
         print(f"{self.queue} starting consume")
         return self.channel.start_consuming()
-
+    
+    @staticmethod
+    def body_parse_util(body):
+        body = json.loads(body)
+        if type(body) == dict:
+            if "img" in body:
+                array = np.array([np.uint8(x) for x in body["img"]])
+                body["img"] = cv2.imdecode(array, cv2.IMREAD_COLOR)
+        return body
+        
 if __name__ == "__main__":
     rq = MessageQueue("hello")
     while True:

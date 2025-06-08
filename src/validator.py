@@ -32,9 +32,12 @@ class Validator(VLM):
         self.user_msgs = [msg]
 
     def classifier_callback(self, ch, method, properties, body):
+        print("Classification recieved")
         self.control_sender.add_msg("Classfication recieved")
-        body = self.classifier.body_parse_util(body)
+        body = MessageQueue.body_parse_util(body)
         description, img = self.parse_body(body)
+        print("Body parsed")
+        print(description)
         self.create_user_prompt(description, img)
         result = self.inference()
         print(result)
