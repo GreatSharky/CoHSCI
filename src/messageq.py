@@ -13,18 +13,20 @@ class MessageQueue():
         print(f"{queue_name} declared")
     
     def get_msg(self):
-        method, properties, body = self.channel.basic_get(self.queuem, auto_ack=True)
-        body = json.loads(body)
-        if type(body) == dict:
-            if "img" in body:
-                array = np.array([np.uint8(x) for x in body["img"]])
-                body["img"] = cv2.imdecode(array, cv2.IMREAD_COLOR)[1]
+        method, properties, body = self.channel.basic_get(self.queue, auto_ack=True)
+        if method != None:
+            body = json.loads(body)
+            if type(body) == dict:
+                if "img" in body:
+                    array = np.array([np.uint8(x) for x in body["img"]])
+                    body["img"] = cv2.imdecode(array, cv2.IMREAD_COLOR)[1]
         return method, properties, body
     
     def add_msg(self, body) -> bool:
         if type(body) == dict:
             if "img" in body:
-                body["img"] = [int(x) for x in body["img"]]
+                array = cv2.imencode(".jpg", body["img"])[1]
+                body["img"] = [int(x) for x in array]
         pkg = json.dumps(body)
         return self.channel.basic_publish(exchange="", routing_key=self.queue, body=pkg)
         
