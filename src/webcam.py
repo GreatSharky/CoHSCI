@@ -34,6 +34,8 @@ class Webcam():
         img = None
         for i in range(20000):
             ret, self.frame = self.__cap.read()
+            if not ret:
+                print("no image")
             # Do capture, add box, add latest mask
             if self.cap_time and 99 == i %200:
                 capture = self.capture()
@@ -41,6 +43,10 @@ class Webcam():
                 self.control_sender.add_msg("Capture made")
                 self.cap_time = False
                 print("Capture made")
+                data = {"img" : capture}
+                self.webcam_sender.add_msg(data)
+                self.control_sender.add_msg("Capture made")
+                self.cap_time = False
             method, header, body = self.segment_reciever.get_msg()
             if method:
                 self.show_mask = True
@@ -98,9 +104,9 @@ class Webcam():
                 textoptions.lineType)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" or __name__ == "__debug__":
     cam_ip = os.getenv("CAM_IP")
-    if cam_ip != "":
+    if cam_ip == "" or cam_ip == None:
         cam_ip = "/dev/video0"
     print(cam_ip)
     cam = Webcam(cam_ip)
