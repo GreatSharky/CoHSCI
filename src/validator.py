@@ -33,7 +33,7 @@ class Validator(VLM):
 
     def classifier_callback(self, ch, method, properties, body):
         self.control_sender.add_msg("Classfication recieved")
-        print("msg")
+        body = self.classifier.body_parse_util(body)
         description, img = self.parse_body(body)
         self.create_user_prompt(description, img)
         result = self.inference()
@@ -42,8 +42,8 @@ class Validator(VLM):
         return
 
     def parse_body(self, body):
-        img = cv2.imread("99_cap.jpg")
-        description = "all five fingers are extended and separated from each other. The palm is facing the camera.n"
+        img = body["img"]
+        description = body["msg"]
         return description, img
 
 if __name__ == "__main__":
