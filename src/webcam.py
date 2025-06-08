@@ -3,6 +3,7 @@ import cv2
 import os
 import numpy as np
 import json
+import json
 from messageq import MessageQueue
 from dataclasses import dataclass
 
@@ -34,17 +35,20 @@ class Webcam():
         img = None
         for i in range(20000):
             ret, self.frame = self.__cap.read()
+            if not ret:
+                print("no image")
             # Do capture, add box, add latest mask
             if self.cap_time and 99 == i %200:
                 capture = self.capture()
-                self.webcam_sender.add_msg(capture)
+                print("Capture made")
+                data = {"img" : capture}
+                self.webcam_sender.add_msg(data)
                 self.control_sender.add_msg("Capture made")
                 self.cap_time = False
-                print("Capture made")
             method, header, body = self.segment_reciever.get_msg()
             if method:
                 self.show_mask = True
-                img = cv2.imdecode(np.frombuffer(body, np.uint8), cv2.IMREAD_COLOR)
+                img = body["img"]
 
             method, header, body = self.control_reciever.get_msg()
             if method:
@@ -56,9 +60,8 @@ class Webcam():
                 break
 
     def set_frame(self, text, box_color, mask):
-        if self.show_mask:
-            self.__add_image(300, 400,mask)
         self.__add_rectangle(1,box_color)
+        self.__add_image(90, 20,mask)
         self.__flip()
         self.__add_text(text)
         return
@@ -67,7 +70,8 @@ class Webcam():
         self.frame = cv2.flip(self.frame, 1)
 
     def __add_image(self, x, y, img):
-        self.frame[y:y+img.shape[1], x:x+img.shape[0],:] = img
+        if self.show_mask:
+            self.frame[y:y+img.shape[1], x:x+img.shape[0],:] = img
 
     def capture(self):
         box = self.__bb
@@ -98,9 +102,9 @@ class Webcam():
                 textoptions.lineType)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" or __name__ == "__debug__":
     cam_ip = os.getenv("CAM_IP")
-    if cam_ip != "":
+    if cam_ip == "" or cam_ip == None:
         cam_ip = "/dev/video0"
     print(cam_ip)
     cam = Webcam(cam_ip)
