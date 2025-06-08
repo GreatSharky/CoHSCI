@@ -39,9 +39,6 @@ class Webcam():
             # Do capture, add box, add latest mask
             if self.cap_time and 99 == i %200:
                 capture = self.capture()
-                self.webcam_sender.add_msg(capture)
-                self.control_sender.add_msg("Capture made")
-                self.cap_time = False
                 print("Capture made")
                 data = {"img" : capture}
                 self.webcam_sender.add_msg(data)
@@ -50,7 +47,7 @@ class Webcam():
             method, header, body = self.segment_reciever.get_msg()
             if method:
                 self.show_mask = True
-                img = cv2.imdecode(np.frombuffer(body, np.uint8), cv2.IMREAD_COLOR)
+                img = body["img"]
 
             method, header, body = self.control_reciever.get_msg()
             if method:
@@ -62,9 +59,8 @@ class Webcam():
                 break
 
     def set_frame(self, text, box_color, mask):
-        if self.show_mask:
-            self.__add_image(300, 400,mask)
         self.__add_rectangle(1,box_color)
+        self.__add_image(90, 20,mask)
         self.__flip()
         self.__add_text(text)
         return
@@ -73,7 +69,8 @@ class Webcam():
         self.frame = cv2.flip(self.frame, 1)
 
     def __add_image(self, x, y, img):
-        self.frame[y:y+img.shape[1], x:x+img.shape[0],:] = img
+        if self.show_mask:
+            self.frame[y:y+img.shape[1], x:x+img.shape[0],:] = img
 
     def capture(self):
         box = self.__bb

@@ -19,7 +19,8 @@ class MessageQueue():
             if type(body) == dict:
                 if "img" in body:
                     array = np.array([np.uint8(x) for x in body["img"]])
-                    body["img"] = cv2.imdecode(array, cv2.IMREAD_COLOR)[1]
+                    body["img"] = cv2.imdecode(array, cv2.IMREAD_COLOR)
+            print(self.queue, "recieved msg")
         return method, properties, body
     
     def add_msg(self, body) -> bool:
@@ -27,6 +28,7 @@ class MessageQueue():
             if "img" in body:
                 array = cv2.imencode(".jpg", body["img"])[1]
                 body["img"] = [int(x) for x in array]
+        print(self.queue, "Sending message")
 
         pkg = json.dumps(body)
         return self.channel.basic_publish(exchange="", routing_key=self.queue, body=pkg)

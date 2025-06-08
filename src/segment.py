@@ -2,6 +2,7 @@
 from ultralytics import SAM
 import cv2
 import numpy as np
+import json
 
 from messageq import MessageQueue
 
@@ -22,16 +23,18 @@ class Segmentor():
 
     def segment(self, ch, method, properties, body):
         self.control.add_msg("Image recieved")
-        buffer = np.frombuffer(body, dtype=np.uint8)
-        image = cv2.imdecode(buffer, cv2.IMREAD_COLOR)
+        data = json.loads(body)
+        img = np.array([np.uint8(x) for x in data["img"]])
+        image = cv2.imdecode(img, cv2.IMREAD_COLOR)
         masks = self.sam(image, points=[[64,80]], labels=[1])
         mask = masks[0].masks.cpu().data
         print(mask)
         h,w = mask.shape[-2:]
         mask = mask.reshape(h,w,1).numpy()
         masked_image = image*mask
-        self.webcam_sender.add_msg(masked_image)
-        self.classifier_sender.add_msg(masked_image)
+        data = {"img": masked_image}
+        self.webcam_sender.add_msg(data.copy())
+        self.classifier_sender.add_msg(data.copy())
         self.control.add_msg("Mask ready")
         print("masked_image sent")
         return masked_image
