@@ -18,7 +18,7 @@ class MessageQueue():
         if type(body) == dict:
             if "img" in body:
                 array = np.array([np.uint8(x) for x in body["img"]])
-                body["img"] = cv2.imdecode(array, cv2.IMREAD_COLOR)
+                body["img"] = cv2.imdecode(array, cv2.IMREAD_COLOR)[1]
         return method, properties, body
     
     def add_msg(self, body) -> bool:
