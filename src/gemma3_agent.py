@@ -9,7 +9,7 @@ from segment import file_index
 
 class VLM_gemma(VLM):
     def __init__(self, model: str, gestures: list, descriptions, samples: int):
-        super().__init__(model, gestures, samples)
+        super().__init__(model, gestures)
         self.descriptions = descriptions
         self.system_msgs = self.__system_prompt()
     
