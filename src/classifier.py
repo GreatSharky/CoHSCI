@@ -1,9 +1,6 @@
 """This one will classify the segmented image"""
 from gemma3_agent import VLM_gemma
-import cv2
 import numpy as np
-from segment import file_index
-import json
 
 from messageq import MessageQueue
 
@@ -21,7 +18,8 @@ class Classifier():
     def classify(self, ch, method, properties, body):
         print("Message recieved")
         print("Classifying...")
-        self.control.add_msg("Image recieved")
+        data = {"status" : "Image_recieved"}
+        self.control.add_msg(data)
         data = MessageQueue.body_parse_util(body)
         image = data["img"]
         self.vlm1.create_user_msg(image)
@@ -33,8 +31,9 @@ class Classifier():
         }
         print(f"Class {classification}")
         self.validator_sender.add_msg(msg)
-        self.webcam_sender.add_msg(f"Class {classification}")
-        self.control.add_msg(f"{classification}")
+        data = {"status" : "Classified",
+                "result" : f"{classification}"}
+        self.control.add_msg(data)
         return
 
 if __name__ == "__main__":

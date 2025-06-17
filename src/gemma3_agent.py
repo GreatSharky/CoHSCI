@@ -5,7 +5,6 @@ import numpy as np
 import time
 from vlm_agent import VLM
 import os
-from segment import file_index
 
 class VLM_gemma(VLM):
     def __init__(self, model: str, gestures: list, descriptions, samples: int):

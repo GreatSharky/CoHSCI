@@ -30,20 +30,15 @@ class Webcam():
         self.control_reciever = MessageQueue("control-webcam")
 
     def start(self):
-        text = ""
+        text = {}
         img = None
         for i in range(20000):
             ret, self.frame = self.__cap.read()
             if not ret:
                 print("no image")
             # Do capture, add box, add latest mask
-            if self.cap_time and 99 == i %200:
+            if self.cap_time and 99 == i %300:
                 capture = self.capture()
-                print("Capture made")
-                data = {"img" : capture}
-                self.webcam_sender.add_msg(data)
-                self.control_sender.add_msg("Capture made")
-                self.cap_time = False
             method, header, body = self.segment_reciever.get_msg()
             if method:
                 self.show_mask = True
@@ -51,15 +46,17 @@ class Webcam():
 
             method, header, body = self.control_reciever.get_msg()
             if method:
-                text = json.loads(body)
-            self.set_frame(text, [0,0,255], img)
+                text = body
+            self.set_frame(text, img)
 
             cv2.imshow("webcam", self.frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-    def set_frame(self, text, box_color, mask):
-        self.__add_rectangle(1,box_color)
+    def set_frame(self, text, mask):
+        if text and text["command"] == "Capture":
+            self.cap_time = True
+        self.__add_rectangle(1)
         self.__add_image(90, 20,mask)
         self.__flip()
         self.__add_text(text)
@@ -74,9 +71,20 @@ class Webcam():
 
     def capture(self):
         box = self.__bb
-        return self.frame[box[1]:box[1]+box[2], box[0]:box[0]+box[3],:]
+        cap = self.frame[box[1]:box[1]+box[2], box[0]:box[0]+box[3],:]
+        data = {"img" : cap}
+        self.webcam_sender.add_msg(data)
+        print("Capture made")
+        data = {"status" : "Capture_made"}
+        self.control_sender.add_msg(data)
+        self.cap_time = False
+        return 
     
-    def __add_rectangle(self, l=1, color=[0,0,255]):
+    def __add_rectangle(self, l=1):
+        if self.cap_time:
+            color = [0,255,0] #Green
+        elif not self.cap_time:
+            color = [0,0,255]
         x = self.__bb[0]
         y = self.__bb[1]
         w = self.__bb[2]
@@ -89,16 +97,18 @@ class Webcam():
     
     def __add_text(self, information: dict):
         for index, title in enumerate(information):
-            textoptions = TextOptions()
-            textoptions.textLocation = (10, 40 + index*22)
-            text = f"{title}: {information[title]}" 
-            self.frame = cv2.putText(self.frame, text, 
-                textoptions.textLocation, 
-                textoptions.font, 
-                textoptions.textSize,
-                textoptions.textColor,
-                textoptions.textThickness,
-                textoptions.lineType)
+            if title != "command":
+                textoptions = TextOptions()
+                textoptions.textColor = [0,255,0]
+                textoptions.textLocation = (10, 20 + index*22)
+                text = f"{title}: {information[title]}" 
+                self.frame = cv2.putText(self.frame, text, 
+                    textoptions.textLocation, 
+                    textoptions.font, 
+                    textoptions.textSize,
+                    textoptions.textColor,
+                    textoptions.textThickness,
+                    textoptions.lineType)
 
 
 if __name__ == "__main__" or __name__ == "__debug__":

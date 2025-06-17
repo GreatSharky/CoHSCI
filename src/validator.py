@@ -9,8 +9,7 @@ from vlm_agent import VLM
 class Validator(VLM):
     def __init__(self, model):
         super().__init__(model, [])
-        self.control_sender = MessageQueue("validator-control")
-        self.control_reciever = MessageQueue("control-validator")
+        self.control_sender = MessageQueue("control-validator")
         self.classifier = MessageQueue("classifier-validator")
         self.create_system_prompt()
         self.classifier.get_blocking_msg(callback=self.classifier_callback)
@@ -33,7 +32,8 @@ class Validator(VLM):
 
     def classifier_callback(self, ch, method, properties, body):
         print("Classification recieved")
-        self.control_sender.add_msg("Classfication recieved")
+        data = {"status" : "Validation_started"}
+        self.control_sender.add_msg(data)
         body = MessageQueue.body_parse_util(body)
         description, img = self.parse_body(body)
         print("Body parsed")
@@ -41,7 +41,9 @@ class Validator(VLM):
         self.create_user_prompt(description, img)
         result = self.inference()
         print(result)
-        self.control_sender.add_msg(result.message.content)
+        data = {"status" : "Validated",
+                "result" : result.message.content}
+        self.control_sender.add_msg(data)
         return
 
     def parse_body(self, body):
