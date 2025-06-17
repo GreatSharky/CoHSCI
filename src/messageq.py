@@ -7,8 +7,9 @@ import json
 class MessageQueue():
     def __init__(self, queue_name):
         self.queue = queue_name
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', heartbeat=6000))
         self.channel = self.connection.channel()
+        self.channel.queue_purge(queue=queue_name)
         self.channel.queue_declare(queue=queue_name)
         print(f"{queue_name} declared")
     
