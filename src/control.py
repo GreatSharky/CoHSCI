@@ -68,7 +68,6 @@ class Control():
         self.classifier_status = ""
         self.webcam_status = ""
         self.segmentor_status = ""
-        self.validator_status = ""
         self.robot_status = ""
 
     def classifier_callback(self, ch, method, properties, body):
@@ -92,7 +91,9 @@ class Control():
             if self.validator_status == "Validated" and self.webcam_status == "Capture_made":
                 self.webcam_command = "Capture"
                 self.system_status = "New Capture started"
+                self.validator_status = "Image_validated"
                 self.reset_status()
+
             return
         
     def robot_callback(self, ch, method, properties, body):
