@@ -47,6 +47,8 @@ class Webcam():
                 cap = self.bb_capture()
                 self.baseline = cv2.img_hash.averageHash(cap)
                 self.cap_time = True
+                msg = {"status" : "Webcam initialized"}
+                self.control_sender.add_msg(msg)
             elif self.cap_time and i > init_size:
                 self.capture(i)
 
@@ -58,7 +60,6 @@ class Webcam():
             method, header, body = self.control_reciever.get_msg()
             if method:
                 text = body
-            text["command"] = i
             self.set_frame(text, img)
 
             cv2.imshow("webcam", self.frame)
@@ -83,12 +84,10 @@ class Webcam():
                 self.color = [0,0,255]
             elif self.index_storage and self.index_storage[-1] == index-1:
                 self.index_storage.append(index)
-                print(index)
-                self.color = [0,255,int(201-len(self.index_storage)*2)]
+                self.color = [0,255,int(251-len(self.index_storage)*2.5)]
             elif not self.index_storage:
                 self.index_storage.append(index)
         else:
-            print(index, diff)
 
             self.index_storage = []
             self.color = [0,255,255]
@@ -128,7 +127,7 @@ class Webcam():
     
     def __add_text(self, information: dict):
         for index, title in enumerate(information):
-            if title:
+            if title != "command":
                 textoptions = TextOptions()
                 textoptions.textColor = [0,255,0]
                 textoptions.textLocation = (10, 20 + index*22)
