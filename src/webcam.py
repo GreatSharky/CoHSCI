@@ -34,7 +34,7 @@ class Webcam():
         text = {}
         img = None
         baseline = []
-        init_size = 200
+        init_size = 100
         self.baseline = 0
         self.divider = 1
         self.index_storage = []
@@ -43,16 +43,11 @@ class Webcam():
             ret, self.frame = self.__cap.read()
             if not ret:
                 print("no image")
-            if i < init_size:
+            if i == init_size:
                 cap = self.bb_capture()
-                baseline.append(cap)
-            elif i == init_size:
-                self.baseline = np.mean(np.array(baseline), axis=0).astype(np.uint8)
-                self.divider = np.sum((self.baseline-self.bb_capture())**2)
-                cv2.imwrite("baseline.jpg", self.baseline)
-                self.baseline = np.where(self.baseline == 0, 1, self.baseline)
+                self.baseline = cv2.img_hash.averageHash(cap)
                 self.cap_time = True
-            elif self.cap_time:
+            elif self.cap_time and i > init_size:
                 self.capture(i)
 
             method, header, body = self.segment_reciever.get_msg()
@@ -63,6 +58,7 @@ class Webcam():
             method, header, body = self.control_reciever.get_msg()
             if method:
                 text = body
+            text["command"] = i
             self.set_frame(text, img)
 
             cv2.imshow("webcam", self.frame)
@@ -71,10 +67,12 @@ class Webcam():
 
     def capture(self, index):
         capture = self.bb_capture()
-        diff = self.image_differnece(capture)
-        print(index, diff)
-        if diff > 11:
-            if len(self.index_storage) == 10:
+        caphash = cv2.img_hash.averageHash(capture)
+        diff = np.abs(caphash-self.baseline)
+        diff = np.average(diff)
+
+        if diff > 70:
+            if len(self.index_storage) == 100:
                 data = {"img" : capture}
                 self.webcam_sender.add_msg(data)
                 print("Capture made")
@@ -85,25 +83,20 @@ class Webcam():
                 self.color = [0,0,255]
             elif self.index_storage and self.index_storage[-1] == index-1:
                 self.index_storage.append(index)
-                self.color = [0,255,0]
-            else:
-                self.index_storage = []
-                self.index_storage = [255,255,0]
+                print(index)
+                self.color = [0,255,int(201-len(self.index_storage)*2)]
+            elif not self.index_storage:
+                self.index_storage.append(index)
+        else:
+            print(index, diff)
 
-    def image_differnece(self, capture):
-        red_diff = np.abs(self.baseline[:,:,0] - capture[:,:,0])/self.baseline[:,:,0]
-        green_diff = np.abs(self.baseline[:,:,1] - capture[:,:,1])/self.baseline[:,:,1]
-        blue_diff = np.abs(self.baseline[:,:,2] - capture[:,:,2])/self.baseline[:,:,2]
-        barrier = .1
-        red_sum = np.sum(np.where(red_diff > barrier, 1, 0))
-        green_sum = np.sum(np.where(green_diff > barrier, 1, 0))
-        blue_sum = np.sum(np.where(blue_diff > barrier, 1, 0))
-        return (red_sum + green_sum + blue_sum)/(capture.shape[0] * capture.shape[1] * capture.shape[2])
+            self.index_storage = []
+            self.color = [0,255,255]
 
     def bb_capture(self):
         box = self.__bb
         cap = self.frame[box[1]:box[1]+box[2], box[0]:box[0]+box[3],:]
-        return cap
+        return cap.copy()
 
     def set_frame(self, text, mask):
         if text and text["command"] == "Capture":
@@ -116,6 +109,7 @@ class Webcam():
     
     def __flip(self):
         self.frame = cv2.flip(self.frame, 1)
+        return
 
     def __add_image(self, x, y, img):
         if self.show_mask:
@@ -134,7 +128,7 @@ class Webcam():
     
     def __add_text(self, information: dict):
         for index, title in enumerate(information):
-            if title != "command":
+            if title:
                 textoptions = TextOptions()
                 textoptions.textColor = [0,255,0]
                 textoptions.textLocation = (10, 20 + index*22)
