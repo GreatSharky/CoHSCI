@@ -52,7 +52,7 @@
           <mxGeometry x="719" y="80" width="100" height="310" as="geometry" />
         </mxCell>
         <mxCell id="vDhwdmV8-rmcX5jLC_KC-39" value="" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="vDhwdmV8-rmcX5jLC_KC-8" vertex="1">
-          <mxGeometry x="45" y="210" width="10" height="80" as="geometry" />
+          <mxGeometry x="45" y="210" width="10" height="90" as="geometry" />
         </mxCell>
         <mxCell id="vDhwdmV8-rmcX5jLC_KC-17" value="Processed image" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=0;" parent="1" source="vDhwdmV8-rmcX5jLC_KC-15" target="vDhwdmV8-rmcX5jLC_KC-19" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -100,33 +100,34 @@
         <mxCell id="vDhwdmV8-rmcX5jLC_KC-40" value="Excecute move" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=0;" parent="1" source="vDhwdmV8-rmcX5jLC_KC-26" target="vDhwdmV8-rmcX5jLC_KC-39" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="700" y="300" />
-              <mxPoint x="700" y="300" />
+              <mxPoint x="700" y="310" />
+              <mxPoint x="700" y="310" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="vDhwdmV8-rmcX5jLC_KC-41" value="response" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=0;dashed=1;" parent="1" source="vDhwdmV8-rmcX5jLC_KC-39" target="vDhwdmV8-rmcX5jLC_KC-26" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="699" y="320" />
-              <mxPoint x="699" y="320" />
+              <mxPoint x="700" y="330" />
+              <mxPoint x="700" y="330" />
             </Array>
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="vDhwdmV8-rmcX5jLC_KC-42" value="move complete" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=0;dashed=1;" parent="1" source="vDhwdmV8-rmcX5jLC_KC-39" target="vDhwdmV8-rmcX5jLC_KC-26" edge="1">
-          <mxGeometry relative="1" as="geometry">
+          <mxGeometry x="0.1385" relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="699" y="360" />
               <mxPoint x="699" y="360" />
             </Array>
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="vDhwdmV8-rmcX5jLC_KC-43" value="Request new image" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=0;" parent="1" source="vDhwdmV8-rmcX5jLC_KC-26" target="vDhwdmV8-rmcX5jLC_KC-1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="349" y="370" />
-              <mxPoint x="349" y="370" />
+              <mxPoint x="340" y="370" />
+              <mxPoint x="340" y="370" />
             </Array>
           </mxGeometry>
         </mxCell>
