@@ -44,11 +44,14 @@ class Webcam():
             if not ret:
                 print("no image")
             if i == init_size:
-                cap = self.bb_capture()
+                cap = np.average(baseline)
                 self.baseline = cv2.img_hash.averageHash(cap)
                 self.cap_time = True
                 msg = {"status" : "Webcam initialized"}
                 self.control_sender.add_msg(msg)
+            elif i > init_size/2 and i < init_size:
+                cap = self.bb_capture()
+                baseline.append(cap)
             elif self.cap_time and i > init_size:
                 self.capture(i)
 
