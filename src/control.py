@@ -25,7 +25,8 @@ class Control():
         self.classifier = MessageQueue("control-classifier")
         self.validator_sender = MessageQueue("control-validator")
         self.validator_reciever = MessageQueue("validator-control")
-        self.robot = MessageQueue("control-robot")
+        self.robot_sender = MessageQueue("control-robot")
+        self.robot_reciever = MessageQueue("robot-control")
 
         self.use_validator = False
 
@@ -35,6 +36,8 @@ class Control():
         self.validator_status = ""
         self.robot_status = ""
         self.webcam_command = ""
+        self.robot_command = ""
+        self.classification = ""
         self.system_status = "Starting"
 
     def control_cycle(self):
@@ -46,7 +49,7 @@ class Control():
         self.classifier_callback(None, cl_method, cl_props, cl_body)
         val_method, val_props, val_body = self.validator_reciever.get_msg()
         self.validator_callback(None, val_method, val_props, val_body)
-        rob_method, rob_props, rob_body = self.robot.get_msg()
+        rob_method, rob_props, rob_body = self.robot_reciever.get_msg()
         self.robot_callback(None, rob_method, rob_props, rob_body)
         self.update_system()
         self.message_segmentor()
@@ -83,6 +86,8 @@ class Control():
             self.classifier_status = body["status"]
             if self.classifier_status == "Classified":
                 self.system_status = f"Gesture classified as Class {body["result"]}"
+                self.classification = body["result"]
+                self.robot_command = "Move"
                 if self.use_validator:
                     msg = {
                         "msg" : body["msg"],
@@ -97,6 +102,7 @@ class Control():
 
             elif self.classifier_status == "Image_recieved":
                 self.system_status = "Classifing capture"
+
             return
         
     def validator_callback(self, ch, method, properties, body):
@@ -110,6 +116,7 @@ class Control():
                 self.webcam_command = "Capture"
                 self.system_status = "New Capture started"
                 self.validator_status = "Image_validated"
+                self.robot_command = "Move"
 
             return
         
@@ -117,6 +124,7 @@ class Control():
         if method != None:
             # Robot status changed
             # Possible robot status: action recieved, action started, action done#
+            self.robot_status = body["status"]
             return
     
     def segmentor_callback(self, ch, method, properties, body):
@@ -157,6 +165,10 @@ class Control():
         return 
     
     def message_robot(self):
+        if self.robot_command == "Move":
+            data = {"msg" : f"Class {self.classification}"}
+            self.robot_sender.add_msg(data)
+            self.robot_command = ""
         return
     
     def message_validator(self):

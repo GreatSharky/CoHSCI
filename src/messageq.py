@@ -20,7 +20,7 @@ class MessageQueue():
             print(self.queue, "recieved msg")
         return method, properties, body
     
-    def add_msg(self, body) -> bool:
+    def add_msg(self, body: dict) -> bool:
         if type(body) == dict:
             if "img" in body:
                 array = cv2.imencode(".jpg", body["img"])[1]

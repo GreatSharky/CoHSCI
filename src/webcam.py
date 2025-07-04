@@ -24,6 +24,7 @@ class Webcam():
         self.show_mask = False
         self.show_class = False
         self.initialized = False
+        self.barrier = 60
         self.webcam_sender = MessageQueue("webcam-segmentor")
         self.segment_reciever = MessageQueue("segmentor-webcam")
         self.classifier_reciever = MessageQueue("classifier-webcam")
@@ -78,7 +79,7 @@ class Webcam():
         diff = np.abs(caphash-self.baseline)
         diff = np.average(diff)
 
-        if diff > 70:
+        if diff > self.barrier:
             if len(self.index_storage) == 100:
                 data = {"img" : capture}
                 self.webcam_sender.add_msg(data)
