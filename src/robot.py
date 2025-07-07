@@ -10,8 +10,20 @@ class Robot():
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.connect((host, port))
             print('TCP client initialized!')
+            self.talker_active = True
         except socket.error as e:
             print(f"Error initializing socket: {e}")
+        self.gesture_map = {
+            "hand" : {
+                "Class 1" : "right",
+                "Class 3" : "left"
+            },
+            "gripper" : {
+                "Class 2" : "closed",
+                "Class 3" : "open"
+            }
+        }
+        
         self.control_reciever.get_blocking_msg(callback=self.message_robot)
 
     def talker(self, inMsg):
@@ -22,25 +34,62 @@ class Robot():
         print(data.decode('utf-8'))
         outMsg = data.decode('utf-8')
         return outMsg
+    
+    def init_robot(self):
+        self.robot = {
+            "hand" : None,
+            # "direction" : None,
+            # "amount" : None,
+            "gripper" : None,
+        }
+        return
 
     def message_robot(self, ch , method, properties, body):
         print("Sending robot message")
         data = MessageQueue.body_parse_util(body)
-        msg = {"status" : "moving"}
-        self.control_sender.add_msg(msg)
-        if "msg" in data:
-            if data["msg"] == "Class 3":
-                response = self.talker("18020000000000000")
-            elif data["msg"] == "Class 2":
-                response = self.talker("18021000000000000")
-            else:
-                response = "Not specced"
-        print(response)
+        msg = self.robot_message()
+        status = ""
+        response = ""
+        if len(msg) == 17:
+            print(msg)
+            if self.talker_active:
+                response = self.talker(msg)
+                print(response)
+                status = "moved"
+
+        else:
+            self.robot[msg] = self.gesture_map[msg][body["msg"]]
+            status = "updated"
         data = {
-            "status" : "moved",
+            "status" : status,
             "response" : response
             }
         self.control_sender.add_msg(data)
+
+    def robot_message(self):
+        if self.robot["hand"] == None:
+            return "hand"
+        # elif self.robot["direction"]  == None:
+        #     return "direction"
+        # elif self.robot["amount"] == None:
+        #     return "amount"
+        elif self.robot["gripper"] == None:
+            return "gripper"
+        else:
+            # Message build
+            msg = "0"*17
+            if self.robot["hand"] == "right":
+                msg[0] = "1"
+            elif self.robot["hand"] == "left":
+                msg[0] = "0"
+            
+            if self.robot["gripper"] == "open":
+                msg[3:5] = "20"
+            elif self.robot["gripper"] == "closed":
+                msg[3:5] = "21"
+
+            msg[1:3] = "80"
+            return msg
 
 if __name__ == "__main__":
     HOST = "192.168.125.1"
