@@ -18,9 +18,11 @@ class Robot():
                 "Class 1" : "right",
                 "Class 3" : "left"
             },
-            "gripper" : {
+            "action" : {
                 "Class 2" : "closed",
-                "Class 3" : "open"
+                "Class 3" : "open",
+                "Class 1" : "forward",
+                "Class 4" : "backward"
             }
         }
         self.init_robot()
@@ -40,7 +42,7 @@ class Robot():
             # "action" : None,
             # "direction" : None,
             # "amount" : None,
-            "gripper" : None,
+            "action" : None,
         }
         return
 
@@ -87,10 +89,14 @@ class Robot():
             elif self.robot["hand"] == "left":
                 msg = "0"
             msg += "80"
-            if self.robot["gripper"] == "open":
+            if self.robot["action"] == "open":
                 msg += "20"
-            elif self.robot["gripper"] == "closed":
+            elif self.robot["action"] == "closed":
                 msg += "21"
+            elif self.robot["action"] == "forward":
+                msg += "100100"
+            elif self.robot["action"] == "backward":
+                msg += "101100"
 
             msg = msg.ljust(17,"0")
         return msg

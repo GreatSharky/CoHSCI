@@ -6,14 +6,11 @@ ACTION_MAP = {
     "left" : "Class 3",
     "right" : "Class 1",
     # action
-    "gripper" : "Class 3",
-    "move" : "Class 1",
-    # gripper
     "open" : "Class 3",
     "closed" : "Class 2",
     # direction
-    "forward" : "Class 2",
-    "backward" : "Class 3",
+    "forward" : "Class 1",
+    "backward" : "Class 4",
 }
 
 def test_robot(actions):
