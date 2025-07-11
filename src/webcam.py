@@ -24,7 +24,7 @@ class Webcam():
         self.show_mask = False
         self.show_class = False
         self.initialized = False
-        self.barrier = 60
+        self.barrier = 50
         self.webcam_sender = MessageQueue("webcam-segmentor")
         self.segment_reciever = MessageQueue("segmentor-webcam")
         self.classifier_reciever = MessageQueue("classifier-webcam")

@@ -23,21 +23,21 @@ class Robot():
                 "Class 3" : "open"
             }
         }
+        self.init_robot()
         
         self.control_reciever.get_blocking_msg(callback=self.message_robot)
 
     def talker(self, inMsg):
-        print(inMsg)
         self.socket.sendall(inMsg.encode())
         data = self.socket.recv(1024)
         time.sleep(1)
-        print(data.decode('utf-8'))
         outMsg = data.decode('utf-8')
         return outMsg
     
     def init_robot(self):
         self.robot = {
             "hand" : None,
+            # "action" : None,
             # "direction" : None,
             # "amount" : None,
             "gripper" : None,
@@ -46,50 +46,54 @@ class Robot():
 
     def message_robot(self, ch , method, properties, body):
         print("Sending robot message")
-        data = MessageQueue.body_parse_util(body)
-        msg = self.robot_message()
+        body = MessageQueue.body_parse_util(body)
+        msg = self.robot_message(body["msg"])
+        print(msg)
         status = ""
         response = ""
         if len(msg) == 17:
-            print(msg)
             if self.talker_active:
                 response = self.talker(msg)
                 print(response)
                 status = "moved"
+                self.init_robot()
 
         else:
-            self.robot[msg] = self.gesture_map[msg][body["msg"]]
+            response = msg
             status = "updated"
         data = {
             "status" : status,
             "response" : response
             }
+        print(data)
+        print(self.robot)
         self.control_sender.add_msg(data)
 
-    def robot_message(self):
-        if self.robot["hand"] == None:
-            return "hand"
-        # elif self.robot["direction"]  == None:
-        #     return "direction"
-        # elif self.robot["amount"] == None:
-        #     return "amount"
-        elif self.robot["gripper"] == None:
-            return "gripper"
-        else:
-            # Message build
-            msg = "0"*17
+    def robot_message(self, request_data):
+        msg = ""
+        try:
+            for key in self.robot:
+                if self.robot[key] == None:
+                    self.robot[key] = self.gesture_map[key][request_data]
+                    msg = f"{key} set to {self.robot[key]}"
+                    msg = msg.ljust(20)
+                    break
+        except KeyError:
+            msg = f"{key} not set"
+            msg = msg.ljust(20)
+        if None not in self.robot.values():
             if self.robot["hand"] == "right":
-                msg[0] = "1"
+                msg = "1"
             elif self.robot["hand"] == "left":
-                msg[0] = "0"
-            
+                msg = "0"
+            msg += "80"
             if self.robot["gripper"] == "open":
-                msg[3:5] = "20"
+                msg += "20"
             elif self.robot["gripper"] == "closed":
-                msg[3:5] = "21"
+                msg += "21"
 
-            msg[1:3] = "80"
-            return msg
+            msg = msg.ljust(17,"0")
+        return msg
 
 if __name__ == "__main__":
     HOST = "192.168.125.1"
