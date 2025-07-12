@@ -25,14 +25,12 @@ class Classifier():
         self.vlm1.create_user_msg(image)
         result1 = self.vlm1.inference()
         classification = result1.message.content
-        msg = {
+        data = {
+            "status" : "Classified",
+            "result" : f"{classification}",
             "msg" : self.descriptions[self.gestures[int(classification)]],
             "img" : data["img"]
         }
-        print(f"Class {classification}")
-        self.validator_sender.add_msg(msg)
-        data = {"status" : "Classified",
-                "result" : f"{classification}"}
         self.control.add_msg(data)
         return
 

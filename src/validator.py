@@ -9,10 +9,10 @@ from vlm_agent import VLM
 class Validator(VLM):
     def __init__(self, model):
         super().__init__(model, [])
-        self.control_sender = MessageQueue("control-validator")
-        self.classifier = MessageQueue("classifier-validator")
+        self.control_reciever = MessageQueue("control-validator")
+        self.control_sender = MessageQueue("validator-control")
         self.create_system_prompt()
-        self.classifier.get_blocking_msg(callback=self.classifier_callback)
+        self.control_reciever.get_blocking_msg(callback=self.classifier_callback)
 
     def create_system_prompt(self):
         msg = {
