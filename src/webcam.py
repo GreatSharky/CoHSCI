@@ -2,9 +2,9 @@
 import cv2
 import os
 import numpy as np
-import json
-from messageq import MessageQueue
 from dataclasses import dataclass
+from messageq import MessageQueue
+from settings import config
 
 @dataclass
 class TextOptions():
@@ -16,29 +16,36 @@ class TextOptions():
     textLocation: tuple = (10,40)
 
 class Webcam():
-    def __init__(self, cam: str):
-        self.__cap = cv2.VideoCapture(cam)
-        self.to = TextOptions
-        self.__bb = [90,200,128,128]
-        self.cap_time = True
+    def __init__(self):
+        # Config
+        self.cam_ip = config["webcam"]["ip"]
+        self.__bb = config["webcam"]["bounding_box"]
+        self.barrier = config["webcam"]["barrier"]
+        self.init_size = config["webcam"]["init_size"]
+        self.show_preview = config["webcam"]["preview"]
+        self.time_to_cap = config["webcam"]["time_to_cap"]
+        self.text_color = config["webcam"]["text_color"]
+
+        # Program variables
+        self.__cap = cv2.VideoCapture(self.cam_ip)
+        self.take_cap = True
         self.show_mask = False
         self.show_class = False
         self.initialized = False
-        self.barrier = 50
         self.webcam_sender = MessageQueue("webcam-segmentor")
         self.segment_reciever = MessageQueue("segmentor-webcam")
         self.classifier_reciever = MessageQueue("classifier-webcam")
         self.control_sender = MessageQueue("webcam-control")
         self.control_reciever = MessageQueue("control-webcam")
+        self.index_storage = []
+
 
     def start(self):
         text = {}
         img = None
         baseline = []
-        init_size = 100
+        init_size = self.init_size
         self.baseline = 0
-        self.divider = 1
-        self.index_storage = []
         self.color = [0,0,255]
         for i in range(20000):
             ret, self.frame = self.__cap.read()
@@ -50,17 +57,17 @@ class Webcam():
                 cap = cap.astype(np.uint8)
                 print(cap)
                 self.baseline = cv2.img_hash.averageHash(cap)
-                self.cap_time = True
+                self.take_cap = True
                 msg = {"status" : "Webcam initialized"}
                 self.control_sender.add_msg(msg)
             elif i > init_size/2 and i < init_size:
                 cap = self.bb_capture()
                 baseline.append(cap)
-            elif self.cap_time and i > init_size:
+            elif self.take_cap and i > init_size:
                 self.capture(i)
 
             method, header, body = self.segment_reciever.get_msg()
-            if method:
+            if method and self.show_preview:
                 self.show_mask = True
                 img = body["img"]
 
@@ -80,18 +87,18 @@ class Webcam():
         diff = np.average(diff)
 
         if diff > self.barrier:
-            if len(self.index_storage) == 100:
+            if len(self.index_storage) == self.time_to_cap:
                 data = {"img" : capture}
                 self.webcam_sender.add_msg(data)
                 print("Capture made")
                 data = {"status" : "Capture_made"}
                 self.control_sender.add_msg(data)
-                self.cap_time = False
+                self.take_cap = False
                 self.index_storage = []
                 self.color = [0,0,255]
             elif self.index_storage and self.index_storage[-1] == index-1:
                 self.index_storage.append(index)
-                self.color = [0,255,int(251-len(self.index_storage)*2.5)]
+                self.color = [0,255,int(251-len(self.index_storage)*250/self.time_to_cap)]
             elif not self.index_storage:
                 self.index_storage.append(index)
         else:
@@ -106,7 +113,7 @@ class Webcam():
 
     def set_frame(self, text, mask):
         if text and text["command"] == "Capture":
-            self.cap_time = True
+            self.take_cap = True
         self.__add_rectangle(1)
         self.__add_image(90, 20,mask)
         self.__flip()
@@ -136,7 +143,7 @@ class Webcam():
         for index, title in enumerate(information):
             if title != "command":
                 textoptions = TextOptions()
-                textoptions.textColor = [0,255,0]
+                textoptions.textColor = self.text_color
                 textoptions.textLocation = (10, 20 + index*22)
                 text = f"{title}: {information[title]}" 
                 self.frame = cv2.putText(self.frame, text, 
@@ -149,9 +156,5 @@ class Webcam():
 
 
 if __name__ == "__main__" or __name__ == "__debug__":
-    cam_ip = os.getenv("CAM_IP")
-    if cam_ip == "" or cam_ip == None:
-        cam_ip = "/dev/video0"
-    print(cam_ip)
-    cam = Webcam(cam_ip)
+    cam = Webcam()
     cam.start()

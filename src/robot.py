@@ -1,39 +1,28 @@
 import socket
 import time
 from messageq import MessageQueue
+from settings import config
 
 class Robot():
-    def __init__(self, host, port):
+    def __init__(self):
+        # Configurable
+        self.host = config["robot"]["ip"]
+        self.port = config["robot"]["port"]
+        self.gesture_map = config["robot"]["gesture_map"]
+
+        # System variables
         self.control_reciever = MessageQueue("control-robot")
         self.control_sender = MessageQueue("robot-control")
         try:            
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.socket.connect((host, port))
+            self.socket.connect((self.host, self.port))
             print('TCP client initialized!')
             self.talker_active = True
         except socket.error as e:
             print(f"Error initializing socket: {e}")
             self.talker_active = True
-        self.gesture_map = {
-            "hand" : {
-                "Class 1" : "right",
-                "Class 3" : "left"
-            },
-            "mode" : {
-                "Class 1" : "move",
-                "Class 3" : "grip"
-            },
-            "action" : {
-                "Class 1" : "left",
-                "Class 2" : "right",
-                "Class 3" : "forward",
-                "Class 4" : "backward",
-                "Class 5" : "up",
-                "Class 6" : "down",
-            }
-        }
-        self.init_robot()
-        
+
+        self.init_robot()        
         self.control_reciever.get_blocking_msg(callback=self.message_robot)
 
     def talker(self, inMsg):

@@ -1,14 +1,17 @@
 """This is the segmentation"""
 from ultralytics import SAM
-import cv2
-import numpy as np
-import json
-
 from messageq import MessageQueue
+from settings import config
 
 class Segmentor():
-    def __init__(self, model="sam2.1_b.pt"):
-        self.sam = SAM(model)
+    def __init__(self):
+        # Configurable
+        self.model = config["segmentor"]["model"]
+        self.segment_points = config["segmentor"]["segment_points"]
+        self.point_labels = config["segmentor"]["point_labels"]
+
+        # System variables
+        self.sam = SAM(self.model)
         def callback(ch, method, properties, body):
             self.segment(ch, method, properties, body)
         self.webcam_reciever = MessageQueue("webcam-segmentor")
@@ -22,9 +25,9 @@ class Segmentor():
         self.control.add_msg(data)
         data = MessageQueue.body_parse_util(body)
         image = data["img"]
-        masks = self.sam(image, points=[[64,80]], labels=[1])
+        masks = self.sam(image, points=self.segment_points, labels=self.point_labels)
         mask = masks[0].masks.cpu().data
-        print(mask)
+        print(masks)
         h,w = mask.shape[-2:]
         mask = mask.reshape(h,w,1).numpy()
         masked_image = image*mask
