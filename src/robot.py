@@ -13,16 +13,23 @@ class Robot():
             self.talker_active = True
         except socket.error as e:
             print(f"Error initializing socket: {e}")
+            self.talker_active = True
         self.gesture_map = {
             "hand" : {
                 "Class 1" : "right",
                 "Class 3" : "left"
             },
+            "mode" : {
+                "Class 1" : "move",
+                "Class 3" : "grip"
+            },
             "action" : {
-                "Class 2" : "closed",
-                "Class 3" : "open",
-                "Class 1" : "forward",
-                "Class 4" : "backward"
+                "Class 1" : "left",
+                "Class 2" : "right",
+                "Class 3" : "forward",
+                "Class 4" : "backward",
+                "Class 5" : "up",
+                "Class 6" : "down",
             }
         }
         self.init_robot()
@@ -30,18 +37,16 @@ class Robot():
         self.control_reciever.get_blocking_msg(callback=self.message_robot)
 
     def talker(self, inMsg):
-        self.socket.sendall(inMsg.encode())
-        data = self.socket.recv(1024)
+        #self.socket.sendall(inMsg.encode())
+        #data = self.socket.recv(1024)
         time.sleep(1)
-        outMsg = data.decode('utf-8')
-        return outMsg
+        #outMsg = data.decode('utf-8')
+        #return outMsg
     
     def init_robot(self):
         self.robot = {
             "hand" : None,
-            # "action" : None,
-            # "direction" : None,
-            # "amount" : None,
+            "mode" : None,
             "action" : None,
         }
         return
@@ -57,8 +62,8 @@ class Robot():
             if self.talker_active:
                 response = self.talker(msg)
                 print(response)
-                status = "moved"
-                self.init_robot()
+            status = "moved"
+            self.init_robot()
 
         else:
             response = msg
@@ -84,19 +89,30 @@ class Robot():
             msg = f"{key} not set"
             msg = msg.ljust(20)
         if None not in self.robot.values():
+            print(self.robot)
             if self.robot["hand"] == "right":
                 msg = "1"
             elif self.robot["hand"] == "left":
                 msg = "0"
             msg += "80"
-            if self.robot["action"] == "open":
-                msg += "20"
-            elif self.robot["action"] == "closed":
-                msg += "21"
-            elif self.robot["action"] == "forward":
-                msg += "100100"
-            elif self.robot["action"] == "backward":
-                msg += "101100"
+            if self.robot["mode"] == "grip":
+                if self.robot["action"] == "right":
+                    msg += "20"
+                elif self.robot["action"] == "forward":
+                    msg += "21"
+            elif self.robot["mode"] == "move":
+                if self.robot["action"] == "forward":
+                    msg += "100100"
+                elif self.robot["action"] == "backward":
+                    msg += "101100"
+                elif self.robot["action"] == "left":
+                    msg += "1112340100"
+                elif self.robot["action"] == "right":
+                    msg += "1112341100"
+                elif self.robot["action"] == "up":
+                    msg += "12123412340100"
+                elif self.robot["action"] == "down":
+                    msg += "12123412341100"
 
             msg = msg.ljust(17,"0")
         return msg
