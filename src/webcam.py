@@ -59,7 +59,8 @@ class Webcam():
                 cap = np.mean(baseline, axis=0)
                 cap = cap.astype(np.uint8)
                 print(cap)
-                self.baseline = cv2.img_hash.averageHash(cap)
+                hasher = cv2.img_hash.AverageHash_create()
+                self.baseline = hasher.compute(cap)
                 self.take_cap = True
                 msg = {"status" : "Webcam initialized"}
                 self.control_sender.add_msg(msg)

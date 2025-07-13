@@ -1,6 +1,6 @@
 import pathlib
-import tomli
+import tomllib
 
 path = pathlib.Path(__file__).parent / "config.toml"
 with path.open(mode="rb") as fp:
-    config = tomli.load(fp)
+    config = tomllib.load(fp)
