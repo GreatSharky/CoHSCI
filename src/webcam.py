@@ -16,9 +16,12 @@ class TextOptions():
     textLocation: tuple = (10,40)
 
 class Webcam():
-    def __init__(self):
+    def __init__(self, cam_ip=""):
         # Config
-        self.cam_ip = config["webcam"]["ip"]
+        if cam_ip:
+            self.cam_ip = cam_ip
+        else:
+            self.cam_ip = config["webcam"]["ip"]
         self.__bb = config["webcam"]["bounding_box"]
         self.barrier = config["webcam"]["barrier"]
         self.init_size = config["webcam"]["init_size"]
@@ -156,5 +159,6 @@ class Webcam():
 
 
 if __name__ == "__main__" or __name__ == "__debug__":
-    cam = Webcam()
+    cam_ip = os.getenv("CAM_IP")
+    cam = Webcam(cam_ip)
     cam.start()
