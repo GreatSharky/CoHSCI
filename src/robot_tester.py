@@ -27,4 +27,4 @@ def test_robot(actions):
         rq.add_msg(data)
 
 
-test_robot(["left", "move","up"])
+test_robot(["hleft", "move","up"])
