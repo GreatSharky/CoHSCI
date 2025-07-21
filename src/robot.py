@@ -35,7 +35,6 @@ class Robot():
     def init_robot(self):
         self.robot = {
             "hand" : None,
-            "mode" : None,
             "action" : None,
         }
         return
@@ -78,35 +77,30 @@ class Robot():
             msg = f"{key} not set"
             msg = msg.ljust(20)
         if None not in self.robot.values():
-            print(self.robot)
             if self.robot["hand"] == "right":
                 msg = "1"
             elif self.robot["hand"] == "left":
                 msg = "0"
             msg += "80"
-            if self.robot["mode"] == "grip":
-                if self.robot["action"] == "right":
-                    msg += "20"
-                elif self.robot["action"] == "forward":
-                    msg += "21"
-            elif self.robot["mode"] == "move":
-                if self.robot["action"] == "forward":
-                    msg += "100100"
-                elif self.robot["action"] == "backward":
-                    msg += "101100"
-                elif self.robot["action"] == "left":
-                    msg += "1112340100"
-                elif self.robot["action"] == "right":
-                    msg += "1112341100"
-                elif self.robot["action"] == "up":
-                    msg += "12123412340100"
-                elif self.robot["action"] == "down":
-                    msg += "12123412341100"
+            if self.robot["action"] == "close":
+                msg += "20"
+            elif self.robot["action"] == "open":
+                msg += "21"
+            if self.robot["action"] == "forward":
+                msg += "100100"
+            elif self.robot["action"] == "backward":
+                msg += "101100"
+            elif self.robot["action"] == "left":
+                msg += "1112340100"
+            elif self.robot["action"] == "right":
+                msg += "1112341100"
+            elif self.robot["action"] == "up":
+                msg += "12123412340100"
+            elif self.robot["action"] == "down":
+                msg += "12123412341100"
 
             msg = msg.ljust(17,"0")
         return msg
 
 if __name__ == "__main__":
-    HOST = "192.168.125.1"
-    PORT = 5000
-    robot = Robot(HOST, PORT)
+    robot = Robot()
