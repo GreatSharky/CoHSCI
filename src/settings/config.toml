@@ -1,27 +1,27 @@
 [classifier]
-mdoel = "gemma3=12b"
+mdoel = "gemma3:12b"
 prompts = [
     "There is no hand in the image.",
-    #"Resembles the OK sign. The thumb and the index finger create a circle while the three other fingers are extended.",
-    #"Only the index finger points upwards and all the other fingers tucked down. The palm is facing the camera.",
-    #"Resembles the V sign for victory or for peace. The index and middle finger are extended and apart while the three other fingers are down. The palm is facing the camera.",
-    "All five fingers are extended and apart from each other. The palm is facing the camera.",
+    "Resembles the OK sign. The thumb and the index finger create a circle while the three other fingers are extended.",
+    "Only the index finger points upwards and all the other fingers tucked down. The palm is facing the camera.",
+    "Resembles the V sign for victory or for peace. The index and middle finger are extended and apart while the three other fingers are down. The palm is facing the camera.",
+#    "All five fingers are extended and apart from each other. The palm is facing the camera.",
     "The thumb and the index finger forming an L shape while the other fingers are tucked down. The palm is facing the camera.",
-    "Index finger and the middle finger are extended together upwards. The thumb, ring finger and the pinky are tucked down. Palm is facing the camera.",
+#    "Index finger and the middle finger are extended together upwards. The thumb, ring finger and the pinky are tucked down. Palm is facing the camera.",
     "All fingers are extended and together touching each other. The palm is facing the camera. This sign is used to signal 'stop' or 'halt'.",
     "Resembles the 'Live Long and Posper' sign from Star Trek. All five fingers are extended but there is a gap between the middle and the ring finger. The palm is facing the camera.",
     "Resembles the 'horns' sign. Thumb, index finger and the pinky are extended while the middle finger and the ring finger are tucked down. The palm is facing the camera.",
     "The fingers are clenched together in to tight fist. This is gesture is used to signal solidarity and defiance.",
     "Resembles the 'shaka' sign where the thumb and the pinky are extended and the three middle fingers tucked. Palm faces the camera.",
-    "The hand creates a C-like shape where the thumb and the other fingers are slightly curled and apart from each other.",
-    "The thumb is extended outwards while the other figers are tucked down. The palm is facing the camera.",
+#    "The hand creates a C-like shape where the thumb and the other fingers are slightly curled and apart from each other.",
+#    "The thumb is extended outwards while the other figers are tucked down. The palm is facing the camera.",
     "Thumbs up gesture where the thumb is facing upwards and all other fingers are tucked in.",
     "Middle finger is extended while the other fingers are tucked down. This gesture is considered offensive.",
     
 ]
 
 [validator]
-model = "gemma3=12b"
+model = "gemma3:12b"
 prompt = [
     
 ]
