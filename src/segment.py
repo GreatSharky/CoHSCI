@@ -19,7 +19,6 @@ class Segmentor():
         self.classifier_sender = MessageQueue("segmentor-classifier")
         self.webcam_sender = MessageQueue("segmentor-webcam")
         self.control = MessageQueue("control-segmentor")
-        self.index = 14
 
         self.webcam_reciever.get_blocking_msg(callback)
 
@@ -40,8 +39,6 @@ class Segmentor():
         data = {"status" : "Segment_done"}
         self.control.add_msg(data)
         print("masked_image sent")
-        self.index += 1
-        cv2.imwrite(f"{self.index}.jpg", masked_image)
         return masked_image
     
     
