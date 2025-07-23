@@ -21,7 +21,7 @@ class Webcam():
         if cam_ip:
             self.cam_ip = cam_ip
         else:
-            self.cam_ip = config["webcam"]["ip"]
+            self.cam_ip = config["webcam"]["camera_output"]
         self.__bb = config["webcam"]["bounding_box"]
         self.barrier = config["webcam"]["barrier"]
         self.init_size = config["webcam"]["init_size"]
@@ -50,7 +50,7 @@ class Webcam():
         init_size = self.init_size
         self.baseline = 0
         self.color = [0,0,255]
-        for i in range(20000):
+        for i in range(200000):
             ret, self.frame = self.__cap.read()
             if not ret:
                 print("no image")
