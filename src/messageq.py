@@ -17,7 +17,6 @@ class MessageQueue():
         method, properties, body = self.channel.basic_get(self.queue, auto_ack=True)
         if method != None:
             body = self.body_parse_util(body)
-            print(self.queue, "recieved msg")
         return method, properties, body
     
     def add_msg(self, body: dict) -> bool:
@@ -25,7 +24,6 @@ class MessageQueue():
             if "img" in body:
                 array = cv2.imencode(".jpg", body["img"])[1]
                 body["img"] = [int(x) for x in array]
-        print(self.queue, "Sending message")
 
         pkg = json.dumps(body)
         return self.channel.basic_publish(exchange="", routing_key=self.queue, body=pkg)
