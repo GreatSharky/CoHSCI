@@ -19,6 +19,23 @@ prompts = [
     "Middle finger is extended while the other fingers are tucked down. This gesture is considered offensive." # Back
     
 ]
+emoji_prompts = [
+    "Not a hand",
+    "🤙", # "Shaka or hang loose" #right hand
+    "👆", #left hand
+    "✌️", #left
+    "👌", #right
+    "Only index finger is pointing up", #forward
+    "✊", #backward
+    "👍", #up
+    "👎", #down
+    "✋", #close
+    "Live long and prosper", #open
+    "🖕", #kill
+    # "👊",
+    # "🤟", #both
+    # "🤘",
+]
 
 [validator]
 model = "gemma3:12b"
@@ -27,7 +44,7 @@ prompt = [
 ]
 
 [webcam]
-camera_output = ""
+camera_output = "/dev/video0"
 preview = true
 barrier = 50
 init_size = 100
@@ -44,14 +61,14 @@ point_labels = [1]
 ip = "192.168.125.1"
 port = 5000
     [robot.gesture_map]
-    hand = {"Class 8" = "right", "Class 4" = "left"}
-    #mode = {"Class 1" = "move", "Class 3" = "grip"}
-        [robot.gesture_map.action]
-        "Class 3" = "left"
-        "Class 1" = "right"
-        "Class 2" = "forward"
-        "Class 10" = "backward"
-        "Class 9" = "up"
-        "Class 7" = "down"
-        "Class 6" = "open"
-        "Class 5" = "close"
+    "Class 1" = "right_hand"
+    "Class 2" = "left_hand"
+    "Class 3" = "left"
+    "Class 4" = "right"
+    "Class 5" = "forward"
+    "Class 6" = "backward"
+    "Class 7" = "up"
+    "Class 8" = "down"
+    "Class 9" = "close"
+    "Class 10" = "open"
+    "Class 11" = "kill"

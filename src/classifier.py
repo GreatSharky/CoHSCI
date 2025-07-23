@@ -38,5 +38,5 @@ class Classifier():
 
 if __name__ == "__main__":
 
-    descriptions = config["classifier"]["prompts"]
+    descriptions = config["classifier"]["emoji_prompts"]
     classifier = Classifier(descriptions, "gemma3:12b")
