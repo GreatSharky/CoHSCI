@@ -44,7 +44,3 @@ class Segmentor():
     
 if __name__ == "__main__":
     sam = Segmentor()
-    print("Is this triggered?")
-    i = 1
-    while True:
-        img = sam.segment()

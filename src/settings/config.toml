@@ -2,22 +2,39 @@
 mdoel = "gemma3:12b"
 prompts = [
     "There is no hand in the image.",
-    "Resembles the OK sign. The thumb and the index finger create a circle while the three other fingers are extended.",
-    "Only the index finger points upwards and all the other fingers tucked down. The palm is facing the camera.",
-    "Resembles the V sign for victory or for peace. The index and middle finger are extended and apart while the three other fingers are down. The palm is facing the camera.",
-#    "All five fingers are extended and apart from each other. The palm is facing the camera.",
-    "The thumb and the index finger forming an L shape while the other fingers are tucked down. The palm is facing the camera.",
-#    "Index finger and the middle finger are extended together upwards. The thumb, ring finger and the pinky are tucked down. Palm is facing the camera.",
-    "All fingers are extended and together touching each other. The palm is facing the camera. This sign is used to signal 'stop' or 'halt'.",
-    "Resembles the 'Live Long and Posper' sign from Star Trek. All five fingers are extended but there is a gap between the middle and the ring finger. The palm is facing the camera.",
-    "Resembles the 'horns' sign. Thumb, index finger and the pinky are extended while the middle finger and the ring finger are tucked down. The palm is facing the camera.",
-    "The fingers are clenched together in to tight fist. This is gesture is used to signal solidarity and defiance.",
-    "Resembles the 'shaka' sign where the thumb and the pinky are extended and the three middle fingers tucked. Palm faces the camera.",
+    "Resembles the OK sign. The thumb and the index finger create a circle while the three other fingers are extended.", #Right
+    "Only the index finger points upwards and all the other fingers tucked down.", # Forward
+    "Resembles the V sign for victory or for peace. The index and middle finger are extended and apart while the three other fingers are down.", # Left
+#    "All five fingers are extended and apart from each other.",
+    "The thumb and the index finger forming an L shape while the other fingers are tucked down." , # Left hand
+#    "Index finger and the middle finger are extended together upwards. The thumb, ring finger and the pinky are tucked down.",
+    "All fingers are extended and together touching each other.  This sign is used to signal 'stop' or 'halt'.", # Close
+    "Resembles the 'Live Long and Posper' sign from Star Trek. All five fingers are extended but there is a gap between the middle and the ring finger.", # Open
+    #"Resembles the 'horns' sign. Thumb, index finger and the pinky are extended while the middle finger and the ring finger are tucked down.",
+    "The fingers are clenched together in to tight fist. This is gesture is used to signal solidarity and defiance.", # Down
+    "Resembles the 'shaka' sign where the thumb and the pinky are extended and the three middle fingers tucked.", # Right hand
 #    "The hand creates a C-like shape where the thumb and the other fingers are slightly curled and apart from each other.",
-#    "The thumb is extended outwards while the other figers are tucked down. The palm is facing the camera.",
-    "Thumbs up gesture where the thumb is facing upwards and all other fingers are tucked in.",
-    "Middle finger is extended while the other fingers are tucked down. This gesture is considered offensive.",
+#    "The thumb is extended outwards while the other figers are tucked down. ",
+    "Thumbs up gesture where the thumb is facing upwards and all other fingers are tucked in.", # Up
+    "Middle finger is extended while the other fingers are tucked down. This gesture is considered offensive." # Back
     
+]
+emoji_prompts = [
+    "Not a hand",
+    "🤙", # "Shaka or hang loose" #right hand
+    "👆", #left hand
+    "✌️", #left
+    "👌", #right
+    "Only index finger is pointing up", #forward
+    "✊", #backward
+    "👍", #up
+    "👎", #down
+    "✋", #close
+    "Live long and prosper", #open
+    "🖕", #kill
+    # "👊",
+    # "🤟", #both
+    # "🤘",
 ]
 
 [validator]
@@ -27,7 +44,7 @@ prompt = [
 ]
 
 [webcam]
-camera_output = ""
+camera_output = "/dev/video0"
 preview = true
 barrier = 50
 init_size = 100
@@ -44,12 +61,14 @@ point_labels = [1]
 ip = "192.168.125.1"
 port = 5000
     [robot.gesture_map]
-    hand = {"Class 1" = "right", "Class 3" = "left"}
-    mode = {"Class 1" = "move", "Class 3" = "grip"}
-        [robot.gesture_map.action]
-        "Class 1" = "left"
-        "Class 2" = "right"
-        "Class 3" = "forward"
-        "Class 4" = "backward"
-        "Class 5" = "up"
-        "Class 6" = "down"
+    "Class 1" = "right_hand"
+    "Class 2" = "left_hand"
+    "Class 3" = "left"
+    "Class 4" = "right"
+    "Class 5" = "forward"
+    "Class 6" = "backward"
+    "Class 7" = "up"
+    "Class 8" = "down"
+    "Class 9" = "close"
+    "Class 10" = "open"
+    "Class 11" = "kill"
