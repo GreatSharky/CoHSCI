@@ -1,0 +1,45 @@
+services:
+  webcam:
+    build:
+      context: src
+      dockerfile: webcam/Dockerfile
+    depends_on:
+      - control
+  
+  control:
+    build: 
+      context: src
+      dockerfile: control/Dockerfile
+
+    depends_on:
+      - rabbitMQ
+
+  segmentor:
+    build: 
+      context: src
+      dockerfile: segmentor/Dockerfile
+
+    depends_on:
+      - control
+      - webcam
+
+  classifier:
+    build: 
+      context: src
+      dockerfile: classifier/Dockerfile
+
+    depends_on:
+      - control
+      - segmentor
+
+  robot:
+    build: 
+      context: src
+      dockerfile: robot/Dockerfile
+    
+    depends_on:
+      - control
+      - classifier
+
+  rabbitMQ:
+    image: "rabbitmq:latest"
