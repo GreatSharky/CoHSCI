@@ -1,6 +1,5 @@
 """This one will classify the segmented image"""
 from gemma3_agent import VLM_gemma
-import numpy as np
 
 from messageq import MessageQueue
 from settings import config

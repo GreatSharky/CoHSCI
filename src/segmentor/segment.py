@@ -2,7 +2,6 @@
 from ultralytics import SAM
 from messageq import MessageQueue
 from settings import config
-import cv2
 
 class Segmentor():
     def __init__(self):

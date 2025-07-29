@@ -22,10 +22,10 @@ prompts = [
 emoji_prompts = [
     "Not a hand",
     "🤙", # "Shaka or hang loose" #right hand
-    "👆", #left hand
+    "🤘", #left hand
     "✌️", #left
     "👌", #right
-    "Only index finger is pointing up", #forward
+    "👆", #forward
     "✊", #backward
     "👍", #up
     "👎", #down
@@ -46,7 +46,7 @@ prompt = [
 [webcam]
 camera_output = "/dev/video0"
 preview = true
-barrier = 50
+barrier = 47
 init_size = 100
 bounding_box = [90,200,128,128]
 text_color = [0,255,0]
