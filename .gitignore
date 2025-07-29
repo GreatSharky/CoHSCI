@@ -3,7 +3,7 @@ test_*
 *.pt
 *.jpg
 tmp/
-messageq/build/
-messageq/dist/
-messageq/messageq.egg-info/
+build/
+dist/
+messageq.egg-info/
 .venv/
