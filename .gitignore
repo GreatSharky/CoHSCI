@@ -1,5 +1,9 @@
+__pycache__/
 test_*
 *.pt
 *.jpg
 tmp/
-__pycache__/
+messageq/build/
+messageq/dist/
+messageq/messageq.egg-info/
+.venv/
