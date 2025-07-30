@@ -4,6 +4,6 @@ WORKDIR /app
 RUN pip install --upgrade pip
 COPY messageq ./messageq
 RUN pip install ./messageq
-COPY webcam .
+COPY classifier .
 RUN pip install -r requirements.txt
-CMD [ "python" , "webcam.py"]
+CMD [ "python" , "classifier.py"]

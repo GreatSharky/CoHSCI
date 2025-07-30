@@ -1,0 +1,15 @@
+[robot]
+ip = "192.168.125.1"
+port = 5000
+    [robot.gesture_map]
+    "Class 1" = "right_hand"
+    "Class 2" = "left_hand"
+    "Class 3" = "left"
+    "Class 4" = "right"
+    "Class 5" = "forward"
+    "Class 6" = "backward"
+    "Class 7" = "up"
+    "Class 8" = "down"
+    "Class 9" = "close"
+    "Class 10" = "open"
+    "Class 11" = "kill"

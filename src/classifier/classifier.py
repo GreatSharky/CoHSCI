@@ -1,17 +1,21 @@
 """This one will classify the segmented image"""
-from gemma3_agent import VLM_gemma
+import os
+import tomllib
 
+from gemma3_agent import VLM_gemma
 from messageq import MessageQueue
-from settings import config
 
 class Classifier():
-    def __init__(self, descriptions, model):
-        self.descriptions = descriptions
-        self.vlm1 = VLM_gemma(model, descriptions)
-        self.segmentor_reciever = MessageQueue("segmentor-classifier")
-        self.webcam_sender = MessageQueue("classifier-webcam")
-        self.control = MessageQueue("control-classifier")
-        self.validator_sender = MessageQueue("classifier-validator")
+    def __init__(self, config):
+        self.descriptions = config["classifier"]["emoji_prompts"]
+        model = config["classifier"]["model"]
+        self.vlm1 = VLM_gemma(model, self.descriptions)
+        broker = config["classifier"]["broker"]
+
+        self.segmentor_reciever = MessageQueue(broker, "segmentor-classifier")
+        self.webcam_sender = MessageQueue(broker, "classifier-webcam")
+        self.control = MessageQueue(broker, "control-classifier")
+        self.validator_sender = MessageQueue(broker, "classifier-validator")
         self.segmentor_reciever.get_blocking_msg(self.classify)
 
     def classify(self, ch, method, properties, body):
@@ -32,10 +36,13 @@ class Classifier():
             "msg" : self.descriptions[int(classification)],
             "img" : data["img"]
         }
+        print(classification)
         self.control.add_msg(data)
         return
 
 if __name__ == "__main__":
-
-    descriptions = config["classifier"]["emoji_prompts"]
-    classifier = Classifier(descriptions, "gemma3:12b")
+    with open("config.toml", "rb") as file:
+        config = tomllib.load(file)
+    broker = os.getenv("rabbitMQ", "localhost")
+    config["classifier"]["broker"] = broker
+    classifier = Classifier(config)

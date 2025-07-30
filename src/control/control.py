@@ -1,4 +1,6 @@
 import time
+import os
+import tomllib
 from messageq import MessageQueue
 
 # Write control/state machine that tracks program state.
@@ -19,14 +21,15 @@ from messageq import MessageQueue
 
 class Control():
     def __init__(self):
-        self.webcam_reciever = MessageQueue("webcam-control")
-        self.webcam_sender = MessageQueue("control-webcam")
-        self.segmentor = MessageQueue("control-segmentor")
-        self.classifier = MessageQueue("control-classifier")
-        self.validator_sender = MessageQueue("control-validator")
-        self.validator_reciever = MessageQueue("validator-control")
-        self.robot_sender = MessageQueue("control-robot")
-        self.robot_reciever = MessageQueue("robot-control")
+        broker = os.getenv("rabbitMQ", "localhost")
+        self.webcam_reciever = MessageQueue(broker, "webcam-control")
+        self.webcam_sender = MessageQueue(broker, "control-webcam")
+        self.segmentor = MessageQueue(broker, "control-segmentor")
+        self.classifier = MessageQueue(broker, "control-classifier")
+        self.validator_sender = MessageQueue(broker, "control-validator")
+        self.validator_reciever = MessageQueue(broker, "validator-control")
+        self.robot_sender = MessageQueue(broker, "control-robot")
+        self.robot_reciever = MessageQueue(broker, "robot-control")
 
         self.use_validator = False
 

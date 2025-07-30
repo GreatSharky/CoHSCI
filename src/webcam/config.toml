@@ -1,0 +1,8 @@
+[webcam]
+camera_output = "/dev/video0"
+preview = true
+barrier = 47
+init_size = 100
+bounding_box = [90,200,128,128]
+text_color = [0,255,0]
+time_to_cap = 100

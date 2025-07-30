@@ -1,23 +1,25 @@
 """This is the segmentation"""
+import os
+import tomllib
 from ultralytics import SAM
 from messageq import MessageQueue
-from settings import config
 
 class Segmentor():
-    def __init__(self):
+    def __init__(self, config):
         # Configurable
         self.model = config["segmentor"]["model"]
         self.segment_points = config["segmentor"]["segment_points"]
         self.point_labels = config["segmentor"]["point_labels"]
+        broker = config["segmentor"]["broker"]
 
         # System variables
         self.sam = SAM(self.model)
         def callback(ch, method, properties, body):
             self.segment(ch, method, properties, body)
-        self.webcam_reciever = MessageQueue("webcam-segmentor")
-        self.classifier_sender = MessageQueue("segmentor-classifier")
-        self.webcam_sender = MessageQueue("segmentor-webcam")
-        self.control = MessageQueue("control-segmentor")
+        self.webcam_reciever = MessageQueue(broker, "webcam-segmentor")
+        self.classifier_sender = MessageQueue(broker, "segmentor-classifier")
+        self.webcam_sender = MessageQueue(broker, "segmentor-webcam")
+        self.control = MessageQueue(broker, "control-segmentor")
 
         self.webcam_reciever.get_blocking_msg(callback)
 
@@ -42,4 +44,8 @@ class Segmentor():
     
     
 if __name__ == "__main__":
-    sam = Segmentor()
+    with open("config.toml", "rb") as file:
+        config = tomllib.load(file)
+    broker = os.getenv("rabbitMQ", "localhost")
+    config["segementor"]["broker"] = broker
+    sam = Segmentor(config)

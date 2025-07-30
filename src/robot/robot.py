@@ -1,18 +1,20 @@
 import socket
 import time
+import os
+import tomllib
 from messageq import MessageQueue
-from settings import config
 
 class Robot():
-    def __init__(self):
+    def __init__(self, config):
         # Configurable
         self.host = config["robot"]["ip"]
         self.port = config["robot"]["port"]
         self.gesture_map = config["robot"]["gesture_map"]
+        broker = config["robot"]["broker"]
 
         # System variables
-        self.control_reciever = MessageQueue("control-robot")
-        self.control_sender = MessageQueue("robot-control")
+        self.control_reciever = MessageQueue(broker, "control-robot")
+        self.control_sender = MessageQueue(broker, "robot-control")
         try:            
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.settimeout(10)
@@ -115,4 +117,8 @@ class Robot():
         return msg
 
 if __name__ == "__main__":
-    robot = Robot()
+    with open("config.toml", "rb") as file:
+        config = tomllib.load(file)
+    broker = os.getenv("rabbitMQ", "localhost")
+    config["robot"]["broker"] = broker
+    robot = Robot(config)

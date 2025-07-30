@@ -1,0 +1,4 @@
+[segmentor]
+model = "sam2.1_b.pt"
+segment_points = [[64,80]]
+point_labels = [1]

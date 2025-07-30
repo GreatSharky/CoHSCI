@@ -1,13 +1,13 @@
-import pika
+import json
 import time
 import numpy as np
 import cv2
-import json
+import pika
 
 class MessageQueue():
-    def __init__(self, queue_name):
+    def __init__(self, broker, queue_name):
         self.queue = queue_name
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', heartbeat=6000))
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=broker, heartbeat=6000))
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue=queue_name)
         self.channel.queue_purge(queue=queue_name)

@@ -1,10 +1,10 @@
 """This is the webcam part"""
 import cv2
 import os
+import tomllib
 import numpy as np
 from dataclasses import dataclass
 from messageq import MessageQueue
-from settings import config
 
 @dataclass
 class TextOptions():
@@ -16,7 +16,7 @@ class TextOptions():
     textLocation: tuple = (10,40)
 
 class Webcam():
-    def __init__(self, cam_ip=""):
+    def __init__(self, config, cam_ip=""):
         # Config
         if cam_ip:
             self.cam_ip = cam_ip
@@ -28,6 +28,7 @@ class Webcam():
         self.show_preview = config["webcam"]["preview"]
         self.time_to_cap = config["webcam"]["time_to_cap"]
         self.text_color = config["webcam"]["text_color"]
+        broker = config["webcam"]["broker"]
 
         # Program variables
         self.__cap = cv2.VideoCapture(self.cam_ip)
@@ -35,11 +36,11 @@ class Webcam():
         self.show_mask = False
         self.show_class = False
         self.initialized = False
-        self.webcam_sender = MessageQueue("webcam-segmentor")
-        self.segment_reciever = MessageQueue("segmentor-webcam")
-        self.classifier_reciever = MessageQueue("classifier-webcam")
-        self.control_sender = MessageQueue("webcam-control")
-        self.control_reciever = MessageQueue("control-webcam")
+        self.webcam_sender = MessageQueue(broker, "webcam-segmentor")
+        self.segment_reciever = MessageQueue(broker, "segmentor-webcam")
+        self.classifier_reciever = MessageQueue(broker, "classifier-webcam")
+        self.control_sender = MessageQueue(broker, "webcam-control")
+        self.control_reciever = MessageQueue(broker, "control-webcam")
         self.index_storage = []
 
 
@@ -161,5 +162,9 @@ class Webcam():
 
 if __name__ == "__main__" or __name__ == "__debug__":
     cam_ip = os.getenv("CAM_IP")
-    cam = Webcam(cam_ip)
+    with open("config.toml", "rb") as fp:
+        config = tomllib.load(fp)
+    broker = os.getenv("rabbitMQ", "localhost")
+    config["webcam"]["broker"] = broker
+    cam = Webcam(config, cam_ip)
     cam.start()
