@@ -1,7 +1,5 @@
 import json
 import time
-import numpy as np
-import cv2
 import pika
 
 class MessageQueue():
@@ -43,15 +41,15 @@ class MessageQueue():
         return body
         
 if __name__ == "__main__":
-    rq = MessageQueue("hello")
-    while True:
-        method_frame, header_frame, body = rq.get_msg()
-        print(method_frame, header_frame, body)
-        if method_frame:
-            img = cv2.imdecode(np.frombuffer(body, dtype=np.uint8), cv2.IMREAD_COLOR)
-            print(img)
+    # rq = MessageQueue("hello")
+    # while True:
+    #     method_frame, header_frame, body = rq.get_msg()
+    #     print(method_frame, header_frame, body)
+    #     if method_frame:
+    #         img = cv2.imdecode(np.frombuffer(body, dtype=np.uint8), cv2.IMREAD_COLOR)
+    #         print(img)
 
-        time.sleep(2)
+    #     time.sleep(2)
 
     # Sending message 
     # numpy jpg array: jpg
