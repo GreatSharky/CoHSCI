@@ -66,6 +66,7 @@ class Segmentor():
     
     
 if __name__ == "__main__":
+    logging.info("---------------\n---------------\n---------------\n")
     time.sleep(5)
     logging.debug("Started")
     with open("config.toml", "rb") as file:

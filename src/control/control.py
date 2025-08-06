@@ -193,6 +193,7 @@ class Control():
         return
 
 if __name__ == "__main__":
+    logging.info("---------------\n---------------\n---------------\n")
     time.sleep(5)
     state_machine = Control()
     logging.info("Start")

@@ -14,7 +14,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s: %(filename)s - %(message)s",
     handlers= [
-        logging.FileHandler("/app/log/segment.log"),
+        logging.FileHandler("/app/log/webcam.log"),
         logging.StreamHandler()
         ]
 )
@@ -179,6 +179,7 @@ class Webcam():
 
 
 if __name__ == "__main__" or __name__ == "__debug__":
+    logging.info("---------------\n---------------\n---------------\n")
     time.sleep(5)
     cam_ip = os.getenv("CAM_IP")
     with open("config.toml", "rb") as fp:

@@ -12,6 +12,7 @@ logging.basicConfig(
     format="%(asctime)s: %(filename)s - %(message)s",
     handlers= [
         logging.FileHandler("/app/log/robot.log"),
+        logging.StreamHandler()
         ]
 )
 logger = logging.getLogger(__name__)
@@ -134,6 +135,7 @@ class Robot():
         return msg
 
 if __name__ == "__main__":
+    logging.info("---------------\n---------------\n---------------\n")
     time.sleep(5)
     with open("config.toml", "rb") as file:
         config = tomllib.load(file)

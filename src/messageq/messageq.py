@@ -1,8 +1,11 @@
 import json
 import time
+import logging
 import pika
 import cv2
 import numpy as np
+
+logger = logging.getLogger(__name__)
 
 class MessageQueue():
     def __init__(self, broker, queue_name):
@@ -11,15 +14,17 @@ class MessageQueue():
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue=queue_name)
         self.channel.queue_purge(queue=queue_name)
-        print(f"{queue_name} declared")
+        logging.info(f"{queue_name} declared")
     
     def get_msg(self):
         method, properties, body = self.channel.basic_get(self.queue, auto_ack=True)
         if method != None:
             body = self.body_parse_util(body)
+            logging.info(f"{self.queue} Message body: {body}")
         return method, properties, body
     
     def add_msg(self, body: dict) -> bool:
+        logging.info(f"{self.queue} Added message {body}")
         if type(body) == dict:
             if "img" in body:
                 array = cv2.imencode(".jpg", body["img"])[1]
@@ -30,7 +35,7 @@ class MessageQueue():
         
     def get_blocking_msg(self, callback):
         self.channel.basic_consume(queue=self.queue, on_message_callback=callback, auto_ack=True)
-        print(f"{self.queue} starting consume")
+        logging.info(f"{self.queue} starting consume")
         return self.channel.start_consuming()
     
     @staticmethod
@@ -43,19 +48,19 @@ class MessageQueue():
         return body
         
 if __name__ == "__main__":
-    # rq = MessageQueue("hello")
-    # while True:
-    #     method_frame, header_frame, body = rq.get_msg()
-    #     print(method_frame, header_frame, body)
-    #     if method_frame:
-    #         img = cv2.imdecode(np.frombuffer(body, dtype=np.uint8), cv2.IMREAD_COLOR)
-    #         print(img)
+    rq = MessageQueue("hello")
+    while True:
+        method_frame, header_frame, body = rq.get_msg()
+        logging.info(method_frame, header_frame, body)
+        if method_frame:
+            img = cv2.imdecode(np.frombuffer(body, dtype=np.uint8), cv2.IMREAD_COLOR)
+            logging.info(img)
 
-    #     time.sleep(2)
+        time.sleep(2)
 
     # Sending message 
     # numpy jpg array: jpg
     # encoded = cv2.imencode(".jpg", jpg)[1].tobytes()
     # mq.add_msg(encoded)
     # decoded = cv2.imdecode(np.frombuffer(body, dtype=np.uint8), cv2.IMREAD_COLOR)
-    print("Nothing done")
+    logging.info("Nothing done")

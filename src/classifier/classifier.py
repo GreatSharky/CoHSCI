@@ -13,7 +13,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s: %(filename)s - %(message)s",
     handlers= [
-        logging.FileHandler("/app/log/segment.log"),
+        logging.FileHandler("/app/log/classifier.log"),
         logging.StreamHandler()
         ]
 )
@@ -57,6 +57,7 @@ class Classifier():
         return
 
 if __name__ == "__main__":
+    logging.info("---------------\n---------------\n---------------\n")
     time.sleep(5)
     with open("config.toml", "rb") as file:
         config = tomllib.load(file)
