@@ -85,7 +85,6 @@ class Control():
         logging.info(self.segmentor_status)
         logging.info(self.classifier_status)
         logging.info(self.validator_status)
-        logging.info()
         return
     
     def reset_status(self):
