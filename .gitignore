@@ -7,3 +7,4 @@ build/
 dist/
 messageq.egg-info/
 .venv/
+log/*
