@@ -1,7 +1,20 @@
 import time
 import os
 import tomllib
+import logging
 from messageq import MessageQueue
+
+os.makedirs("/app/log", exist_ok=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s: %(filename)s - %(message)s",
+    handlers= [
+        logging.FileHandler("/app/log/control.log"),
+        logging.StreamHandler()
+        ]
+)
+logger = logging.getLogger(__name__)
 
 # Write control/state machine that tracks program state.
 # Roles:
@@ -21,7 +34,8 @@ from messageq import MessageQueue
 
 class Control():
     def __init__(self):
-        broker = os.getenv("rabbitMQ", "localhost")
+        broker = "rabbitmq"
+        logging.info(f"Starting message queues")
         self.webcam_reciever = MessageQueue(broker, "webcam-control")
         self.webcam_sender = MessageQueue(broker, "control-webcam")
         self.segmentor = MessageQueue(broker, "control-segmentor")
@@ -32,6 +46,7 @@ class Control():
         self.robot_reciever = MessageQueue(broker, "robot-control")
 
         self.use_validator = False
+        logging.info(f"Use validator = {self.use_validator}")
 
         self.classifier_status = ""
         self.webcam_status = ""
@@ -63,14 +78,14 @@ class Control():
         return
     
     def update_system(self):
-        print("STATUS UPDATE")
-        print(self.webcam_command)
-        print(self.system_status)
-        print(self.webcam_status)
-        print(self.segmentor_status)
-        print(self.classifier_status)
-        print(self.validator_status)
-        print()
+        logging.info("STATUS UPDATE")
+        logging.info(self.webcam_command)
+        logging.info(self.system_status)
+        logging.info(self.webcam_status)
+        logging.info(self.segmentor_status)
+        logging.info(self.classifier_status)
+        logging.info(self.validator_status)
+        logging.info()
         return
     
     def reset_status(self):
@@ -178,7 +193,9 @@ class Control():
         return
 
 if __name__ == "__main__":
+    time.sleep(5)
     state_machine = Control()
+    logging.info("Start")
     while True:
         state_machine.control_cycle()
         time.sleep(1)

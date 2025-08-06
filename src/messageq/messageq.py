@@ -1,6 +1,8 @@
 import json
 import time
 import pika
+import cv2
+import numpy as np
 
 class MessageQueue():
     def __init__(self, broker, queue_name):
@@ -56,3 +58,4 @@ if __name__ == "__main__":
     # encoded = cv2.imencode(".jpg", jpg)[1].tobytes()
     # mq.add_msg(encoded)
     # decoded = cv2.imdecode(np.frombuffer(body, dtype=np.uint8), cv2.IMREAD_COLOR)
+    print("Nothing done")

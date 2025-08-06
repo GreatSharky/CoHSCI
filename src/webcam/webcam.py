@@ -2,9 +2,23 @@
 import cv2
 import os
 import tomllib
+import time
+import logging
 import numpy as np
 from dataclasses import dataclass
 from messageq import MessageQueue
+
+os.makedirs("/app/log", exist_ok=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s: %(filename)s - %(message)s",
+    handlers= [
+        logging.FileHandler("/app/log/segment.log"),
+        logging.StreamHandler()
+        ]
+)
+logger = logging.getLogger(__name__)
 
 @dataclass
 class TextOptions():
@@ -36,6 +50,7 @@ class Webcam():
         self.show_mask = False
         self.show_class = False
         self.initialized = False
+        logging.info("Connecting")
         self.webcam_sender = MessageQueue(broker, "webcam-segmentor")
         self.segment_reciever = MessageQueue(broker, "segmentor-webcam")
         self.classifier_reciever = MessageQueue(broker, "classifier-webcam")
@@ -54,14 +69,15 @@ class Webcam():
         for i in range(200000):
             ret, self.frame = self.__cap.read()
             if not ret:
-                print("no image")
+                logging.info("No image,")
             if i == init_size:
                 baseline = np.array(baseline)
                 cap = np.mean(baseline, axis=0)
                 cap = cap.astype(np.uint8)
-                print(cap)
                 hasher = cv2.img_hash.AverageHash_create()
                 self.baseline = hasher.compute(cap)
+                logging.info(f"Baseline set to {self.baseline}")
+                logging.info("Start capture")
                 self.take_cap = True
                 msg = {"status" : "Webcam initialized"}
                 self.control_sender.add_msg(msg)
@@ -73,6 +89,7 @@ class Webcam():
 
             method, header, body = self.segment_reciever.get_msg()
             if method and self.show_preview:
+                logging.info("Segment recieved")
                 self.show_mask = True
                 img = body["img"]
 
@@ -83,6 +100,7 @@ class Webcam():
 
             cv2.imshow("webcam", self.frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
+                logging.info(f"quit index:{i}")
                 break
 
     def capture(self, index):
@@ -95,7 +113,7 @@ class Webcam():
             if len(self.index_storage) == self.time_to_cap:
                 data = {"img" : capture}
                 self.webcam_sender.add_msg(data)
-                print("Capture made")
+                logging.info("Capture made")
                 data = {"status" : "Capture_made"}
                 self.control_sender.add_msg(data)
                 self.take_cap = False
@@ -107,7 +125,6 @@ class Webcam():
             elif not self.index_storage:
                 self.index_storage.append(index)
         else:
-
             self.index_storage = []
             self.color = [0,255,255]
 
@@ -117,6 +134,7 @@ class Webcam():
         return cap.copy()
 
     def set_frame(self, text, mask):
+        logging.info("Set frame")
         if text and text["command"] == "Capture":
             self.take_cap = True
         self.__add_rectangle(1)
@@ -161,10 +179,12 @@ class Webcam():
 
 
 if __name__ == "__main__" or __name__ == "__debug__":
+    time.sleep(5)
     cam_ip = os.getenv("CAM_IP")
     with open("config.toml", "rb") as fp:
         config = tomllib.load(fp)
     broker = os.getenv("rabbitMQ", "localhost")
-    config["webcam"]["broker"] = broker
+    config["webcam"]["broker"] = "rabbitmq"
+    logging.info(f"Starting config: {config}")
     cam = Webcam(config, cam_ip)
     cam.start()

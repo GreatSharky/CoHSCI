@@ -1,5 +1,5 @@
 [classifier]
-mdoel = "gemma3:12b"
+model = "gemma3:12b"
 prompts = [
     "There is no hand in the image.",
     "Resembles the OK sign. The thumb and the index finger create a circle while the three other fingers are extended.", #Right

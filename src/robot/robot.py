@@ -3,6 +3,18 @@ import time
 import os
 import tomllib
 from messageq import MessageQueue
+import logging
+
+os.makedirs("/app/log", exist_ok=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s: %(filename)s - %(message)s",
+    handlers= [
+        logging.FileHandler("/app/log/robot.log"),
+        ]
+)
+logger = logging.getLogger(__name__)
 
 class Robot():
     def __init__(self, config):
@@ -13,6 +25,7 @@ class Robot():
         broker = config["robot"]["broker"]
 
         # System variables
+        logging.info(f"Start message queues: {broker}")
         self.control_reciever = MessageQueue(broker, "control-robot")
         self.control_sender = MessageQueue(broker, "robot-control")
         try:            
@@ -29,10 +42,12 @@ class Robot():
         self.control_reciever.get_blocking_msg(callback=self.message_robot)
 
     def talker(self, inMsg):
+        logging.info("Sending socket msg")
         self.socket.sendall(inMsg.encode())
         data = self.socket.recv(1024)
         time.sleep(1)
         outMsg = data.decode('utf-8')
+        logging.info(f"Response {outMsg}")
         return outMsg
     
     def init_robot(self):
@@ -43,10 +58,10 @@ class Robot():
         return
 
     def message_robot(self, ch , method, properties, body):
-        print("Sending robot message")
+        logging.info("Sending robot message")
         body = MessageQueue.body_parse_util(body)
         msg = self.update_robot_state(body["msg"])
-        print(msg)
+        logging.info(msg)
         status = ""
         response = ""
         if len(msg) == 17:
@@ -63,8 +78,8 @@ class Robot():
             "status" : status,
             "response" : response
             }
-        print(data)
-        print(self.robot)
+        logging.info(f"Data: {data}")
+        logging.info(f"Robot: {self.robot}")
         self.control_sender.add_msg(data)
 
     def update_robot_state(self, data):
@@ -77,6 +92,7 @@ class Robot():
                 msg = msg.ljust(20)
             elif self.gesture_map[data] != "kill" and self.robot["hand"] != None:
                 self.robot["action"] = self.gesture_map[data]
+                msg = f"Robot action set to {self.robot["action"]}"
                 msg = msg.ljust(20)
             elif self.gesture_map[data] == "kill":
                 self.init_robot()
@@ -89,7 +105,7 @@ class Robot():
             msg = f"Nothing done"
             msg = msg.ljust(20)
         if None not in self.robot.values():
-            print(self.robot)
+            logging.info(self.robot)
             if self.robot["hand"] == "right_hand":
                 msg = "1"
             elif self.robot["hand"] == "left_hand":
@@ -114,11 +130,14 @@ class Robot():
                 msg += "12123412341100"
 
             msg = msg.ljust(17,"0")
+        logging.info(msg)
         return msg
 
 if __name__ == "__main__":
+    time.sleep(5)
     with open("config.toml", "rb") as file:
         config = tomllib.load(file)
     broker = os.getenv("rabbitMQ", "localhost")
-    config["robot"]["broker"] = broker
+    config["robot"]["broker"] = "rabbitmq"
+    logging.info(f"Starting robot config: {config}")
     robot = Robot(config)
