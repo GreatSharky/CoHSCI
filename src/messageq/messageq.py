@@ -8,9 +8,9 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 class MessageQueue():
-    def __init__(self, broker, queue_name):
+    def __init__(self, broker, queue_name, port=5672):
         self.queue = queue_name
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=broker, heartbeat=6000))
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=broker, heartbeat=6000, port=port))
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue=queue_name)
         self.channel.queue_purge(queue=queue_name)

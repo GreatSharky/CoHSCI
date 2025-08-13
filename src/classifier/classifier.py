@@ -10,7 +10,7 @@ from messageq import MessageQueue
 os.makedirs("/app/log", exist_ok=True)
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s: %(filename)s - %(message)s",
     handlers= [
         logging.FileHandler("/app/log/classifier.log"),
@@ -40,7 +40,9 @@ class Classifier():
         self.control.add_msg(data)
         data = MessageQueue.body_parse_util(body)
         image = data["img"]
+        logging.debug("Starting VLM.")
         self.vlm1.create_user_msg(image)
+        logging.debug("VLM stopped.")
         result1 = self.vlm1.inference()
         classification = result1.message.content
         if "lass" in classification:
@@ -59,7 +61,7 @@ class Classifier():
 if __name__ == "__main__":
     logging.info("---------------\n---------------\n---------------\n")
     time.sleep(5)
-    with open("config.toml", "rb") as file:
+    with open("../config", "rb") as file:
         config = tomllib.load(file)
     broker = os.getenv("rabbitMQ", "localhost")
     config["classifier"]["broker"] = "rabbitmq"

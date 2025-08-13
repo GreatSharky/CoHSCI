@@ -137,7 +137,7 @@ class Robot():
 if __name__ == "__main__":
     logging.info("---------------\n---------------\n---------------\n")
     time.sleep(5)
-    with open("config.toml", "rb") as file:
+    with open("../config", "rb") as file:
         config = tomllib.load(file)
     broker = os.getenv("rabbitMQ", "localhost")
     config["robot"]["broker"] = "rabbitmq"

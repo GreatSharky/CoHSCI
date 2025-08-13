@@ -9,7 +9,7 @@ import time
 os.makedirs("/app/log", exist_ok=True)
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s: %(filename)s - %(message)s",
     handlers= [
         logging.FileHandler("/app/log/segment.log"),
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     logging.info("---------------\n---------------\n---------------\n")
     time.sleep(5)
     logging.debug("Started")
-    with open("config.toml", "rb") as file:
+    with open("../config", "rb") as file:
         config = tomllib.load(file)
     broker = os.getenv("rabbitMQ", "localhost")
     config["segmentor"]["broker"] = "rabbitmq"

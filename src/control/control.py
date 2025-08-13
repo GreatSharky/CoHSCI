@@ -196,6 +196,7 @@ if __name__ == "__main__":
     time.sleep(5)
     state_machine = Control()
     logging.info("Start")
+    i = 0
     while True:
         state_machine.control_cycle()
         time.sleep(1)

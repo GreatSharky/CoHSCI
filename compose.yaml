@@ -1,14 +1,6 @@
+name: dippa
 
 services:
-  webcam:
-    build:
-      context: ./src
-      dockerfile: webcam/Dockerfile
-    depends_on:
-      - control
-    volumes:
-      - ./log:/app/log
-
   control:
     build:
       context: ./src
@@ -24,9 +16,10 @@ services:
       dockerfile: segmentor/Dockerfile
     depends_on:
       - control
-      - webcam
     volumes:
       - ./log:/app/log
+    configs:
+      - config
 
   classifier:
     build:
@@ -37,6 +30,10 @@ services:
       - segmentor
     volumes:
       - ./log:/app/log
+    configs:
+      - config
+    ports:
+      - 11435:11434
 
   robot:
     build:
@@ -47,7 +44,16 @@ services:
       - classifier
     volumes:
       - ./log:/app/log
+    configs:
+      - config
 
   rabbitmq:
     image: "rabbitmq:latest"
     container_name: "rabbitmq"
+    ports:
+      - 15673:15672
+      - 5673:5672
+
+configs:
+  config:
+    file: ./src/config.toml

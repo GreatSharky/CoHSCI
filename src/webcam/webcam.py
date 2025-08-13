@@ -8,13 +8,11 @@ import numpy as np
 from dataclasses import dataclass
 from messageq import MessageQueue
 
-os.makedirs("/app/log", exist_ok=True)
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s: %(filename)s - %(message)s",
     handlers= [
-        logging.FileHandler("/app/log/webcam.log"),
+        logging.FileHandler("webcam.log"),
         logging.StreamHandler()
         ]
 )
@@ -51,11 +49,11 @@ class Webcam():
         self.show_class = False
         self.initialized = False
         logging.info("Connecting")
-        self.webcam_sender = MessageQueue(broker, "webcam-segmentor")
-        self.segment_reciever = MessageQueue(broker, "segmentor-webcam")
-        self.classifier_reciever = MessageQueue(broker, "classifier-webcam")
-        self.control_sender = MessageQueue(broker, "webcam-control")
-        self.control_reciever = MessageQueue(broker, "control-webcam")
+        self.webcam_sender = MessageQueue(broker, "webcam-segmentor", port= 5673)
+        self.segment_reciever = MessageQueue(broker, "segmentor-webcam", port= 5673)
+        self.classifier_reciever = MessageQueue(broker, "classifier-webcam", port= 5673)
+        self.control_sender = MessageQueue(broker, "webcam-control", port= 5673)
+        self.control_reciever = MessageQueue(broker, "control-webcam", port= 5673)
         self.index_storage = []
 
 
@@ -134,7 +132,7 @@ class Webcam():
         return cap.copy()
 
     def set_frame(self, text, mask):
-        logging.info("Set frame")
+        logging.debug("Set frame")
         if text and text["command"] == "Capture":
             self.take_cap = True
         self.__add_rectangle(1)
@@ -185,7 +183,7 @@ if __name__ == "__main__" or __name__ == "__debug__":
     with open("config.toml", "rb") as fp:
         config = tomllib.load(fp)
     broker = os.getenv("rabbitMQ", "localhost")
-    config["webcam"]["broker"] = "rabbitmq"
+    config["webcam"]["broker"] = "localhost"
     logging.info(f"Starting config: {config}")
     cam = Webcam(config, cam_ip)
     cam.start()
