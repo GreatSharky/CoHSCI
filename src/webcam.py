@@ -119,7 +119,7 @@ class Webcam():
         if text and text["command"] == "Capture":
             self.take_cap = True
         self.__add_rectangle(1)
-        self.__add_image(90, 20,mask)
+        self.__add_image(100, 320,mask)
         self.__flip()
         self.__add_text(text)
         return

@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: messageq
+Version: 0.0.1
+Summary: A wraooer for rabbitMq
+Author-email: Aaro Haikonen <aaro.haikonen99@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/GreatSharky/dippa-codes
+Requires-Python: >=3.12
+Requires-Dist: pika

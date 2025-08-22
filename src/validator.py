@@ -8,7 +8,7 @@ from vlm_agent import VLM
 
 class Validator(VLM):
     def __init__(self, model):
-        super().__init__(model, [])
+        super().__init__(model)
         self.control_reciever = MessageQueue("control-validator")
         self.control_sender = MessageQueue("validator-control")
         self.create_system_prompt()
@@ -17,7 +17,7 @@ class Validator(VLM):
     def create_system_prompt(self):
         msg = {
             "role" : "system",
-            "content" : "How well the given description matches the given image. Give the output as a score between 0 and 100 where 0 means the description does not match the image at all and 100 means the description matches the image perfectly"
+            "content" : "How well the given description matches the given image. Give the output as a score between 0 and 100 where 0 means the description does not match the image at all and 100 means the description matches the image perfectly. Give only numerical answer."
         }
         self.system_msgs = [msg]
 

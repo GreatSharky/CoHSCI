@@ -1,0 +1,7 @@
+messageq.py
+pyproject.toml
+messageq.egg-info/PKG-INFO
+messageq.egg-info/SOURCES.txt
+messageq.egg-info/dependency_links.txt
+messageq.egg-info/requires.txt
+messageq.egg-info/top_level.txt

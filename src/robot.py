@@ -58,8 +58,8 @@ class Robot():
             response = msg
             status = "updated"
         data = {
-            "status" : status,
-            "response" : response
+            "response" : status,
+            "status" : response
             }
         print(data)
         print(self.robot)

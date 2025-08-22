@@ -28,7 +28,7 @@ class Control():
         self.robot_sender = MessageQueue("control-robot")
         self.robot_reciever = MessageQueue("robot-control")
 
-        self.use_validator = False
+        self.use_validator = True
 
         self.classifier_status = ""
         self.webcam_status = ""
@@ -87,7 +87,6 @@ class Control():
             if self.classifier_status == "Classified":
                 self.system_status = f"Gesture classified as Class {body["result"]}"
                 self.classification = body["result"]
-                self.robot_command = "Move"
                 if self.use_validator:
                     msg = {
                         "msg" : body["msg"],
@@ -99,6 +98,7 @@ class Control():
                     self.webcam_command = "Capture"
                     self.classifier_status = "Classified"
                     self.system_status = f"Class {body["result"]}, New Capture started"
+                    self.robot_command = "Move"
 
             elif self.classifier_status == "Image_recieved":
                 self.system_status = "Classifing capture"
