@@ -92,10 +92,11 @@ class Webcam():
 
         if diff > self.barrier:
             if len(self.index_storage) == self.time_to_cap:
-                data = {"img" : capture}
-                self.webcam_sender.add_msg(data)
                 print("Capture made")
-                data = {"status" : "Capture_made"}
+                data = {
+                    "status" : "Capture_made",
+                    "img" : capture
+                    }
                 self.control_sender.add_msg(data)
                 self.take_cap = False
                 self.index_storage = []

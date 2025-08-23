@@ -21,14 +21,17 @@ class Control():
     def __init__(self):
         self.webcam_reciever = MessageQueue("webcam-control")
         self.webcam_sender = MessageQueue("control-webcam")
-        self.segmentor = MessageQueue("control-segmentor")
-        self.classifier = MessageQueue("control-classifier")
+        self.segmentor_sender = MessageQueue("control-segmentor")
+        self.segmentor_reciever = MessageQueue("segmentor-control")
+        self.classifier_sender = MessageQueue("control-classifier")
+        self.classifier_reciever = MessageQueue("classifier-control")
         self.validator_sender = MessageQueue("control-validator")
         self.validator_reciever = MessageQueue("validator-control")
         self.robot_sender = MessageQueue("control-robot")
         self.robot_reciever = MessageQueue("robot-control")
 
-        self.use_validator = True
+        self.use_validator = True # Add to config
+        self.use_segmentation = True # Add to config
 
         self.classifier_status = ""
         self.webcam_status = ""
@@ -112,11 +115,17 @@ class Control():
             # validation success#
             self.validator_status = body["status"]
             if self.validator_status == "Validated" and self.webcam_status == "Capture_made":
-                self.reset_status()
-                self.webcam_command = "Capture"
-                self.system_status = "New Capture started"
-                self.validator_status = "Image_validated"
-                self.robot_command = "Move"
+                if int(body["result"]) > 95: # Add barrier value to config
+                    self.reset_status()
+                    self.webcam_command = "Capture"
+                    self.system_status = "New Capture started"
+                    self.validator_status = "Image_validated"
+                    self.robot_command = "Move"
+                else:
+                    self.reset_status()
+                    self.webcam_command = "Capture"
+                    self.system_status = "New Capture started"
+                    self.validator_status = "Validation_failed"
 
             return
         
@@ -134,6 +143,9 @@ class Control():
             # Could check if segmentation has smart amount of non black pixels and get the pixel value
             # Dont have to do the analysis in the classifier#
             self.segmentor_status = body["status"]
+            if self.segmentor_status == "Segent_done":
+                data = {"img" : body["img"]}
+                self.classifier_sender.add_msg(data)
             return
     
     def webcam_callback(self, ch, method, properties, body):
@@ -142,6 +154,11 @@ class Control():
             # Possible webcam status: Capture made, Capture requested, User ready
             msg = body["status"]
             self.webcam_status = msg
+            data = {"img" : body["img"]}
+            if self.use_segmentation == True:
+                self.segmentor_sender.add_msg(data)
+            else:
+                self.classifier_sender.add_msg(data)
             
     def message_classifier(self):
         return 
