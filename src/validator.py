@@ -11,7 +11,7 @@ class Validator(VLM):
         super().__init__(model)
         self.control_reciever = MessageQueue("control-validator")
         self.control_sender = MessageQueue("validator-control")
-        #self.create_system_prompt()
+        self.create_system_prompt()
         self.control_reciever.get_blocking_msg(callback=self.classifier_callback)
 
     def create_system_prompt(self):
@@ -25,7 +25,7 @@ class Validator(VLM):
         img = self.get_image(image)
         msg = {
             "role" : "user",
-            "content" : f"How well does {description} match the image? Give aswer only in percentage points.",
+            "content" : f"{description}",
             "images" : [img]
         }
         self.user_msgs = [msg]
@@ -52,4 +52,4 @@ class Validator(VLM):
         return description, img
 
 if __name__ == "__main__":
-    val = Validator("llama3.2-vision")
+    val = Validator("gemma3:4b")
