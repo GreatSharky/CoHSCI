@@ -1,9 +1,25 @@
 """This one will classify the segmented image"""
 from gemma3_agent import VLM_gemma
 import numpy as np
+# import logging
+# import os
+# from pathlib import Path
 
 from messageq import MessageQueue
 from settings import config
+
+# os.makedirs("../log", exist_ok=True)
+
+# logging.basicConfig(
+#     level=logging.DEBUG,
+#     format="%(asctime)s: %(filename)s - %(message)s",
+#     handlers= [
+#         logging.FileHandler("../log/classifier.log"),
+#         logging.StreamHandler()
+#         ]
+# )
+# logger = logging.getLogger(__name__)
+
 
 class Classifier():
     def __init__(self, descriptions, model):

@@ -1,5 +1,6 @@
 import time
 from messageq import MessageQueue
+from settings import config
 
 # Write control/state machine that tracks program state.
 # Roles:
@@ -30,8 +31,8 @@ class Control():
         self.robot_sender = MessageQueue("control-robot")
         self.robot_reciever = MessageQueue("robot-control")
 
-        self.use_validator = True # Add to config
-        self.use_segmentation = True # Add to config
+        self.use_validator = config["control"]["validate"] # Add to config
+        self.use_segmentation = config["control"]["segment"] # Add to config
 
         self.classifier_status = ""
         self.webcam_status = ""
@@ -46,9 +47,9 @@ class Control():
     def control_cycle(self):
         wc_method, wc_props, wc_body = self.webcam_reciever.get_msg() 
         self.webcam_callback(None, wc_method, wc_props, wc_body)
-        sg_method, sg_props, sg_body = self.segmentor.get_msg()
+        sg_method, sg_props, sg_body = self.segmentor_reciever.get_msg()
         self.segmentor_callback(None, sg_method, sg_props, sg_body)
-        cl_method, cl_props, cl_body = self.classifier.get_msg()
+        cl_method, cl_props, cl_body = self.classifier_reciever.get_msg()
         self.classifier_callback(None, cl_method, cl_props, cl_body)
         val_method, val_props, val_body = self.validator_reciever.get_msg()
         self.validator_callback(None, val_method, val_props, val_body)
@@ -63,14 +64,14 @@ class Control():
         return
     
     def update_system(self):
-        print("STATUS UPDATE")
-        print(self.webcam_command)
-        print(self.system_status)
-        print(self.webcam_status)
-        print(self.segmentor_status)
-        print(self.classifier_status)
-        print(self.validator_status)
-        print()
+        # print("STATUS UPDATE")
+        # print(self.webcam_command)
+        # print(self.system_status)
+        # print(self.webcam_status)
+        # print(self.segmentor_status)
+        # print(self.classifier_status)
+        # print(self.validator_status)
+        # print()
         return
     
     def reset_status(self):
@@ -115,7 +116,7 @@ class Control():
             # validation success#
             self.validator_status = body["status"]
             if self.validator_status == "Validated" and self.webcam_status == "Capture_made":
-                if int(body["result"]) > 95: # Add barrier value to config
+                if body["result"].isnumeric() and int(body["result"]) > 95: # Add barrier value to config
                     self.reset_status()
                     self.webcam_command = "Capture"
                     self.system_status = "New Capture started"
@@ -143,9 +144,10 @@ class Control():
             # Could check if segmentation has smart amount of non black pixels and get the pixel value
             # Dont have to do the analysis in the classifier#
             self.segmentor_status = body["status"]
-            if self.segmentor_status == "Segent_done":
+            if self.segmentor_status == "Segment_done":
                 data = {"img" : body["img"]}
-                self.classifier_sender.add_msg(data)
+                self.classifier_sender.add_msg(data.copy())
+                self.webcam_sender.add_msg(data.copy())
             return
     
     def webcam_callback(self, ch, method, properties, body):
@@ -154,11 +156,12 @@ class Control():
             # Possible webcam status: Capture made, Capture requested, User ready
             msg = body["status"]
             self.webcam_status = msg
-            data = {"img" : body["img"]}
-            if self.use_segmentation == True:
-                self.segmentor_sender.add_msg(data)
-            else:
-                self.classifier_sender.add_msg(data)
+            if msg == "Capture_made":
+                data = {"img" : body["img"]}
+                if self.use_segmentation == True:
+                    self.segmentor_sender.add_msg(data)
+                else:
+                    self.classifier_sender.add_msg(data)
             
     def message_classifier(self):
         return 
@@ -169,7 +172,6 @@ class Control():
     def message_weacam(self):
         # Status changes in the system are relayed to the operator with text added to the webcam screen 
         # #
-        print("send message")
         message = {"command" : self.webcam_command,
                    "system" : self.system_status,
                    "webcam" : self.webcam_status,
@@ -195,4 +197,4 @@ if __name__ == "__main__":
     state_machine = Control()
     while True:
         state_machine.control_cycle()
-        time.sleep(1)
+        time.sleep(config["control"]["poll_rate"])

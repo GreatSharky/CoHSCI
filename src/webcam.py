@@ -70,14 +70,14 @@ class Webcam():
             elif self.take_cap and i > init_size:
                 self.capture(i)
 
-            method, header, body = self.segment_reciever.get_msg()
-            if method and self.show_preview:
-                self.show_mask = True
-                img = body["img"]
 
             method, header, body = self.control_reciever.get_msg()
             if method:
-                text = body
+                if self.show_preview and "img" in body:
+                    self.show_mask = True
+                    img = body["img"]
+                else:
+                    text = body
             self.set_frame(text, img)
 
             cv2.imshow("webcam", self.frame)
