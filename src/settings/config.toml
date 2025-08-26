@@ -1,3 +1,9 @@
+
+[control]
+segment = false
+validate = true
+poll_rate = 0.5
+
 [classifier]
 mdoel = "gemma3:12b"
 prompts = [
@@ -22,7 +28,7 @@ prompts = [
 emoji_prompts = [
     "Not a full hand", #0
     "🤙", #1 "Shaka or hang loose" #right hand
-    "Horns gesture", #2 left hand
+    "🖕", #2 left hand
     "✌️", #3 left
     "👌", #4 right
     "Only index finger is pointing up", #5 forward
@@ -31,7 +37,7 @@ emoji_prompts = [
     "👎", #8 down
     "✋", #9 close
     "Live long and prosper", #10 open
-    "🖕", #11 kill
+    #"🖕", #11 kill
     # "👊",
     # "🤟", #both
     # "🤘",
@@ -39,16 +45,14 @@ emoji_prompts = [
 
 [validator]
 model = "gemma3:12b"
-prompt = [
-    
-]
+system_prompt = "Give a score between 0 and 100 how well the description matches the image. Give only numerical answer."
 
 [webcam]
-camera_output = "/dev/video4"
+camera_output = "/dev/video0"
 preview = true
 barrier = 50
 init_size = 100
-bounding_box = [100,100,128,128]
+bounding_box = [90,200,128,128]
 text_color = [0,255,0]
 time_to_cap = 50
 

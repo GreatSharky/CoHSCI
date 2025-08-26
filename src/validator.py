@@ -4,20 +4,23 @@ import json
 
 from messageq import MessageQueue
 from vlm_agent import VLM
+from settings import config
 
 
 class Validator(VLM):
-    def __init__(self, model):
-        super().__init__(model)
+    def __init__(self, config):
+        # Config
+        super().__init__(config["model"])
+        self.create_system_prompt(config["system_prompt"])
+
         self.control_reciever = MessageQueue("control-validator")
         self.control_sender = MessageQueue("validator-control")
-        self.create_system_prompt()
         self.control_reciever.get_blocking_msg(callback=self.classifier_callback)
 
-    def create_system_prompt(self):
+    def create_system_prompt(self, description):
         msg = {
-            "role" : "user",
-            "content" : "Give a score between 0 and 100 how well the description matches the image. Give only numerical answer."
+            "role" : "system",
+            "content" : description
         }
         self.system_msgs = [msg]
 
@@ -52,4 +55,4 @@ class Validator(VLM):
         return description, img
 
 if __name__ == "__main__":
-    val = Validator("gemma3:4b")
+    val = Validator(config["validator"])
