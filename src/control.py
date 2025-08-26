@@ -1,4 +1,6 @@
 import time
+import logging
+from pathlib import Path
 from messageq import MessageQueue
 from settings import config
 
@@ -18,8 +20,23 @@ from settings import config
 # During pipeline control could update send webcam status updates on message queue.
 # Webcam should then be refactored. #
 
+log_path = Path(__file__).parent.parent / "log"
+log_path.mkdir(exist_ok=True)
+log_file = log_path / (Path(__file__).stem + ".log")
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s: %(filename)s - %(message)s",
+    handlers= [
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+        ]
+)
+logger = logging.getLogger(__name__)
+
 class Control():
     def __init__(self):
+        logging.info("----\n----\n----\nStart control")
+        logging.info(f"Config: {config["control"]}")
         self.webcam_reciever = MessageQueue("webcam-control")
         self.webcam_sender = MessageQueue("control-webcam")
         self.segmentor_sender = MessageQueue("control-segmentor")
@@ -32,7 +49,9 @@ class Control():
         self.robot_reciever = MessageQueue("robot-control")
 
         self.use_validator = config["control"]["validate"] # Add to config
+        logging.log(f"Use validation: {self.use_validator}")
         self.use_segmentation = config["control"]["segment"] # Add to config
+        logging.log(f"Use segmentation: {self.use_segmentation}")
 
         self.classifier_status = ""
         self.webcam_status = ""
@@ -84,6 +103,7 @@ class Control():
 
     def classifier_callback(self, ch, method, properties, body):
         if method != None:
+            logging.info(f"Classifier msg recieved: {body}")
             # Classifier status changed
             # Possible classifier statuses: image recieved, classifing, waiting for validation,
             # validation failed, validated
@@ -111,6 +131,7 @@ class Control():
         
     def validator_callback(self, ch, method, properties, body):
         if method != None:
+            logging.info(f"Validator msg recieved: {body}")
             # Validator status changed
             # Possible validator sstatuses: image text recieved, validation failed, 
             # validation success#
@@ -132,6 +153,7 @@ class Control():
         
     def robot_callback(self, ch, method, properties, body):
         if method != None:
+            logging.info(f"Robot msg recieved: {body}")
             # Robot status changed
             # Possible robot status: action recieved, action started, action done#
             self.robot_status = body["status"]
@@ -139,6 +161,7 @@ class Control():
     
     def segmentor_callback(self, ch, method, properties, body):
         if method != None:
+            logging.info(f"Segmentor msg recieved: {body}")
             # segmentor status changed
             # Possible segmentor statuses: image recieved, mask ready 
             # Could check if segmentation has smart amount of non black pixels and get the pixel value
@@ -152,6 +175,7 @@ class Control():
     
     def webcam_callback(self, ch, method, properties, body):
         if method != None:
+            logging.info(f"Webcam msg recieved: {body}")
             # Webcam status changed
             # Possible webcam status: Capture made, Capture requested, User ready
             msg = body["status"]
@@ -186,6 +210,7 @@ class Control():
     def message_robot(self):
         if self.robot_command == "Move":
             data = {"msg" : f"Class {self.classification}"}
+            logging.info(f"Sendinf robot command: {data}")
             self.robot_sender.add_msg(data)
             self.robot_command = ""
         return

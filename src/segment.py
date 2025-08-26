@@ -1,12 +1,28 @@
 """This is the segmentation"""
 from ultralytics import SAM
+from pathlib import Path
+import logging
 from messageq import MessageQueue
 from settings import config
-import cv2
+
+log_path = Path(__file__).parent.parent / "log"
+log_path.mkdir(exist_ok=True)
+log_file = log_path / (Path(__file__).stem + ".log")
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s: %(filename)s - %(message)s",
+    handlers= [
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+        ]
+)
+logger = logging.getLogger(__name__)
 
 class Segmentor():
     def __init__(self):
         # Configurable
+        logging.info("----\n----\n----\nStart segmentor")
+        logging.info(f"Segmentor config: {config["segmentor"]}")
         self.model = config["segmentor"]["model"]
         self.segment_points = config["segmentor"]["segment_points"]
         self.point_labels = config["segmentor"]["point_labels"]
@@ -27,7 +43,7 @@ class Segmentor():
         image = data["img"]
         masks = self.sam(image, points=self.segment_points, labels=self.point_labels)
         mask = masks[0].masks.cpu().data
-        print(masks)
+        logging.debug(masks)
         h,w = mask.shape[-2:]
         mask = mask.reshape(h,w,1).numpy()
         masked_image = image*mask
@@ -36,7 +52,7 @@ class Segmentor():
             "img": masked_image
             }
         self.control_sender.add_msg(data.copy())
-        print("masked_image sent")
+        logging.info(f"Masked_image sent: {data}")
         return masked_image
     
     
