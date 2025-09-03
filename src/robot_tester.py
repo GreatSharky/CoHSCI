@@ -3,20 +3,17 @@ import time
 
 ACTION_MAP = {
     # hand
-    "hleft" : "Class 3",
+    "hleft" : "Class 2",
     "hright" : "Class 1",
-    # mode
-    "move" : "Class 1",
-    "grip" : "Class 3",
     # direction
-    "forward" : "Class 3",
-    "backward" : "Class 4",
-    "left" : "Class 1",
-    "right" : "Class 2",
-    "up" : "Class 5",
-    "down" : "Class 6",
-    "open" : "Class 3",
-    "close" : "Class 2"
+    "forward" : "Class 5",
+    "backward" : "Class 6",
+    "left" : "Class 3",
+    "right" : "Class 4",
+    "up" : "Class 7",
+    "down" : "Class 8",
+    "open" : "Class 10",
+    "close" : "Class 9"
 }
 
 def test_robot(actions):
@@ -27,4 +24,4 @@ def test_robot(actions):
         rq.add_msg(data)
 
 
-test_robot(["hleft", "move","up"])
+test_robot(["hleft", "up"])

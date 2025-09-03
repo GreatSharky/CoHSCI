@@ -9,7 +9,7 @@ log_path = Path(__file__).parent.parent / "log"
 log_path.mkdir(exist_ok=True)
 log_file = log_path / (Path(__file__).stem + ".log")
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s: %(filename)s - %(message)s",
     handlers= [
         logging.FileHandler(log_file),
@@ -26,11 +26,15 @@ class Robot():
         self.host = config["robot"]["ip"]
         self.port = config["robot"]["port"]
         self.gesture_map = config["robot"]["gesture_map"]
+        self.lengths = [100,40,5] #config["robot"]["step_size"]
 
         # System variables
         self.control_reciever = MessageQueue("control-robot")
         self.control_sender = MessageQueue("robot-control")
-        try:            
+        self.control_mode = False
+        self.prev_control_msg = None
+        self.step = self.lengths[0]
+        try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.settimeout(10)
             self.socket.connect((self.host, self.port))
@@ -82,14 +86,22 @@ class Robot():
         logging.debug(self.robot)
         self.control_sender.add_msg(data)
 
-    def update_robot_state(self, data):
+    def consume_control_message(self, data):
         msg = ""
         try:
             if self.gesture_map[data] in ["left_hand","right_hand"]:
-                self.robot["hand"] = self.gesture_map[data]
-                self.robot["action"] = None
-                msg = f"Robot hand set to {self.robot["hand"]}"
-                msg = msg.ljust(20)
+                if self.prev_control_msg == self.gesture_map[data]:
+                    # Switch mode
+                    self.control_mode = not self.control_mode
+                    self.robot["action"] = None
+                    logging.info(f"Mode switched. Control mode {self.control_mode}")
+                    msg = f"Mode switched"
+                    msg = msg.ljust(20)
+                else:
+                    self.robot["hand"] = self.gesture_map[data]
+                    self.robot["action"] = None
+                    msg = f"Robot hand set to {self.robot["hand"]}"
+                    msg = msg.ljust(20)
             elif self.gesture_map[data] != "kill" and self.robot["hand"] != None:
                 self.robot["action"] = self.gesture_map[data]
                 msg = msg.ljust(20)
@@ -100,10 +112,17 @@ class Robot():
             else:
                 msg = "Nothing done"
                 msg = msg.ljust(20)
+            self.prev_control_msg = self.gesture_map[data]
         except KeyError:
             msg = f"Nothing done"
             msg = msg.ljust(20)
-        if None not in self.robot.values():
+        return msg
+
+    def update_robot_state(self, data):
+        msg = self.consume_control_message(data)
+
+        if None not in self.robot.values() and not self.control_mode:
+            logging.info("Jog mode")
             logging.debug(self.robot)
             if self.robot["hand"] == "right_hand":
                 msg = "1"
@@ -116,20 +135,56 @@ class Robot():
             elif self.robot["action"] == "close":
                 msg += "21"
             if self.robot["action"] == "forward":
-                msg += "100020"
+                msg += "100" + str(self.step).rjust(3,"0")
             elif self.robot["action"] == "backward":
-                msg += "101020"
+                msg += "101" + str(self.step).rjust(3,"0")
             elif self.robot["action"] == "left":
-                msg += "1112340020"
+                msg += "1112340" + str(self.step).rjust(3,"0")
             elif self.robot["action"] == "right":
-                msg += "1112341020"
+                msg += "1112341" + str(self.step).rjust(3,"0")
             elif self.robot["action"] == "up":
-                msg += "12123412340020"
+                msg += "12123412340" + str(self.step).rjust(3,"0")
             elif self.robot["action"] == "down":
-                msg += "12123412341020"
+                msg += "12123412341" + str(self.step).rjust(3,"0")
 
             msg = msg.ljust(17,"0")
+        elif None not in self.robot.values() and self.control_mode:
+            logging.info("Control mode")
+            logging.debug(self.robot)
+            if self.robot["hand"] == "right_hand":
+                msg = "1"
+            elif self.robot["hand"] == "left_hand":
+                msg = "0"
+            msg += "80"
+            if self.robot["action"] == "close":
+                self.step = self.change_step_size("up")
+                logging.info(f"Step size {self.step}")
+            elif self.robot["action"] == "open":
+                self.step = self.change_step_size("down")
+                logging.info(f"Step size {self.step}")
+            elif self.robot["action"] == "right":
+                msg += "rotate right"
+            elif self.robot["action"] == "left":
+                msg += "rotate left"
+            elif self.robot["action"] == "up":
+                msg += "rotate counterclock"
+            elif self.robot["action"] == "down":
+                msg += "rotate clockwise"
+            
+            msg = msg.ljust(17,"0")
         return msg
+    
+    def change_step_size(self, direction):
+        idx = self.lengths.index(self.step)
+
+        if direction.lower() == "up":
+            if idx < len(self.lengths) - 1:
+                return self.lengths[idx + 1]
+            return self.step  # already at max
+        elif direction.lower() == "down":
+            if idx > 0:
+                return self.lengths[idx - 1]
+            return self.step  # already at min
 
 if __name__ == "__main__":
     robot = Robot()
