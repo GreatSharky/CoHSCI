@@ -3,8 +3,6 @@ import time
 import numpy as np
 import cv2
 import json
-import logging
-
 
 class MessageQueue():
     def __init__(self, queue_name):
@@ -13,17 +11,15 @@ class MessageQueue():
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue=queue_name)
         self.channel.queue_purge(queue=queue_name)
-        logging.debug(f"{queue_name} declared")
+        print(f"{queue_name} declared")
     
     def get_msg(self):
         method, properties, body = self.channel.basic_get(self.queue, auto_ack=True)
         if method != None:
             body = self.body_parse_util(body)
-            logging.debug(f"Recieved msg: {body}")
         return method, properties, body
     
     def add_msg(self, body: dict) -> bool:
-        logging.debug(f"Add msg: {body}")
         if type(body) == dict:
             if "img" in body:
                 array = cv2.imencode(".jpg", body["img"])[1]
@@ -34,7 +30,7 @@ class MessageQueue():
         
     def get_blocking_msg(self, callback):
         self.channel.basic_consume(queue=self.queue, on_message_callback=callback, auto_ack=True)
-        logging.info(f"{self.queue} starting consume")
+        print(f"{self.queue} starting consume")
         return self.channel.start_consuming()
     
     @staticmethod

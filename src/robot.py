@@ -1,11 +1,28 @@
 import socket
 import time
+from pathlib import Path
+import logging
 from messageq import MessageQueue
 from settings import config
+
+log_path = Path(__file__).parent.parent / "log"
+log_path.mkdir(exist_ok=True)
+log_file = log_path / (Path(__file__).stem + ".log")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s: %(filename)s - %(message)s",
+    handlers= [
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+        ]
+)
+logger = logging.getLogger(__name__)
 
 class Robot():
     def __init__(self):
         # Configurable
+        logging.info("----\n----\n----\nStart robot")
+        logging.info(f"Robot config: {config["robot"]}")
         self.host = config["robot"]["ip"]
         self.port = config["robot"]["port"]
         self.gesture_map = config["robot"]["gesture_map"]
@@ -17,10 +34,10 @@ class Robot():
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.settimeout(10)
             self.socket.connect((self.host, self.port))
-            print('TCP client initialized!')
+            logging.info('TCP client initialized!')
             self.talker_active = True
         except socket.error as e:
-            print(f"Error initializing socket: {e}")
+            logging.error(f"Error initializing socket: {e}")
             self.talker_active = False
 
         self.init_robot()        
@@ -41,16 +58,16 @@ class Robot():
         return
 
     def message_robot(self, ch , method, properties, body):
-        print("Sending robot message")
+        logging.info("Sending robot message")
         body = MessageQueue.body_parse_util(body)
         msg = self.update_robot_state(body["msg"])
-        print(msg)
+        logging.info(msg)
         status = ""
         response = ""
         if len(msg) == 17:
             if self.talker_active:
                 response = self.talker(msg)
-                print(response)
+                logging.info(response)
             status = "moved"
             # self.init_robot()
             self.robot["action"] = None
@@ -58,11 +75,11 @@ class Robot():
             response = msg
             status = "updated"
         data = {
-            "status" : status,
-            "response" : response
+            "response" : status,
+            "status" : response
             }
-        print(data)
-        print(self.robot)
+        logging.info(data)
+        logging.debug(self.robot)
         self.control_sender.add_msg(data)
 
     def update_robot_state(self, data):
@@ -87,7 +104,7 @@ class Robot():
             msg = f"Nothing done"
             msg = msg.ljust(20)
         if None not in self.robot.values():
-            print(self.robot)
+            logging.debug(self.robot)
             if self.robot["hand"] == "right_hand":
                 msg = "1"
             elif self.robot["hand"] == "left_hand":
@@ -99,17 +116,17 @@ class Robot():
             elif self.robot["action"] == "close":
                 msg += "21"
             if self.robot["action"] == "forward":
-                msg += "100100"
+                msg += "100020"
             elif self.robot["action"] == "backward":
-                msg += "101100"
+                msg += "101020"
             elif self.robot["action"] == "left":
-                msg += "1112340100"
+                msg += "1112340020"
             elif self.robot["action"] == "right":
-                msg += "1112341100"
+                msg += "1112341020"
             elif self.robot["action"] == "up":
-                msg += "12123412340100"
+                msg += "12123412340020"
             elif self.robot["action"] == "down":
-                msg += "12123412341100"
+                msg += "12123412341020"
 
             msg = msg.ljust(17,"0")
         return msg

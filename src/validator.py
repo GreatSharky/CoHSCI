@@ -1,23 +1,42 @@
 import cv2
 import numpy as np
 import json
+import logging
+from pathlib import Path
 
 from messageq import MessageQueue
 from vlm_agent import VLM
+from settings import config
 
+log_path = Path(__file__).parent.parent / "log"
+log_path.mkdir(exist_ok=True)
+log_file = log_path / (Path(__file__).stem + ".log")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s: %(filename)s - %(message)s",
+    handlers= [
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+        ]
+)
+logger = logging.getLogger(__name__)
 
 class Validator(VLM):
-    def __init__(self, model):
-        super().__init__(model, [])
+    def __init__(self, config):
+        # Config
+        logging.info("----\n----\n----\nStart validator")
+        logging.info(f"Validator config: {config}")
+        super().__init__(config["model"])
+        self.create_system_prompt(config["system_prompt"])
+
         self.control_reciever = MessageQueue("control-validator")
         self.control_sender = MessageQueue("validator-control")
-        self.create_system_prompt()
         self.control_reciever.get_blocking_msg(callback=self.classifier_callback)
 
-    def create_system_prompt(self):
+    def create_system_prompt(self, description):
         msg = {
             "role" : "system",
-            "content" : "How well the given description matches the given image. Give the output as a score between 0 and 100 where 0 means the description does not match the image at all and 100 means the description matches the image perfectly"
+            "content" : description
         }
         self.system_msgs = [msg]
 
@@ -25,24 +44,26 @@ class Validator(VLM):
         img = self.get_image(image)
         msg = {
             "role" : "user",
-            "content" : description,
+            "content" : f"{description}",
             "images" : [img]
         }
         self.user_msgs = [msg]
 
     def classifier_callback(self, ch, method, properties, body):
-        print("Classification recieved")
+        logging.info("Classification recieved")
         data = {"status" : "Validation_started"}
         self.control_sender.add_msg(data)
         body = MessageQueue.body_parse_util(body)
+        logging.info(f"{body["msg"]}")
         description, img = self.parse_body(body)
-        print("Body parsed")
-        print(description)
+        logging.debug("Body parsed")
+        logging.debug(description)
         self.create_user_prompt(description, img)
         result = self.inference()
-        print(result)
+        logging.debug(result)
         data = {"status" : "Validated",
                 "result" : result.message.content}
+        logging.info(f"Validation result {data}")
         self.control_sender.add_msg(data)
         return
 
@@ -52,4 +73,4 @@ class Validator(VLM):
         return description, img
 
 if __name__ == "__main__":
-    val = Validator("gemma3:12b")
+    val = Validator(config["validator"])

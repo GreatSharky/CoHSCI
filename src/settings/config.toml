@@ -1,3 +1,9 @@
+
+[control]
+segment = false
+validate = true
+poll_rate = 0.1
+
 [classifier]
 mdoel = "gemma3:12b"
 prompts = [
@@ -20,18 +26,18 @@ prompts = [
     
 ]
 emoji_prompts = [
-    "Not a hand",
-    "🤙", # "Shaka or hang loose" #right hand
-    "👆", #left hand
-    "✌️", #left
-    "👌", #right
-    "Only index finger is pointing up", #forward
-    "✊", #backward
-    "👍", #up
-    "👎", #down
-    "✋", #close
-    "Live long and prosper", #open
-    "🖕", #kill
+    "Not a full hand", #0
+    "🤙", #1 "Shaka or hang loose" #right hand
+    "🖕", #2 left hand
+    "✌️", #3 left
+    "👌", #4 right
+    "Only index finger is pointing up", #5 forward
+    "✊", #6 backward
+    "👍", #7 up
+    "👎", #8 down
+    "✋", #9 close
+    "Live long and prosper", #10 open
+    #"🖕", #11 kill
     # "👊",
     # "🤟", #both
     # "🤘",
@@ -39,9 +45,7 @@ emoji_prompts = [
 
 [validator]
 model = "gemma3:12b"
-prompt = [
-    
-]
+system_prompt = "Give a score between 0 and 100 how well the description matches the image. Give only numerical answer."
 
 [webcam]
 camera_output = "/dev/video0"
@@ -50,7 +54,14 @@ barrier = 50
 init_size = 100
 bounding_box = [90,200,128,128]
 text_color = [0,255,0]
-time_to_cap = 100
+time_to_cap = 50
+    [webcam.text_options]
+        font = 3
+        textSize = 0.8
+        textThickness = 2
+        lineType = 1
+        textColor = [0,0,0]
+        textLocation = [10,40]
 
 [segmentor]
 model = "sam2.1_b.pt"
