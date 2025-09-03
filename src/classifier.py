@@ -1,24 +1,24 @@
 """This one will classify the segmented image"""
 from gemma3_agent import VLM_gemma
 import numpy as np
-# import logging
-# import os
-# from pathlib import Path
+import logging
+import os
+from pathlib import Path
 
 from messageq import MessageQueue
 from settings import config
 
-# os.makedirs("../log", exist_ok=True)
+os.makedirs("../log", exist_ok=True)
 
-# logging.basicConfig(
-#     level=logging.DEBUG,
-#     format="%(asctime)s: %(filename)s - %(message)s",
-#     handlers= [
-#         logging.FileHandler("../log/classifier.log"),
-#         logging.StreamHandler()
-#         ]
-# )
-# logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s: %(filename)s - %(message)s",
+    handlers= [
+        logging.FileHandler("../log/classifier.log"),
+        logging.StreamHandler()
+        ]
+)
+logger = logging.getLogger(__name__)
 
 
 class Classifier():
@@ -30,8 +30,8 @@ class Classifier():
         self.control_reciever.get_blocking_msg(self.classify)
 
     def classify(self, ch, method, properties, body):
-        print("Message recieved")
-        print("Classifying...")
+        logging.info("Message recieved")
+        logging.info("Classifying...")
         data = {"status" : "Image_recieved"}
         self.control_sender.add_msg(data)
         data = MessageQueue.body_parse_util(body)
@@ -39,6 +39,7 @@ class Classifier():
         self.vlm1.create_user_msg(image)
         result1 = self.vlm1.inference()
         classification = result1.message.content
+        logging.info(f"Classification {classification}")
         if "lass" in classification:
             classification = classification[len("Class "):]
         data = {
@@ -47,6 +48,7 @@ class Classifier():
             "msg" : self.descriptions[int(classification)],
             "img" : data["img"]
         }
+        logging.debug(data)
         self.control_sender.add_msg(data)
         return
 

@@ -9,7 +9,7 @@ log_path = Path(__file__).parent.parent / "log"
 log_path.mkdir(exist_ok=True)
 log_file = log_path / (Path(__file__).stem + ".log")
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="%(asctime)s: %(filename)s - %(message)s",
     handlers= [
         logging.FileHandler(log_file),
@@ -116,17 +116,17 @@ class Robot():
             elif self.robot["action"] == "close":
                 msg += "21"
             if self.robot["action"] == "forward":
-                msg += "100100"
+                msg += "100020"
             elif self.robot["action"] == "backward":
-                msg += "101100"
+                msg += "101020"
             elif self.robot["action"] == "left":
-                msg += "1112340100"
+                msg += "1112340020"
             elif self.robot["action"] == "right":
-                msg += "1112341100"
+                msg += "1112341020"
             elif self.robot["action"] == "up":
-                msg += "12123412340100"
+                msg += "12123412340020"
             elif self.robot["action"] == "down":
-                msg += "12123412341100"
+                msg += "12123412341020"
 
             msg = msg.ljust(17,"0")
         return msg

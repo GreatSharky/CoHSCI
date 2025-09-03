@@ -12,7 +12,7 @@ log_path = Path(__file__).parent.parent / "log"
 log_path.mkdir(exist_ok=True)
 log_file = log_path / (Path(__file__).stem + ".log")
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="%(asctime)s: %(filename)s - %(message)s",
     handlers= [
         logging.FileHandler(log_file),
@@ -54,6 +54,7 @@ class Validator(VLM):
         data = {"status" : "Validation_started"}
         self.control_sender.add_msg(data)
         body = MessageQueue.body_parse_util(body)
+        logging.info(f"{body["msg"]}")
         description, img = self.parse_body(body)
         logging.debug("Body parsed")
         logging.debug(description)

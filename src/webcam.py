@@ -13,7 +13,7 @@ log_path = Path(__file__).parent.parent / "log"
 log_path.mkdir(exist_ok=True)
 log_file = log_path / (Path(__file__).stem + ".log")
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="%(asctime)s: %(filename)s - %(message)s",
     handlers= [
         logging.FileHandler(log_file),
@@ -22,14 +22,16 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+color = config["webcam"]["text_options"]["textColor"]
+location = config["webcam"]["text_options"]["textLocation"]
 @dataclass
 class TextOptions():
     font: int = config["webcam"]["text_options"]["font"]
     textSize: float = config["webcam"]["text_options"]["textSize"]
     textThickness: int = config["webcam"]["text_options"]["textThickness"]
     lineType: int = config["webcam"]["text_options"]["lineType"]
-    textColor: tuple = config["webcam"]["text_options"]["textColor"]
-    textLocation: tuple = config["webcam"]["text_options"]["textLocation"]
+    textColor: tuple = (color[0], color[1], color[2])
+    textLocation: list = (location[0], location[1])
 
 class Webcam():
     def __init__(self, cam_ip=""):

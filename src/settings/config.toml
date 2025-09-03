@@ -2,7 +2,7 @@
 [control]
 segment = false
 validate = true
-poll_rate = 0.5
+poll_rate = 0.1
 
 [classifier]
 mdoel = "gemma3:12b"

@@ -24,7 +24,7 @@ log_path = Path(__file__).parent.parent / "log"
 log_path.mkdir(exist_ok=True)
 log_file = log_path / (Path(__file__).stem + ".log")
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="%(asctime)s: %(filename)s - %(message)s",
     handlers= [
         logging.FileHandler(log_file),
@@ -49,9 +49,9 @@ class Control():
         self.robot_reciever = MessageQueue("robot-control")
 
         self.use_validator = config["control"]["validate"] # Add to config
-        logging.log(f"Use validation: {self.use_validator}")
+        logging.info(f"Use validation: {self.use_validator}")
         self.use_segmentation = config["control"]["segment"] # Add to config
-        logging.log(f"Use segmentation: {self.use_segmentation}")
+        logging.info(f"Use segmentation: {self.use_segmentation}")
 
         self.classifier_status = ""
         self.webcam_status = ""
