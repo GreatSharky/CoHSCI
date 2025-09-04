@@ -34,6 +34,7 @@ class Robot():
         self.control_mode = False
         self.prev_control_msg = None
         self.step = self.lengths[0]
+        self.rotations = [2, 2, 2]
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.settimeout(10)
@@ -163,14 +164,25 @@ class Robot():
                 self.step = self.change_step_size("down")
                 logging.info(f"Step size {self.step}")
             elif self.robot["action"] == "right":
-                msg += "rotate right"
+                if self.rotations[1] < 5:
+                    logging.info(f"Rotate clockwise {self.rotations[1]}")
+                    self.rotations[1] += 1
+                    msg += "12312341045"
             elif self.robot["action"] == "left":
-                msg += "rotate left"
+                if self.rotations[1] < 5:
+                    logging.info(f"Rotate around -x {self.rotations[1]}")
+                    self.rotations[1] += 1
+                    msg += "12312340045"
             elif self.robot["action"] == "up":
-                msg += "rotate counterclock"
+                if self.rotations[0] > 0:
+                    logging.info(f"Rotate counter clockwise {self.rotations[0]}")
+                    self.rotations[0] -= 1
+                    msg += "123123412341045"
             elif self.robot["action"] == "down":
-                msg += "rotate clockwise"
-            
+                if self.rotations[0] < 5:
+                    logging.info(f"Rotate clockwise {self.rotations[0]}")
+                    self.rotations[0] += 1
+                    msg += "123123412340045"
             msg = msg.ljust(17,"0")
         return msg
     
