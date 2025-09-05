@@ -19,7 +19,7 @@ class Webcam():
         # Config
 
         # Program variables
-        self.__cap = cv2.VideoCapture("/dev/video0")
+        self.__cap = cv2.VideoCapture("/dev/video4")
         self.take_cap = True
         self.show_mask = False
         self.show_class = False

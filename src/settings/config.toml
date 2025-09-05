@@ -54,7 +54,7 @@ barrier = 50
 init_size = 100
 bounding_box = [90,200,128,128]
 text_color = [0,255,0]
-time_to_cap = 50
+time_to_cap = 30
     [webcam.text_options]
         font = 3
         textSize = 0.8

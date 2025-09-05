@@ -9,7 +9,7 @@ log_path = Path(__file__).parent.parent / "log"
 log_path.mkdir(exist_ok=True)
 log_file = log_path / (Path(__file__).stem + ".log")
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="%(asctime)s: %(filename)s - %(message)s",
     handlers= [
         logging.FileHandler(log_file),
@@ -26,7 +26,7 @@ class Robot():
         self.host = config["robot"]["ip"]
         self.port = config["robot"]["port"]
         self.gesture_map = config["robot"]["gesture_map"]
-        self.lengths = [100,40,5] #config["robot"]["step_size"]
+        self.lengths = [100,40,5,1] #config["robot"]["step_size"]
 
         # System variables
         self.control_reciever = MessageQueue("control-robot")
@@ -34,7 +34,7 @@ class Robot():
         self.control_mode = False
         self.prev_control_msg = None
         self.step = self.lengths[0]
-        self.rotations = [2, 2, 2]
+        self.rotations = [3, 3, 3]
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.settimeout(10)
@@ -167,22 +167,32 @@ class Robot():
                 if self.rotations[1] < 5:
                     logging.info(f"Rotate clockwise {self.rotations[1]}")
                     self.rotations[1] += 1
-                    msg += "12312341045"
+                    msg += "4010000001"
             elif self.robot["action"] == "left":
-                if self.rotations[1] < 5:
+                if self.rotations[1] < 7:
                     logging.info(f"Rotate around -x {self.rotations[1]}")
                     self.rotations[1] += 1
-                    msg += "12312340045"
+                    msg += "4010001001"
             elif self.robot["action"] == "up":
                 if self.rotations[0] > 0:
                     logging.info(f"Rotate counter clockwise {self.rotations[0]}")
                     self.rotations[0] -= 1
-                    msg += "123123412341045"
+                    msg += "40100010001001"
             elif self.robot["action"] == "down":
-                if self.rotations[0] < 5:
+                if self.rotations[0] < 7:
                     logging.info(f"Rotate clockwise {self.rotations[0]}")
                     self.rotations[0] += 1
-                    msg += "123123412340045"
+                    msg += "40100010000001"
+            elif self.robot["action"] == "forward":
+                if self.rotations[0] < 7:
+                    logging.info(f"Rotate clockwise {self.rotations[0]}")
+                    self.rotations[0] += 1
+                    msg += "400001"
+            elif self.robot["action"] == "backward":
+                if self.rotations[0] < 7:
+                    logging.info(f"Rotate clockwise {self.rotations[0]}")
+                    self.rotations[0] += 1
+                    msg += "401001"
             msg = msg.ljust(17,"0")
         return msg
     
