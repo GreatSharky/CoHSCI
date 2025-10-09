@@ -1,9 +1,96 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" version="28.2.3">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" version="28.2.5">
   <diagram name="Page-1" id="q6aPOcOGmsaEb8rbF4xc">
-    <mxGraphModel>
+    <mxGraphModel dx="2066" dy="1124" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-1" target="WeTgeCYrkl7P4Uz0gtdP-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-1" value="Start" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="80" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-2" target="WeTgeCYrkl7P4Uz0gtdP-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-2" value="Capture gesture" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-11" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-8" target="WeTgeCYrkl7P4Uz0gtdP-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-16" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-8" target="WeTgeCYrkl7P4Uz0gtdP-12">
+          <mxGeometry x="-0.7753" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="350" />
+              <mxPoint x="460" y="560" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-8" value="Segmentation active" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="310" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-10" target="WeTgeCYrkl7P4Uz0gtdP-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-10" value="Segment gesture from background" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-12" target="WeTgeCYrkl7P4Uz0gtdP-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-12" value="Classify gesture" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="530" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-19" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-14" target="WeTgeCYrkl7P4Uz0gtdP-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-32" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-14" target="WeTgeCYrkl7P4Uz0gtdP-22">
+          <mxGeometry x="-0.8214" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="680" />
+              <mxPoint x="460" y="1040" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-14" value="Validation active" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="640" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-18" target="WeTgeCYrkl7P4Uz0gtdP-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-18" value="Validate gesture" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="770" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-20" target="WeTgeCYrkl7P4Uz0gtdP-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-35" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-20" target="WeTgeCYrkl7P4Uz0gtdP-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-20" value="Validation success" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="880" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-22" target="WeTgeCYrkl7P4Uz0gtdP-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-22" value="Send gesture classification to robot caller" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="1010" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="WeTgeCYrkl7P4Uz0gtdP-26" target="WeTgeCYrkl7P4Uz0gtdP-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-26" value="Send socket command to robot" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="1120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-30" value="End" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="1230" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WeTgeCYrkl7P4Uz0gtdP-34" value="End" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="880" width="120" height="80" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
