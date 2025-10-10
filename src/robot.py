@@ -2,6 +2,7 @@ import socket
 import time
 from pathlib import Path
 import logging
+import json
 from messageq import MessageQueue
 from settings import config
 
@@ -34,10 +35,13 @@ class Robot():
         self.control_mode = False
         self.prev_control_msg = None
         self.step = self.lengths[0]
-        self.rotations = [3, 3, 3]
+        self.command_index = 0
+        with open("robot_msgs.json", "r") as file:
+            robot_commands = json.loads(file.read())
+            self.robot_commands = robot_commands["commands"]
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.socket.settimeout(10)
+            self.socket.settimeout(20)
             self.socket.connect((self.host, self.port))
             logging.info('TCP client initialized!')
             self.talker_active = True
@@ -81,7 +85,7 @@ class Robot():
             status = "updated"
         data = {
             "response" : status,
-            "status" : response
+            "status" : self.control_mode
             }
         logging.info(data)
         logging.debug(self.robot)
@@ -95,7 +99,7 @@ class Robot():
                     # Switch mode
                     self.control_mode = not self.control_mode
                     self.robot["action"] = None
-                    logging.info(f"Mode switched. Control mode {self.control_mode}")
+                    logging.info(f"Mode switched. Assembly mode {self.control_mode}")
                     msg = f"Mode switched"
                     msg = msg.ljust(20)
                 else:
@@ -150,7 +154,7 @@ class Robot():
 
             msg = msg.ljust(17,"0")
         elif None not in self.robot.values() and self.control_mode:
-            logging.info("Control mode")
+            logging.info("Assembly mode")
             logging.debug(self.robot)
             if self.robot["hand"] == "right_hand":
                 msg = "1"
@@ -164,36 +168,24 @@ class Robot():
                 self.step = self.change_step_size("down")
                 logging.info(f"Step size {self.step}")
             elif self.robot["action"] == "right":
-                if self.rotations[1] < 5:
-                    logging.info(f"Rotate clockwise {self.rotations[1]}")
-                    self.rotations[1] += 1
-                    msg += "4010000001"
+                if self.command_index < len(self.robot_commands):
+                    msg = self.robot_commands[self.command_index]
+                    self.command_index += 1
+                else:
+                    self.command_index = 0
             elif self.robot["action"] == "left":
-                if self.rotations[1] < 7:
-                    logging.info(f"Rotate around -x {self.rotations[1]}")
-                    self.rotations[1] += 1
-                    msg += "4010001001"
+                msg += "left"
             elif self.robot["action"] == "up":
-                if self.rotations[0] > 0:
-                    logging.info(f"Rotate counter clockwise {self.rotations[0]}")
-                    self.rotations[0] -= 1
-                    msg += "40100010001001"
+                msg += "up"
             elif self.robot["action"] == "down":
-                if self.rotations[0] < 7:
-                    logging.info(f"Rotate clockwise {self.rotations[0]}")
-                    self.rotations[0] += 1
-                    msg += "40100010000001"
+                msg += "down"
             elif self.robot["action"] == "forward":
-                if self.rotations[0] < 7:
-                    logging.info(f"Rotate clockwise {self.rotations[0]}")
-                    self.rotations[0] += 1
-                    msg += "400001"
-            elif self.robot["action"] == "backward":
-                if self.rotations[0] < 7:
-                    logging.info(f"Rotate clockwise {self.rotations[0]}")
-                    self.rotations[0] += 1
-                    msg += "401001"
-            msg = msg.ljust(17,"0")
+                msg += "forward"
+            # elif self.robot["action"] == "backward":
+            #     if self.rotations[1] > 0:
+            #         self.rotations[1] -= 1
+            #         logging.info(f"Prev step {self.rotations[1]}")
+            #         msg += "take_from_list"
         return msg
     
     def change_step_size(self, direction):

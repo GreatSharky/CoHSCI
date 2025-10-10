@@ -50,8 +50,8 @@ system_prompt = "Give a score between 0 and 100 how well the description matches
 [webcam]
 camera_output = "/dev/video0"
 preview = true
-barrier = 50
-init_size = 100
+barrier = 55
+init_size = 200
 bounding_box = [90,200,128,128]
 text_color = [0,255,0]
 time_to_cap = 30

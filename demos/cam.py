@@ -3,7 +3,6 @@ import cv2
 import os
 import numpy as np
 from dataclasses import dataclass
-from messageq import MessageQueue
 
 @dataclass
 class TextOptions():
