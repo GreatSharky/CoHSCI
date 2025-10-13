@@ -1,3 +1,22 @@
+[commands]
+left_handed = false
+    [commands.prompts]
+        "nothing" = "Not a full hand" #0
+        "right_hand" = "🤙" #1 "Shaka or hang loose" #right hand
+        "left_hand" = "Live long and prosper" #2 left hand
+        "left" = "✌️" #3 left
+        "right" = "👌" #4 right
+        "forward" = "Only index finger is pointing up" #5 forward
+        "backward" = "✊" #6 backward
+        "up" = "👍" #7 up
+        "down" = "👎" #8 down
+        "next_step" = "right"
+        #"close" = "✋" #9 close
+        #"open" = "Live long and prosper" #10 open
+        #"🖕", #11 kill
+        # "👊",
+        # "🤟", #both
+        # "🤘",
 
 [control]
 segment = false
@@ -43,6 +62,23 @@ emoji_prompts = [
     # "🤘",
 ]
 
+[robot]
+ip = "192.168.125.1"
+port = 5000
+    [robot.gesture_map]
+    "Class 1" = "right_hand"
+    "Class 2" = "left_hand"
+    "Class 3" = "left"
+    "Class 4" = "right"
+    "Class 5" = "forward"
+    "Class 6" = "backward"
+    "Class 7" = "up"
+    "Class 8" = "down"
+    "Class 9" = "close"
+    "Class 10" = "open"
+    "Class 11" = "kill"
+
+
 [validator]
 model = "gemma3:12b"
 system_prompt = "Give a score between 0 and 100 how well the description matches the image. Give only numerical answer."
@@ -65,21 +101,6 @@ time_to_cap = 30
 
 [segmentor]
 model = "sam2.1_b.pt"
-segment_points = [[64,80]]
-point_labels = [1]
+segment_points = [[5,5],[5,-5],[-5,-5],[-5,5]]
+point_labels = [0,0,0,0]
 
-[robot]
-ip = "192.168.125.1"
-port = 5000
-    [robot.gesture_map]
-    "Class 1" = "right_hand"
-    "Class 2" = "left_hand"
-    "Class 3" = "left"
-    "Class 4" = "right"
-    "Class 5" = "forward"
-    "Class 6" = "backward"
-    "Class 7" = "up"
-    "Class 8" = "down"
-    "Class 9" = "close"
-    "Class 10" = "open"
-    "Class 11" = "kill"

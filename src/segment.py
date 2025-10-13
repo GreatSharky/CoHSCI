@@ -42,18 +42,20 @@ class Segmentor():
         data = MessageQueue.body_parse_util(body)
         image = data["img"]
         masks = self.sam(image, points=self.segment_points, labels=self.point_labels)
-        mask = masks[0].masks.cpu().data
         logging.debug(masks)
-        h,w = mask.shape[-2:]
-        mask = mask.reshape(h,w,1).numpy()
-        masked_image = image*mask
+        for mask_object in masks:
+            # mask = masks[0].masks.cpu().data
+            mask = mask_object.masks.cpu().data
+            h,w = mask.shape[-2:]
+            mask = mask.reshape(h,w,1).numpy()
+            image = image*mask
         data = {
             "status" : "Segment_done",
-            "img": masked_image
+            "img": image
             }
         self.control_sender.add_msg(data.copy())
         logging.info(f"Masked_image sent: {data}")
-        return masked_image
+        return image
     
     
 if __name__ == "__main__":

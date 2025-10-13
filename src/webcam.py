@@ -48,6 +48,7 @@ class Webcam():
         self.show_preview = config["webcam"]["preview"]
         self.time_to_cap = config["webcam"]["time_to_cap"]
         self.text_color = config["webcam"]["text_color"]
+        self.left_handed = config["commands"]["left_handed"]
 
         # Program variables
         self.__cap = cv2.VideoCapture(self.cam_ip)
@@ -61,6 +62,7 @@ class Webcam():
         self.control_sender = MessageQueue("webcam-control")
         self.control_reciever = MessageQueue("control-webcam")
         self.index_storage = []
+        self.img_shape = []
 
 
     def start(self):
@@ -89,7 +91,7 @@ class Webcam():
                 baseline.append(cap)
             elif self.take_cap and i > init_size:
                 self.capture(i)
-
+            self.img_shape = self.frame.shape
 
             method, header, body = self.control_reciever.get_msg()
             if method:
@@ -134,7 +136,14 @@ class Webcam():
 
     def bb_capture(self):
         box = self.__bb
-        cap = self.frame[box[1]:box[1]+box[2], box[0]:box[0]+box[3],:]
+        if not self.left_handed:
+            cap = self.frame[box[1]:box[1]+box[2], box[0]:box[0]+box[3],:]
+        else:
+            cap = self.frame[
+                self.img_shape[0]-box[1]:self.img_shape[0]-box[1]+box[2],
+                self.img_shape[1]-box[0]:self.img_shape[1]-box[0]+box[3],
+                :
+                ]
         return cap.copy()
 
     def set_frame(self, text, mask):
@@ -155,14 +164,21 @@ class Webcam():
             self.frame[y:y+img.shape[1], x:x+img.shape[0],:] = img
     
     def __add_rectangle(self, l=1):
-        x = self.__bb[0]
-        y = self.__bb[1]
-        w = self.__bb[2]
-        h = self.__bb[3]
+        if not self.left_handed:
+            x = self.__bb[0]
+            y = self.__bb[1]
+            w = self.__bb[2]
+            h = self.__bb[3]
+        else:
+            x = self.img_shape[1] - self.__bb[0]
+            y = self.img_shape[0] - self.__bb[1]
+            w = self.__bb[2]
+            h = self.__bb[3]
         self.frame[y:y+h, x:x+l, :] = self.color
         self.frame[y:y+l, x:x+w, :] = self.color
         self.frame[y:y+h+l, x+w:x+w+l, :] = self.color
         self.frame[y+h:y+h+l, x:x+w+l, :] = self.color
+
         return self.frame
     
     def __add_text(self, information: dict):

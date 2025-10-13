@@ -26,8 +26,9 @@ class Robot():
         logging.info(f"Robot config: {config["robot"]}")
         self.host = config["robot"]["ip"]
         self.port = config["robot"]["port"]
-        self.gesture_map = config["robot"]["gesture_map"]
-        self.lengths = [100,40,5,1] #config["robot"]["step_size"]
+        self.gesture_map = config["commands"]["prompts"]
+        self.gestures = list(self.gesture_map.keys())
+        self.lengths = [3] #config["robot"]["step_size"]
 
         # System variables
         self.control_reciever = MessageQueue("control-robot")
@@ -107,7 +108,7 @@ class Robot():
                     self.robot["action"] = None
                     msg = f"Robot hand set to {self.robot["hand"]}"
                     msg = msg.ljust(20)
-            elif self.gesture_map[data] != "kill" and self.robot["hand"] != None:
+            elif self.gesture_map[data] != "nothing" and self.robot["hand"] != None:
                 self.robot["action"] = self.gesture_map[data]
                 msg = msg.ljust(20)
             elif self.gesture_map[data] == "kill":
@@ -161,31 +162,16 @@ class Robot():
             elif self.robot["hand"] == "left_hand":
                 msg = "0"
             msg += "80"
-            if self.robot["action"] == "close":
-                self.step = self.change_step_size("up")
-                logging.info(f"Step size {self.step}")
-            elif self.robot["action"] == "open":
-                self.step = self.change_step_size("down")
-                logging.info(f"Step size {self.step}")
-            elif self.robot["action"] == "right":
+            if self.gesture_map["next_step"] in self.gesture_map.keys():
+                next_command = self.gesture_map["next_step"]
+            else:
+                next_command = "next_step"
+            if self.robot["action"] == next_command:
                 if self.command_index < len(self.robot_commands):
                     msg = self.robot_commands[self.command_index]
                     self.command_index += 1
                 else:
                     self.command_index = 0
-            elif self.robot["action"] == "left":
-                msg += "left"
-            elif self.robot["action"] == "up":
-                msg += "up"
-            elif self.robot["action"] == "down":
-                msg += "down"
-            elif self.robot["action"] == "forward":
-                msg += "forward"
-            # elif self.robot["action"] == "backward":
-            #     if self.rotations[1] > 0:
-            #         self.rotations[1] -= 1
-            #         logging.info(f"Prev step {self.rotations[1]}")
-            #         msg += "take_from_list"
         return msg
     
     def change_step_size(self, direction):
