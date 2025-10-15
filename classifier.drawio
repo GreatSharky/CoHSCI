@@ -1,9 +1,48 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" version="28.2.7">
   <diagram name="Page-1" id="7bNTmwoXYMSAqHCJU1_h">
-    <mxGraphModel>
+    <mxGraphModel dx="1426" dy="777" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-4" value="Webcam interface" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="299" y="250" width="150" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-6" value="Controller" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="110" y="290" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-7" value="Segmented gesture&lt;div&gt;capture&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="200" y="240" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-8" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.35;rotation=90;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="329" y="190" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-9" value="Ollama request" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="471" y="240" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-10" value="Config&lt;div&gt;Options&lt;/div&gt;" style="shape=manualInput;whiteSpace=wrap;html=1;size=27;fillColor=#f0a30a;fontColor=#000000;strokeColor=#BD7000;" vertex="1" parent="1">
+          <mxGeometry x="334" y="120" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-11" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4666666666666667;arrowSize=0.27522935779816515;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="190" y="270" width="109" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-12" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4666666666666667;arrowSize=0.27522935779816515;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="460" y="270" width="109" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-13" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4666666666666667;arrowSize=0.27522935779816515;fillColor=#dae8fc;strokeColor=#6c8ebf;rotation=-180;" vertex="1" parent="1">
+          <mxGeometry x="449" y="310" width="109" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-14" value="Classification" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="214.5" y="340" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-16" value="Ollama running Gemini3" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="580" y="290" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-17" value="Ollama response" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="471" y="340" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-18" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4666666666666667;arrowSize=0.27522935779816515;fillColor=#dae8fc;strokeColor=#6c8ebf;rotation=-180;" vertex="1" parent="1">
+          <mxGeometry x="180" y="310" width="109" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
