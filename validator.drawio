@@ -10,7 +10,7 @@
         <mxCell id="whr2phT3ORJHTCThnyPo-3" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4666666666666667;arrowSize=0.27522935779816515;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
           <mxGeometry x="170" y="310" width="109" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="whr2phT3ORJHTCThnyPo-2" value="Webcam interface" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+        <mxCell id="whr2phT3ORJHTCThnyPo-2" value="Validator" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
           <mxGeometry x="279" y="290" width="150" height="110" as="geometry" />
         </mxCell>
         <mxCell id="whr2phT3ORJHTCThnyPo-4" value="Classifier classification" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
