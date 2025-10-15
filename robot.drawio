@@ -1,9 +1,48 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" version="28.2.7">
   <diagram name="Page-1" id="1HubqSoe79BB_A6ddNX_">
-    <mxGraphModel>
+    <mxGraphModel dx="1426" dy="777" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-1" value="Robot&amp;nbsp; function caller" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="319" y="280" width="150" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-2" value="Controller" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="130" y="320" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-3" value="Validated classification" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="220" y="270" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-4" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.35;rotation=90;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="349" y="220" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-5" value="Robot control command" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="493.5" y="270" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-6" value="Config&amp;nbsp;&lt;div&gt;options&lt;/div&gt;" style="shape=manualInput;whiteSpace=wrap;html=1;size=27;fillColor=#f0a30a;fontColor=#000000;strokeColor=#BD7000;" vertex="1" parent="1">
+          <mxGeometry x="354" y="150" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-7" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4666666666666667;arrowSize=0.27522935779816515;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="210" y="300" width="109" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-8" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4666666666666667;arrowSize=0.27522935779816515;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="480" y="300" width="109" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-9" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4666666666666667;arrowSize=0.27522935779816515;fillColor=#dae8fc;strokeColor=#6c8ebf;rotation=-180;" vertex="1" parent="1">
+          <mxGeometry x="469" y="340" width="109" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-10" value="Robot status" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="220" y="370" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-11" value="ABB YuMi Robot Controller" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="600" y="320" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-12" value="Robot controller response" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="493.5" y="370" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UCxpgNuvdGAdj46jrYsD-13" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4666666666666667;arrowSize=0.27522935779816515;fillColor=#dae8fc;strokeColor=#6c8ebf;rotation=-180;" vertex="1" parent="1">
+          <mxGeometry x="200" y="340" width="109" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
