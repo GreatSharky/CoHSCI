@@ -13,7 +13,7 @@
         <mxCell id="whr2phT3ORJHTCThnyPo-2" value="Validator" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
           <mxGeometry x="279" y="290" width="150" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="whr2phT3ORJHTCThnyPo-4" value="Classifier classification" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+        <mxCell id="whr2phT3ORJHTCThnyPo-4" value="Classifier classification prompt" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="180" y="280" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="whr2phT3ORJHTCThnyPo-5" value="Controller" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
