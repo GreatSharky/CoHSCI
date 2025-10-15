@@ -4,7 +4,7 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="HD3aoyBavs8oidR4Y3jv-4" value="Webcam interface" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-4" value="Classifier" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
           <mxGeometry x="299" y="250" width="150" height="110" as="geometry" />
         </mxCell>
         <mxCell id="HD3aoyBavs8oidR4Y3jv-6" value="Controller" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
@@ -19,7 +19,7 @@
         <mxCell id="HD3aoyBavs8oidR4Y3jv-9" value="Ollama request" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="471" y="240" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="HD3aoyBavs8oidR4Y3jv-10" value="Config&lt;div&gt;Options&lt;/div&gt;" style="shape=manualInput;whiteSpace=wrap;html=1;size=27;fillColor=#f0a30a;fontColor=#000000;strokeColor=#BD7000;" vertex="1" parent="1">
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-10" value="System prompts" style="shape=manualInput;whiteSpace=wrap;html=1;size=27;fillColor=#f0a30a;fontColor=#000000;strokeColor=#BD7000;" vertex="1" parent="1">
           <mxGeometry x="334" y="120" width="80" height="60" as="geometry" />
         </mxCell>
         <mxCell id="HD3aoyBavs8oidR4Y3jv-11" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4666666666666667;arrowSize=0.27522935779816515;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
