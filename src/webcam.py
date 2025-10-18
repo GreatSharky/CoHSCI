@@ -99,7 +99,7 @@ class Webcam():
                 if self.show_preview and "img" in body:
                     self.show_mask = True
                     img = body["img"]
-                else:
+                elif "img" not in body:
                     text = body
             self.set_frame(text, img)
 
@@ -135,15 +135,13 @@ class Webcam():
             self.color = [0,255,255]
 
     def bb_capture(self):
-        box = self.__bb
-        if not self.left_handed:
-            cap = self.frame[box[1]:box[1]+box[2], box[0]:box[0]+box[3],:]
-        else:
-            cap = self.frame[
-                self.img_shape[0]-box[1]:self.img_shape[0]-box[1]+box[2],
-                self.img_shape[1]-box[0]:self.img_shape[1]-box[0]+box[3],
-                :
-                ]
+        x, y, w, h = self.__bb
+
+        if self.left_handed:
+            x = self.frame.shape[1] - (x + w)
+
+        cap = self.frame[y:y+h, x:x+w, :]
+
         return cap.copy()
 
     def set_frame(self, text, mask):
@@ -164,20 +162,14 @@ class Webcam():
             self.frame[y:y+img.shape[1], x:x+img.shape[0],:] = img
     
     def __add_rectangle(self, l=1):
-        if not self.left_handed:
-            x = self.__bb[0]
-            y = self.__bb[1]
-            w = self.__bb[2]
-            h = self.__bb[3]
-        else:
-            x = self.img_shape[1] - self.__bb[0]
-            y = self.img_shape[0] - self.__bb[1]
-            w = self.__bb[2]
-            h = self.__bb[3]
-        self.frame[y:y+h, x:x+l, :] = self.color
-        self.frame[y:y+l, x:x+w, :] = self.color
-        self.frame[y:y+h+l, x+w:x+w+l, :] = self.color
-        self.frame[y+h:y+h+l, x:x+w+l, :] = self.color
+        x, y, w, h = self.__bb
+        if self.left_handed:
+            x = self.frame.shape[1] - (x + w)
+
+        self.frame[y:y+h, x:x+l, :] = self.color # first vertical side
+        self.frame[y:y+l, x:x+w, :] = self.color # top horizontal
+        self.frame[y:y+h+l, x+w:x+w+l, :] = self.color # second vertical
+        self.frame[y+h:y+h+l, x:x+w+l, :] = self.color # bottom horizontal
 
         return self.frame
     

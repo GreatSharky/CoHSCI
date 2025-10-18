@@ -85,7 +85,7 @@ system_prompt = "Give a score between 0 and 100 how well the description matches
 
 [webcam]
 camera_output = "/dev/video0"
-preview = true
+preview = false
 barrier = 55
 init_size = 200
 bounding_box = [90,200,128,128]
@@ -101,6 +101,6 @@ time_to_cap = 30
 
 [segmentor]
 model = "sam2.1_b.pt"
-segment_points = [[5,5],[5,-5],[-5,-5],[-5,5]]
-point_labels = [0,0,0,0]
+segment_points = [[4,4],[4,123],[123,123],[123,4]]
+point_labels = [1,1,1,1]
 

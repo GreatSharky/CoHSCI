@@ -53,7 +53,7 @@ class Control():
         logging.info(f"Use validation: {self.use_validator}")
         self.use_segmentation = config["control"]["segment"] # Add to config
         logging.info(f"Use segmentation: {self.use_segmentation}")
-        self.save_captures = False
+        self.save_captures = True
         self.img_name = 1
 
         self.classifier_status = ""
@@ -201,13 +201,15 @@ class Control():
     def message_weacam(self):
         # Status changes in the system are relayed to the operator with text added to the webcam screen 
         # #
-        message = {"command" : self.webcam_command,
-                   "system" : self.system_status,
-                   "webcam" : self.webcam_status,
-                   "segmentor" : self.segmentor_status,
-                   "classifier" : self.classifier_status,
-                   "validator" : self.validator_status,
-                   "robot" : self.robot_status}
+        message = {
+            "command" : self.webcam_command,
+            "system" : self.system_status,
+            "webcam" : self.webcam_status,
+            "segmentor" : self.segmentor_status,
+            "classifier" : self.classifier_status,
+            "validator" : self.validator_status,
+            "robot" : self.robot_status
+            }
         self.webcam_sender.add_msg(message)
         self.webcam_command = ""
         return 

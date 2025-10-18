@@ -26,8 +26,9 @@ class Robot():
         logging.info(f"Robot config: {config["robot"]}")
         self.host = config["robot"]["ip"]
         self.port = config["robot"]["port"]
-        self.gesture_map = config["commands"]["prompts"]
-        self.gestures = list(self.gesture_map.keys())
+        self.gestures_map = config["commands"]["prompts"]
+        self.gestures = list(self.gestures_map.keys())
+        logging.debug(self.gestures)
         self.lengths = [3] #config["robot"]["step_size"]
 
         # System variables
@@ -68,9 +69,9 @@ class Robot():
         return
 
     def message_robot(self, ch , method, properties, body):
-        logging.info("Sending robot message")
         body = MessageQueue.body_parse_util(body)
-        msg = self.update_robot_state(body["msg"])
+        logging.info(f"msg recieved {body}")
+        msg = self.update_robot_state(int(body["msg"]))
         logging.info(msg)
         status = ""
         response = ""
@@ -94,9 +95,10 @@ class Robot():
 
     def consume_control_message(self, data):
         msg = ""
+        logging.debug(data)
         try:
-            if self.gesture_map[data] in ["left_hand","right_hand"]:
-                if self.prev_control_msg == self.gesture_map[data]:
+            if self.gestures[data] in ["left_hand","right_hand"]:
+                if self.prev_control_msg == self.gestures[data]:
                     # Switch mode
                     self.control_mode = not self.control_mode
                     self.robot["action"] = None
@@ -104,23 +106,23 @@ class Robot():
                     msg = f"Mode switched"
                     msg = msg.ljust(20)
                 else:
-                    self.robot["hand"] = self.gesture_map[data]
+                    self.robot["hand"] = self.gestures[data]
                     self.robot["action"] = None
                     msg = f"Robot hand set to {self.robot["hand"]}"
                     msg = msg.ljust(20)
-            elif self.gesture_map[data] != "nothing" and self.robot["hand"] != None:
-                self.robot["action"] = self.gesture_map[data]
+            elif self.gestures[data] != "nothing" and self.robot["hand"] != None:
+                self.robot["action"] = self.gestures[data]
                 msg = msg.ljust(20)
-            elif self.gesture_map[data] == "kill":
+            elif self.gestures[data] == "kill":
                 self.init_robot()
                 msg = f"State reset"
                 msg = msg.ljust(20)
             else:
                 msg = "Nothing done"
                 msg = msg.ljust(20)
-            self.prev_control_msg = self.gesture_map[data]
+            self.prev_control_msg = self.gestures[data]
         except KeyError:
-            msg = f"Nothing done"
+            msg = f"KeyError, propably error in key"
             msg = msg.ljust(20)
         return msg
 
@@ -162,10 +164,11 @@ class Robot():
             elif self.robot["hand"] == "left_hand":
                 msg = "0"
             msg += "80"
-            if self.gesture_map["next_step"] in self.gesture_map.keys():
-                next_command = self.gesture_map["next_step"]
+            if self.gestures_map["next_step"] in self.gestures_map.keys():
+                next_command = self.gestures_map["next_step"]
             else:
                 next_command = "next_step"
+            logging.debug(next_command)
             if self.robot["action"] == next_command:
                 if self.command_index < len(self.robot_commands):
                     msg = self.robot_commands[self.command_index]

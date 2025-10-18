@@ -2,6 +2,7 @@
 from ultralytics import SAM
 from pathlib import Path
 import logging
+import cv2
 from messageq import MessageQueue
 from settings import config
 
@@ -38,17 +39,22 @@ class Segmentor():
 
     def segment(self, ch, method, properties, body):
         data = {"status" : "Segment_started"}
+        logging.info("Msg recieved")
         self.control_sender.add_msg(data)
         data = MessageQueue.body_parse_util(body)
+        logging.info(body)
         image = data["img"]
-        masks = self.sam(image, points=self.segment_points, labels=self.point_labels)
-        logging.debug(masks)
-        for mask_object in masks:
+        results = self.sam(image, points=self.segment_points, labels=self.point_labels)
+        logging.info("Results ready")
+        for mask_object in results[0].masks:
             # mask = masks[0].masks.cpu().data
-            mask = mask_object.masks.cpu().data
+            mask = mask_object.cpu().data
+            logging.debug(mask)
             h,w = mask.shape[-2:]
             mask = mask.reshape(h,w,1).numpy()
-            image = image*mask
+            maksed_img = image*mask
+            image = image - maksed_img
+        logging.info("Mask ready")
         data = {
             "status" : "Segment_done",
             "img": image
