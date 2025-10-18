@@ -10,7 +10,7 @@ left_handed = false
         "backward" = "✊" #6 backward
         "up" = "👍" #7 up
         "down" = "👎" #8 down
-        "next_step" = "right"
+        "next_step" = "🖕"
         #"close" = "✋" #9 close
         #"open" = "Live long and prosper" #10 open
         #"🖕", #11 kill
@@ -65,18 +65,7 @@ emoji_prompts = [
 [robot]
 ip = "192.168.125.1"
 port = 5000
-    [robot.gesture_map]
-    "Class 1" = "right_hand"
-    "Class 2" = "left_hand"
-    "Class 3" = "left"
-    "Class 4" = "right"
-    "Class 5" = "forward"
-    "Class 6" = "backward"
-    "Class 7" = "up"
-    "Class 8" = "down"
-    "Class 9" = "close"
-    "Class 10" = "open"
-    "Class 11" = "kill"
+
 
 
 [validator]
@@ -86,7 +75,7 @@ system_prompt = "Give a score between 0 and 100 how well the description matches
 [webcam]
 camera_output = "/dev/video0"
 preview = false
-barrier = 55
+barrier = 15
 init_size = 200
 bounding_box = [90,200,128,128]
 text_color = [0,255,0]

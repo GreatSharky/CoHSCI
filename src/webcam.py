@@ -63,7 +63,7 @@ class Webcam():
         self.control_reciever = MessageQueue("control-webcam")
         self.index_storage = []
         self.img_shape = []
-
+        self.hasher = cv2.img_hash.PHash_create()
 
     def start(self):
         text = {}
@@ -81,8 +81,7 @@ class Webcam():
                 cap = np.mean(baseline, axis=0)
                 cap = cap.astype(np.uint8)
                 logging.debug(cap)
-                hasher = cv2.img_hash.AverageHash_create()
-                self.baseline = hasher.compute(cap)
+                self.baseline = self.hasher.compute(cap)
                 self.take_cap = True
                 msg = {"status" : "Webcam initialized"}
                 self.control_sender.add_msg(msg)
@@ -109,10 +108,8 @@ class Webcam():
 
     def capture(self, index):
         capture = self.bb_capture()
-        caphash = cv2.img_hash.averageHash(capture)
-        diff = np.abs(caphash-self.baseline)
-        diff = np.average(diff)
-
+        caphash = self.hasher.compute(capture)
+        diff = cv2.norm(caphash,self.baseline, cv2.NORM_HAMMING)
         if diff > self.barrier:
             if len(self.index_storage) == self.time_to_cap:
                 logging.info("Capture made")
