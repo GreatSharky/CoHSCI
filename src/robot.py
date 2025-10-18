@@ -34,7 +34,7 @@ class Robot():
         # System variables
         self.control_reciever = MessageQueue("control-robot")
         self.control_sender = MessageQueue("robot-control")
-        self.control_mode = False
+        self.assembly_mode = True
         self.prev_control_msg = None
         self.step = self.lengths[0]
         self.command_index = 0
@@ -87,7 +87,7 @@ class Robot():
             status = "updated"
         data = {
             "response" : status,
-            "status" : self.control_mode
+            "status" : self.assembly_mode
             }
         logging.info(data)
         logging.debug(self.robot)
@@ -100,9 +100,9 @@ class Robot():
             if self.gestures[data] in ["left_hand","right_hand"]:
                 if self.prev_control_msg == self.gestures[data]:
                     # Switch mode
-                    self.control_mode = not self.control_mode
+                    self.assembly_mode = not self.assembly_mode
                     self.robot["action"] = None
-                    logging.info(f"Mode switched. Assembly mode {self.control_mode}")
+                    logging.info(f"Mode switched. Assembly mode {self.assembly_mode}")
                     msg = f"Mode switched"
                     msg = msg.ljust(20)
                 else:
@@ -129,7 +129,7 @@ class Robot():
     def update_robot_state(self, data):
         msg = self.consume_control_message(data)
 
-        if None not in self.robot.values() and not self.control_mode:
+        if None not in self.robot.values() and not self.assembly_mode:
             logging.info("Jog mode")
             logging.debug(self.robot)
             if self.robot["hand"] == "right_hand":
@@ -156,7 +156,7 @@ class Robot():
                 msg += "12123412341" + str(self.step).rjust(3,"0")
 
             msg = msg.ljust(17,"0")
-        elif None not in self.robot.values() and self.control_mode:
+        elif None not in self.robot.values() and self.assembly_mode:
             logging.info("Assembly mode")
             logging.debug(self.robot)
             if self.robot["hand"] == "right_hand":

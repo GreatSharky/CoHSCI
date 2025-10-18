@@ -19,7 +19,7 @@ left_handed = false
         # "🤘",
 
 [control]
-segment = false
+segment = true
 validate = true
 poll_rate = 0.1
 
