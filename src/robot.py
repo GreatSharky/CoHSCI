@@ -26,13 +26,15 @@ class Robot():
         logging.info(f"Robot config: {config["robot"]}")
         self.host = config["robot"]["ip"]
         self.port = config["robot"]["port"]
-        self.gesture_map = config["robot"]["gesture_map"]
-        self.lengths = [100,40,5,1] #config["robot"]["step_size"]
+        self.gestures_map = config["commands"]["prompts"]
+        self.gestures = list(self.gestures_map.keys())
+        logging.debug(self.gestures)
+        self.lengths = [3] #config["robot"]["step_size"]
 
         # System variables
         self.control_reciever = MessageQueue("control-robot")
         self.control_sender = MessageQueue("robot-control")
-        self.control_mode = False
+        self.assembly_mode = True
         self.prev_control_msg = None
         self.step = self.lengths[0]
         self.command_index = 0
@@ -67,9 +69,9 @@ class Robot():
         return
 
     def message_robot(self, ch , method, properties, body):
-        logging.info("Sending robot message")
         body = MessageQueue.body_parse_util(body)
-        msg = self.update_robot_state(body["msg"])
+        logging.info(f"msg recieved {body}")
+        msg = self.update_robot_state(int(body["msg"]))
         logging.info(msg)
         status = ""
         response = ""
@@ -85,7 +87,7 @@ class Robot():
             status = "updated"
         data = {
             "response" : status,
-            "status" : self.control_mode
+            "status" : self.assembly_mode
             }
         logging.info(data)
         logging.debug(self.robot)
@@ -93,40 +95,41 @@ class Robot():
 
     def consume_control_message(self, data):
         msg = ""
+        logging.debug(data)
         try:
-            if self.gesture_map[data] in ["left_hand","right_hand"]:
-                if self.prev_control_msg == self.gesture_map[data]:
+            if self.gestures[data] in ["left_hand","right_hand"]:
+                if self.prev_control_msg == self.gestures[data]:
                     # Switch mode
-                    self.control_mode = not self.control_mode
+                    self.assembly_mode = not self.assembly_mode
                     self.robot["action"] = None
-                    logging.info(f"Mode switched. Assembly mode {self.control_mode}")
+                    logging.info(f"Mode switched. Assembly mode {self.assembly_mode}")
                     msg = f"Mode switched"
                     msg = msg.ljust(20)
                 else:
-                    self.robot["hand"] = self.gesture_map[data]
+                    self.robot["hand"] = self.gestures[data]
                     self.robot["action"] = None
                     msg = f"Robot hand set to {self.robot["hand"]}"
                     msg = msg.ljust(20)
-            elif self.gesture_map[data] != "kill" and self.robot["hand"] != None:
-                self.robot["action"] = self.gesture_map[data]
+            elif self.gestures[data] != "nothing" and self.robot["hand"] != None:
+                self.robot["action"] = self.gestures[data]
                 msg = msg.ljust(20)
-            elif self.gesture_map[data] == "kill":
+            elif self.gestures[data] == "kill":
                 self.init_robot()
                 msg = f"State reset"
                 msg = msg.ljust(20)
             else:
                 msg = "Nothing done"
                 msg = msg.ljust(20)
-            self.prev_control_msg = self.gesture_map[data]
+            self.prev_control_msg = self.gestures[data]
         except KeyError:
-            msg = f"Nothing done"
+            msg = f"KeyError, propably error in key"
             msg = msg.ljust(20)
         return msg
 
     def update_robot_state(self, data):
         msg = self.consume_control_message(data)
 
-        if None not in self.robot.values() and not self.control_mode:
+        if None not in self.robot.values() and not self.assembly_mode:
             logging.info("Jog mode")
             logging.debug(self.robot)
             if self.robot["hand"] == "right_hand":
@@ -153,7 +156,7 @@ class Robot():
                 msg += "12123412341" + str(self.step).rjust(3,"0")
 
             msg = msg.ljust(17,"0")
-        elif None not in self.robot.values() and self.control_mode:
+        elif None not in self.robot.values() and self.assembly_mode:
             logging.info("Assembly mode")
             logging.debug(self.robot)
             if self.robot["hand"] == "right_hand":
@@ -161,31 +164,17 @@ class Robot():
             elif self.robot["hand"] == "left_hand":
                 msg = "0"
             msg += "80"
-            if self.robot["action"] == "close":
-                self.step = self.change_step_size("up")
-                logging.info(f"Step size {self.step}")
-            elif self.robot["action"] == "open":
-                self.step = self.change_step_size("down")
-                logging.info(f"Step size {self.step}")
-            elif self.robot["action"] == "right":
+            if self.gestures_map["next_step"] in self.gestures_map.keys():
+                next_command = self.gestures_map["next_step"]
+            else:
+                next_command = "next_step"
+            logging.debug(next_command)
+            if self.robot["action"] == next_command:
                 if self.command_index < len(self.robot_commands):
                     msg = self.robot_commands[self.command_index]
                     self.command_index += 1
                 else:
                     self.command_index = 0
-            elif self.robot["action"] == "left":
-                msg += "left"
-            elif self.robot["action"] == "up":
-                msg += "up"
-            elif self.robot["action"] == "down":
-                msg += "down"
-            elif self.robot["action"] == "forward":
-                msg += "forward"
-            # elif self.robot["action"] == "backward":
-            #     if self.rotations[1] > 0:
-            #         self.rotations[1] -= 1
-            #         logging.info(f"Prev step {self.rotations[1]}")
-            #         msg += "take_from_list"
         return msg
     
     def change_step_size(self, direction):

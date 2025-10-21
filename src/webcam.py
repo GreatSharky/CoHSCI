@@ -48,6 +48,7 @@ class Webcam():
         self.show_preview = config["webcam"]["preview"]
         self.time_to_cap = config["webcam"]["time_to_cap"]
         self.text_color = config["webcam"]["text_color"]
+        self.left_handed = config["commands"]["left_handed"]
 
         # Program variables
         self.__cap = cv2.VideoCapture(self.cam_ip)
@@ -61,7 +62,8 @@ class Webcam():
         self.control_sender = MessageQueue("webcam-control")
         self.control_reciever = MessageQueue("control-webcam")
         self.index_storage = []
-
+        self.img_shape = []
+        self.hasher = cv2.img_hash.PHash_create()
 
     def start(self):
         text = {}
@@ -79,8 +81,7 @@ class Webcam():
                 cap = np.mean(baseline, axis=0)
                 cap = cap.astype(np.uint8)
                 logging.debug(cap)
-                hasher = cv2.img_hash.AverageHash_create()
-                self.baseline = hasher.compute(cap)
+                self.baseline = self.hasher.compute(cap)
                 self.take_cap = True
                 msg = {"status" : "Webcam initialized"}
                 self.control_sender.add_msg(msg)
@@ -89,7 +90,7 @@ class Webcam():
                 baseline.append(cap)
             elif self.take_cap and i > init_size:
                 self.capture(i)
-
+            self.img_shape = self.frame.shape
 
             method, header, body = self.control_reciever.get_msg()
             if method:
@@ -97,7 +98,7 @@ class Webcam():
                 if self.show_preview and "img" in body:
                     self.show_mask = True
                     img = body["img"]
-                else:
+                elif "img" not in body:
                     text = body
             self.set_frame(text, img)
 
@@ -107,10 +108,8 @@ class Webcam():
 
     def capture(self, index):
         capture = self.bb_capture()
-        caphash = cv2.img_hash.averageHash(capture)
-        diff = np.abs(caphash-self.baseline)
-        diff = np.average(diff)
-
+        caphash = self.hasher.compute(capture)
+        diff = cv2.norm(caphash,self.baseline, cv2.NORM_HAMMING)
         if diff > self.barrier:
             if len(self.index_storage) == self.time_to_cap:
                 logging.info("Capture made")
@@ -133,8 +132,13 @@ class Webcam():
             self.color = [0,255,255]
 
     def bb_capture(self):
-        box = self.__bb
-        cap = self.frame[box[1]:box[1]+box[2], box[0]:box[0]+box[3],:]
+        x, y, w, h = self.__bb
+
+        if self.left_handed:
+            x = self.frame.shape[1] - (x + w)
+
+        cap = self.frame[y:y+h, x:x+w, :]
+
         return cap.copy()
 
     def set_frame(self, text, mask):
@@ -155,14 +159,15 @@ class Webcam():
             self.frame[y:y+img.shape[1], x:x+img.shape[0],:] = img
     
     def __add_rectangle(self, l=1):
-        x = self.__bb[0]
-        y = self.__bb[1]
-        w = self.__bb[2]
-        h = self.__bb[3]
-        self.frame[y:y+h, x:x+l, :] = self.color
-        self.frame[y:y+l, x:x+w, :] = self.color
-        self.frame[y:y+h+l, x+w:x+w+l, :] = self.color
-        self.frame[y+h:y+h+l, x:x+w+l, :] = self.color
+        x, y, w, h = self.__bb
+        if self.left_handed:
+            x = self.frame.shape[1] - (x + w)
+
+        self.frame[y:y+h, x:x+l, :] = self.color # first vertical side
+        self.frame[y:y+l, x:x+w, :] = self.color # top horizontal
+        self.frame[y:y+h+l, x+w:x+w+l, :] = self.color # second vertical
+        self.frame[y+h:y+h+l, x:x+w+l, :] = self.color # bottom horizontal
+
         return self.frame
     
     def __add_text(self, information: dict):

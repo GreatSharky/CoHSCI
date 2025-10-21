@@ -1,3 +1,4 @@
+import cv2
 import time
 import logging
 from pathlib import Path
@@ -52,6 +53,8 @@ class Control():
         logging.info(f"Use validation: {self.use_validator}")
         self.use_segmentation = config["control"]["segment"] # Add to config
         logging.info(f"Use segmentation: {self.use_segmentation}")
+        self.save_captures = True
+        self.img_name = 1
 
         self.classifier_status = ""
         self.webcam_status = ""
@@ -74,25 +77,13 @@ class Control():
         self.validator_callback(None, val_method, val_props, val_body)
         rob_method, rob_props, rob_body = self.robot_reciever.get_msg()
         self.robot_callback(None, rob_method, rob_props, rob_body)
-        self.update_system()
         self.message_segmentor()
         self.message_classifier()
         self.message_validator()
         self.message_robot()
         self.message_weacam()
         return
-    
-    def update_system(self):
-        # print("STATUS UPDATE")
-        # print(self.webcam_command)
-        # print(self.system_status)
-        # print(self.webcam_status)
-        # print(self.segmentor_status)
-        # print(self.classifier_status)
-        # print(self.validator_status)
-        # print()
-        return
-    
+
     def reset_status(self):
         self.classifier_status = ""
         self.webcam_status = ""
@@ -169,6 +160,13 @@ class Control():
             self.segmentor_status = body["status"]
             if self.segmentor_status == "Segment_done":
                 data = {"img" : body["img"]}
+                if self.save_captures:
+                    cap_path = log_path / "segment"
+                    cap_path.mkdir(exist_ok=True)
+                    cap_file = cap_path / f"{self.img_name}.jpg"
+                    logging.info(f"Storing segmentation {cap_file}")
+                    cv2.imwrite(cap_file, body["img"])
+                    self.img_name += 1
                 self.classifier_sender.add_msg(data.copy())
                 self.webcam_sender.add_msg(data.copy())
             return
@@ -182,9 +180,16 @@ class Control():
             self.webcam_status = msg
             if msg == "Capture_made":
                 data = {"img" : body["img"]}
+                if self.save_captures:
+                    cap_path = log_path / "capture"
+                    cap_path.mkdir(exist_ok=True)
+                    cap_file = cap_path / f"{self.img_name}.jpg"
+                    logging.info(f"Storing capture {cap_file}")
+                    cv2.imwrite(cap_file, body["img"])
                 if self.use_segmentation == True:
                     self.segmentor_sender.add_msg(data)
                 else:
+                    self.img_name += 1
                     self.classifier_sender.add_msg(data)
             
     def message_classifier(self):
@@ -196,21 +201,23 @@ class Control():
     def message_weacam(self):
         # Status changes in the system are relayed to the operator with text added to the webcam screen 
         # #
-        message = {"command" : self.webcam_command,
-                   "system" : self.system_status,
-                   "webcam" : self.webcam_status,
-                   "segmentor" : self.segmentor_status,
-                   "classifier" : self.classifier_status,
-                   "validator" : self.validator_status,
-                   "robot" : self.robot_status}
+        message = {
+            "command" : self.webcam_command,
+            "system" : self.system_status,
+            "webcam" : self.webcam_status,
+            "segmentor" : self.segmentor_status,
+            "classifier" : self.classifier_status,
+            "validator" : self.validator_status,
+            "robot" : self.robot_status
+            }
         self.webcam_sender.add_msg(message)
         self.webcam_command = ""
         return 
     
     def message_robot(self):
         if self.robot_command == "Move":
-            data = {"msg" : f"Class {self.classification}"}
-            logging.info(f"Sendinf robot command: {data}")
+            data = {"msg" : self.classification}
+            logging.info(f"Sending robot command: {data}")
             self.robot_sender.add_msg(data)
             self.robot_command = ""
         return

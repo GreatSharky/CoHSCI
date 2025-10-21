@@ -54,5 +54,8 @@ class Classifier():
 
 if __name__ == "__main__":
 
-    descriptions = config["classifier"]["emoji_prompts"]
-    classifier = Classifier(descriptions, "gemma3:12b")
+    descriptions = config["commands"]["prompts"]
+    values = list(descriptions.values())
+    if values[-1] in descriptions.keys():
+        values = values[:-1]
+    classifier = Classifier(values, "gemma3:12b")
