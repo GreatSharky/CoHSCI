@@ -42,7 +42,7 @@ class Segmentor():
         logging.info("Msg recieved")
         self.control_sender.add_msg(data)
         data = MessageQueue.body_parse_util(body)
-        logging.info(body)
+        logging.debug(body)
         image = data["img"]
         results = self.sam(image, points=self.segment_points, labels=self.point_labels)
         logging.info("Results ready")
@@ -60,7 +60,7 @@ class Segmentor():
             "img": image
             }
         self.control_sender.add_msg(data.copy())
-        logging.info(f"Masked_image sent: {data}")
+        logging.info(f"Masked_image sent")
         return image
     
     

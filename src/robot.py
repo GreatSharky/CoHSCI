@@ -71,7 +71,7 @@ class Robot():
     def message_robot(self, ch , method, properties, body):
         body = MessageQueue.body_parse_util(body)
         logging.info(f"msg recieved {body}")
-        msg = self.update_robot_state(int(body["msg"]))
+        msg, action = self.update_robot_state(int(body["msg"]))
         logging.info(msg)
         status = ""
         response = ""
@@ -86,8 +86,9 @@ class Robot():
             response = msg
             status = "updated"
         data = {
-            "response" : status,
-            "status" : self.assembly_mode
+            "status" : status,
+            "mode" : "Assembly" if self.assembly_mode else "Jog",
+            "previous_action" : action
             }
         logging.info(data)
         logging.debug(self.robot)
@@ -95,6 +96,7 @@ class Robot():
 
     def consume_control_message(self, data):
         msg = ""
+        action = ""
         logging.debug(data)
         try:
             if self.gestures[data] in ["left_hand","right_hand"]:
@@ -103,31 +105,32 @@ class Robot():
                     self.assembly_mode = not self.assembly_mode
                     self.robot["action"] = None
                     logging.info(f"Mode switched. Assembly mode {self.assembly_mode}")
-                    msg = f"Mode switched"
-                    msg = msg.ljust(20)
+                    action = f"Mode switched"
+                    msg = action.ljust(20)
                 else:
                     self.robot["hand"] = self.gestures[data]
                     self.robot["action"] = None
-                    msg = f"Robot hand set to {self.robot["hand"]}"
-                    msg = msg.ljust(20)
+                    action = f"Robot hand set to {self.robot["hand"]}"
+                    msg = action.ljust(20)
             elif self.gestures[data] != "nothing" and self.robot["hand"] != None:
                 self.robot["action"] = self.gestures[data]
-                msg = msg.ljust(20)
+                action = self.gestures[data]
+                msg = action.ljust(20)
             elif self.gestures[data] == "kill":
                 self.init_robot()
                 msg = f"State reset"
                 msg = msg.ljust(20)
             else:
-                msg = "Nothing done"
-                msg = msg.ljust(20)
+                action = "Nothing done"
+                msg = action.ljust(20)
             self.prev_control_msg = self.gestures[data]
         except KeyError:
             msg = f"KeyError, propably error in key"
             msg = msg.ljust(20)
-        return msg
+        return msg, action
 
     def update_robot_state(self, data):
-        msg = self.consume_control_message(data)
+        msg, action= self.consume_control_message(data)
 
         if None not in self.robot.values() and not self.assembly_mode:
             logging.info("Jog mode")
@@ -172,10 +175,12 @@ class Robot():
             if self.robot["action"] == next_command:
                 if self.command_index < len(self.robot_commands):
                     msg = self.robot_commands[self.command_index]
+                    action = "next_step"
                     self.command_index += 1
                 else:
                     self.command_index = 0
-        return msg
+                    action = "assembly complete"
+        return msg, action
     
     def change_step_size(self, direction):
         idx = self.lengths.index(self.step)

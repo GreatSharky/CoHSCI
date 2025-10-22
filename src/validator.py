@@ -59,6 +59,7 @@ class Validator(VLM):
         logging.debug("Body parsed")
         logging.debug(description)
         self.create_user_prompt(description, img)
+        logging.info("Validating ...")
         result = self.inference()
         logging.debug(result)
         data = {"status" : "Validated",

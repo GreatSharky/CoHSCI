@@ -31,11 +31,11 @@ class Classifier():
 
     def classify(self, ch, method, properties, body):
         logging.info("Message recieved")
-        logging.info("Classifying...")
         data = {"status" : "Image_recieved"}
         self.control_sender.add_msg(data)
         data = MessageQueue.body_parse_util(body)
         image = data["img"]
+        logging.info("Classifying...")
         self.vlm1.create_user_msg(image)
         result1 = self.vlm1.inference()
         classification = result1.message.content

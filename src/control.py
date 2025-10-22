@@ -64,6 +64,7 @@ class Control():
         self.webcam_command = ""
         self.robot_command = ""
         self.classification = ""
+        self.status_msg = {}
         self.system_status = "Starting"
 
     def control_cycle(self):
@@ -91,6 +92,7 @@ class Control():
         self.robot_status = ""
         self.webcam_command = ""
         self.system_status = ""
+
 
     def classifier_callback(self, ch, method, properties, body):
         if method != None:
@@ -132,13 +134,13 @@ class Control():
                     self.reset_status()
                     self.webcam_command = "Capture"
                     self.system_status = "New Capture started"
-                    self.validator_status = "Image_validated"
+                    self.validator_status = "Success"
                     self.robot_command = "Move"
                 else:
                     self.reset_status()
                     self.webcam_command = "Capture"
                     self.system_status = "New Capture started"
-                    self.validator_status = "Validation_failed"
+                    self.validator_status = "Failure"
 
             return
         
@@ -148,6 +150,7 @@ class Control():
             # Robot status changed
             # Possible robot status: action recieved, action started, action done#
             self.robot_status = body["status"]
+            self.status_msg.update(body)
             return
     
     def segmentor_callback(self, ch, method, properties, body):
@@ -201,16 +204,9 @@ class Control():
     def message_weacam(self):
         # Status changes in the system are relayed to the operator with text added to the webcam screen 
         # #
-        message = {
-            "command" : self.webcam_command,
-            "system" : self.system_status,
-            "webcam" : self.webcam_status,
-            "segmentor" : self.segmentor_status,
-            "classifier" : self.classifier_status,
-            "validator" : self.validator_status,
-            "robot" : self.robot_status
-            }
-        self.webcam_sender.add_msg(message)
+        self.status_msg["command"] = self.webcam_command
+        self.status_msg["classification"] = self.validator_status
+        self.webcam_sender.add_msg(self.status_msg)
         self.webcam_command = ""
         return 
     
