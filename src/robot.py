@@ -85,10 +85,11 @@ class Robot():
         else:
             response = msg
             status = "updated"
+        key = "next step" if self.assembly_mode else "previous_action"
         data = {
             "status" : status,
             "mode" : "Assembly" if self.assembly_mode else "Jog",
-            "previous_action" : action
+            key : action
             }
         logging.info(data)
         logging.debug(self.robot)
@@ -174,11 +175,10 @@ class Robot():
             logging.debug(next_command)
             if self.robot["action"] == next_command:
                 if self.command_index < len(self.robot_commands):
-                    msg = self.robot_commands[self.command_index]
-                    action = "next_step"
+                    msg = self.robot_commands[self.command_index][0]
+                    action = self.robot_commands[self.command_index][1]
                     self.command_index += 1
                 else:
-                    self.command_index = 0
                     action = "assembly complete"
         return msg, action
     
