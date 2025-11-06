@@ -49,7 +49,7 @@
         <mxCell id="W23rfdIP17iiuYrl_zyB-13" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-14" target="W23rfdIP17iiuYrl_zyB-18">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="W23rfdIP17iiuYrl_zyB-14" value="Can build command" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="1">
+        <mxCell id="W23rfdIP17iiuYrl_zyB-14" value="Can create robot command" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="1">
           <mxGeometry x="230" y="550" width="100" height="80" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="W23rfdIP17iiuYrl_zyB-2">
