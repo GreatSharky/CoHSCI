@@ -30,27 +30,11 @@
         <mxCell id="W23rfdIP17iiuYrl_zyB-7" value="Action in msg" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="1">
           <mxGeometry x="230" y="330" width="100" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="W23rfdIP17iiuYrl_zyB-39" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-11" target="W23rfdIP17iiuYrl_zyB-14">
+        <mxCell id="W23rfdIP17iiuYrl_zyB-49" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-11" target="W23rfdIP17iiuYrl_zyB-48">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-11" value="Set robot action" style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;" vertex="1" parent="1">
           <mxGeometry x="220" y="455" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="W23rfdIP17iiuYrl_zyB-12" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-14" target="W23rfdIP17iiuYrl_zyB-37">
-          <mxGeometry x="-0.8846" relative="1" as="geometry">
-            <mxPoint x="390" y="590" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="440" y="589.9999999999998" />
-              <mxPoint x="440" y="900" />
-            </Array>
-            <mxPoint x="-1" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="W23rfdIP17iiuYrl_zyB-13" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-14" target="W23rfdIP17iiuYrl_zyB-18">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="W23rfdIP17iiuYrl_zyB-14" value="Can create robot command" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="1">
-          <mxGeometry x="230" y="550" width="100" height="80" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="W23rfdIP17iiuYrl_zyB-2">
           <mxGeometry relative="1" as="geometry">
@@ -59,17 +43,20 @@
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-18" target="W23rfdIP17iiuYrl_zyB-22">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="280" y="769.9999999999998" as="targetPoint" />
+            <mxPoint x="280" y="919.9999999999998" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="440" y="830" />
+            </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="W23rfdIP17iiuYrl_zyB-18" value="Create and send socket command" style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;" vertex="1" parent="1">
-          <mxGeometry x="220" y="670" width="120" height="60" as="geometry" />
+        <mxCell id="W23rfdIP17iiuYrl_zyB-18" value="Send step&lt;div&gt;command to controller&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;" vertex="1" parent="1">
+          <mxGeometry x="380" y="690" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-22" target="W23rfdIP17iiuYrl_zyB-37">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-22" value="Clear robot action" style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;" vertex="1" parent="1">
-          <mxGeometry x="220" y="770" width="120" height="60" as="geometry" />
+          <mxGeometry x="220" y="800" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-23" value="Start" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="220" y="10" width="120" height="80" as="geometry" />
@@ -83,22 +70,22 @@
         <mxCell id="W23rfdIP17iiuYrl_zyB-28" value="Previous_msg == msg" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="1">
           <mxGeometry x="390" y="210" width="100" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="W23rfdIP17iiuYrl_zyB-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-30" target="W23rfdIP17iiuYrl_zyB-37">
+        <mxCell id="W23rfdIP17iiuYrl_zyB-66" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-30" target="W23rfdIP17iiuYrl_zyB-37">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="600" y="480" />
-              <mxPoint x="440" y="480" />
-              <mxPoint x="440" y="900" />
+              <mxPoint x="600" y="930" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-30" value="Switch mode" style="whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="1">
           <mxGeometry x="540" y="220" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="W23rfdIP17iiuYrl_zyB-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-35" target="W23rfdIP17iiuYrl_zyB-37">
+        <mxCell id="W23rfdIP17iiuYrl_zyB-65" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-35" target="W23rfdIP17iiuYrl_zyB-37">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="440" y="900" />
+              <mxPoint x="440" y="480" />
+              <mxPoint x="600" y="480" />
+              <mxPoint x="600" y="930" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -109,13 +96,34 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-37" value="Update control module" style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;" vertex="1" parent="1">
-          <mxGeometry x="220" y="870" width="120" height="60" as="geometry" />
+          <mxGeometry x="220" y="900" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-43" value="Stop" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="220" y="970" width="120" height="80" as="geometry" />
+          <mxGeometry x="220" y="1000" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-46" value="Stop" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="60" y="330" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="W23rfdIP17iiuYrl_zyB-61" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-48" target="W23rfdIP17iiuYrl_zyB-55">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="W23rfdIP17iiuYrl_zyB-63" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-48" target="W23rfdIP17iiuYrl_zyB-62">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="W23rfdIP17iiuYrl_zyB-48" value="Assembly_mode == True" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="1">
+          <mxGeometry x="230" y="560" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="W23rfdIP17iiuYrl_zyB-57" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-55" target="W23rfdIP17iiuYrl_zyB-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="W23rfdIP17iiuYrl_zyB-55" value="action == next_step" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="1">
+          <mxGeometry x="390" y="560" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="W23rfdIP17iiuYrl_zyB-64" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-62" target="W23rfdIP17iiuYrl_zyB-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="W23rfdIP17iiuYrl_zyB-62" value="Create and send jog command" style="whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="1">
+          <mxGeometry x="220" y="690" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
