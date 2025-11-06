@@ -45,7 +45,7 @@
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="280" y="919.9999999999998" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="440" y="830" />
+              <mxPoint x="440" y="930" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -56,7 +56,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-22" value="Clear robot action" style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;" vertex="1" parent="1">
-          <mxGeometry x="220" y="800" width="120" height="60" as="geometry" />
+          <mxGeometry x="220" y="900" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-23" value="Start" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="220" y="10" width="120" height="80" as="geometry" />
@@ -73,7 +73,7 @@
         <mxCell id="W23rfdIP17iiuYrl_zyB-66" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-30" target="W23rfdIP17iiuYrl_zyB-37">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="600" y="930" />
+              <mxPoint x="600" y="1030" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -85,7 +85,7 @@
             <Array as="points">
               <mxPoint x="440" y="480" />
               <mxPoint x="600" y="480" />
-              <mxPoint x="600" y="930" />
+              <mxPoint x="600" y="1030" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -96,10 +96,10 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-37" value="Update control module" style="rounded=1;whiteSpace=wrap;html=1;arcSize=0;" vertex="1" parent="1">
-          <mxGeometry x="220" y="900" width="120" height="60" as="geometry" />
+          <mxGeometry x="220" y="1000" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-43" value="Stop" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="220" y="1000" width="120" height="80" as="geometry" />
+          <mxGeometry x="220" y="1100" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-46" value="Stop" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="60" y="330" width="120" height="80" as="geometry" />
@@ -107,7 +107,7 @@
         <mxCell id="W23rfdIP17iiuYrl_zyB-61" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-48" target="W23rfdIP17iiuYrl_zyB-55">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="W23rfdIP17iiuYrl_zyB-63" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-48" target="W23rfdIP17iiuYrl_zyB-62">
+        <mxCell id="W23rfdIP17iiuYrl_zyB-68" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-48" target="W23rfdIP17iiuYrl_zyB-67">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-48" value="Assembly_mode == True" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="1">
@@ -123,7 +123,22 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="W23rfdIP17iiuYrl_zyB-62" value="Create and send jog command" style="whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="1">
-          <mxGeometry x="220" y="690" width="120" height="60" as="geometry" />
+          <mxGeometry x="220" y="790" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="W23rfdIP17iiuYrl_zyB-69" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-67" target="W23rfdIP17iiuYrl_zyB-62">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="W23rfdIP17iiuYrl_zyB-70" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="W23rfdIP17iiuYrl_zyB-67" target="W23rfdIP17iiuYrl_zyB-37">
+          <mxGeometry x="-0.8462" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="120" y="720" />
+              <mxPoint x="120" y="1030" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W23rfdIP17iiuYrl_zyB-67" value="Robot hand set" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="1">
+          <mxGeometry x="230" y="680" width="100" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
