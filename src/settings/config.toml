@@ -10,7 +10,7 @@ left_handed = false
         "backward" = "✊" #6 backward
         "up" = "👍" #7 up
         "down" = "👎" #8 down
-        "next_step" = "🖕"
+        "next_step" = "right"
         #"close" = "✋" #9 close
         #"open" = "Live long and prosper" #10 open
         #"🖕", #11 kill
@@ -73,13 +73,13 @@ model = "gemma3:12b"
 system_prompt = "Give a score between 0 and 100 how well the description matches the image. Give only numerical answer."
 
 [webcam]
+time_to_cap = 40
 camera_output = "/dev/video0"
 preview = false
 barrier = 15
 init_size = 200
-bounding_box = [90,200,128,128]
+bounding_box = [90,180,140,140]
 text_color = [0,255,0]
-time_to_cap = 30
     [webcam.text_options]
         font = 3
         textSize = 0.8
@@ -90,6 +90,6 @@ time_to_cap = 30
 
 [segmentor]
 model = "sam2.1_b.pt"
-segment_points = [[4,4],[4,123],[123,123],[123,4]]
+segment_points = [[4,4],[4,135],[135,135],[135,4]]
 point_labels = [1,1,1,1]
 
