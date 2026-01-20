@@ -83,7 +83,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="E9KM8B_vwAy86gY1Z17F-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Prompt design" vertex="1">
-          <mxGeometry height="60" width="120" x="-150" y="900" as="geometry" />
+          <mxGeometry height="60" width="120" x="-140" y="830" as="geometry" />
         </mxCell>
         <mxCell id="E9KM8B_vwAy86gY1Z17F-52" edge="1" parent="1" source="E9KM8B_vwAy86gY1Z17F-28" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="E9KM8B_vwAy86gY1Z17F-1">
           <mxGeometry relative="1" as="geometry" />
@@ -101,19 +101,19 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="E9KM8B_vwAy86gY1Z17F-40" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="ABB YuMi" vertex="1">
-          <mxGeometry height="60" width="120" x="-440" y="770" as="geometry" />
+          <mxGeometry height="60" width="120" x="-430" y="720" as="geometry" />
         </mxCell>
         <mxCell id="E9KM8B_vwAy86gY1Z17F-47" edge="1" parent="1" source="E9KM8B_vwAy86gY1Z17F-46" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="E9KM8B_vwAy86gY1Z17F-11">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="E9KM8B_vwAy86gY1Z17F-46" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Box assembly" vertex="1">
-          <mxGeometry height="60" width="120" x="170" y="615" as="geometry" />
+          <mxGeometry height="60" width="120" x="200" y="720" as="geometry" />
         </mxCell>
         <mxCell id="E9KM8B_vwAy86gY1Z17F-49" edge="1" parent="1" source="E9KM8B_vwAy86gY1Z17F-48" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="E9KM8B_vwAy86gY1Z17F-11">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="E9KM8B_vwAy86gY1Z17F-48" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Other HRC tasks" vertex="1">
-          <mxGeometry height="60" width="120" x="230" y="760" as="geometry" />
+          <mxGeometry height="60" width="120" x="110" y="600" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
