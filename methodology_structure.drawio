@@ -25,8 +25,11 @@
         <mxCell id="E9KM8B_vwAy86gY1Z17F-16" edge="1" parent="1" source="E9KM8B_vwAy86gY1Z17F-4" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="E9KM8B_vwAy86gY1Z17F-1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="E9KM8B_vwAy86gY1Z17F-61" edge="1" parent="1" source="E9KM8B_vwAy86gY1Z17F-4" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="E9KM8B_vwAy86gY1Z17F-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="E9KM8B_vwAy86gY1Z17F-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Modular desing" vertex="1">
-          <mxGeometry height="60" width="120" x="-290" y="520" as="geometry" />
+          <mxGeometry height="60" width="120" x="-290" y="510" as="geometry" />
         </mxCell>
         <mxCell id="E9KM8B_vwAy86gY1Z17F-57" edge="1" parent="1" source="E9KM8B_vwAy86gY1Z17F-5" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="E9KM8B_vwAy86gY1Z17F-12">
           <mxGeometry relative="1" as="geometry" />
@@ -71,6 +74,9 @@
           <mxGeometry height="60" width="120" y="740" as="geometry" />
         </mxCell>
         <mxCell id="E9KM8B_vwAy86gY1Z17F-51" edge="1" parent="1" source="E9KM8B_vwAy86gY1Z17F-12" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="E9KM8B_vwAy86gY1Z17F-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E9KM8B_vwAy86gY1Z17F-62" edge="1" parent="1" source="E9KM8B_vwAy86gY1Z17F-12" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="E9KM8B_vwAy86gY1Z17F-4">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="E9KM8B_vwAy86gY1Z17F-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Work cycle" vertex="1">
