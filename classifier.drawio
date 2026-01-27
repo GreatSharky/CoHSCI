@@ -19,7 +19,7 @@
         <mxCell id="HD3aoyBavs8oidR4Y3jv-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Ollama request" vertex="1">
           <mxGeometry height="30" width="60" x="471" y="240" as="geometry" />
         </mxCell>
-        <mxCell id="HD3aoyBavs8oidR4Y3jv-10" parent="1" style="shape=manualInput;whiteSpace=wrap;html=1;size=27;fillColor=#f8cecc;strokeColor=#b85450;" value="System prompts" vertex="1">
+        <mxCell id="HD3aoyBavs8oidR4Y3jv-10" parent="1" style="shape=manualInput;whiteSpace=wrap;html=1;size=27;fillColor=#f8cecc;strokeColor=#b85450;" value="Config options" vertex="1">
           <mxGeometry height="60" width="80" x="334" y="120" as="geometry" />
         </mxCell>
         <mxCell id="HD3aoyBavs8oidR4Y3jv-11" parent="1" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4666666666666667;arrowSize=0.27522935779816515;fillColor=#e1d5e7;strokeColor=#9673a6;" value="" vertex="1">
