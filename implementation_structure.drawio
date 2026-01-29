@@ -1,9 +1,123 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" version="29.3.4">
   <diagram name="Page-1" id="PyqglAIyy25_uF27i9eQ">
-    <mxGraphModel>
+    <mxGraphModel dx="1899" dy="1912" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="pFolgnxLTXnJassSmeJK-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Implementation" vertex="1">
+          <mxGeometry height="60" width="120" x="310" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-21" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-2" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="System setup" vertex="1">
+          <mxGeometry height="60" width="120" x="220" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-27" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-3" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Control module" vertex="1">
+          <mxGeometry height="60" width="120" x="410" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-29" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-4" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-30" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-4" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=1 4;" target="pFolgnxLTXnJassSmeJK-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-31" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-4" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=1 4;" target="pFolgnxLTXnJassSmeJK-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="User interface" vertex="1">
+          <mxGeometry height="60" width="120" x="80" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-32" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-5" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Segmentor" vertex="1">
+          <mxGeometry height="60" width="120" x="90" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-33" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-6" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-37" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-6" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=1 4;" target="pFolgnxLTXnJassSmeJK-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-39" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-6" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=1 4;" target="pFolgnxLTXnJassSmeJK-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Classifier" vertex="1">
+          <mxGeometry height="60" width="120" x="220" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-35" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-7" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-40" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-7" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=1 4;" target="pFolgnxLTXnJassSmeJK-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Validator" vertex="1">
+          <mxGeometry height="60" width="120" x="370" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-36" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-8" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Robot caller" vertex="1">
+          <mxGeometry height="60" width="120" x="560" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-28" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-9" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Robot controller" vertex="1">
+          <mxGeometry height="60" width="120" x="510" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-20" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-10" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="MQTT" vertex="1">
+          <mxGeometry height="60" width="120" x="510" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-26" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-11" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="ABB YuMi" vertex="1">
+          <mxGeometry height="60" width="120" x="-30" y="-40" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-18" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-12" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Prodigy cell" vertex="1">
+          <mxGeometry height="60" width="120" x="50" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-24" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-13" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-13" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="NVIDIA GPU" vertex="1">
+          <mxGeometry height="60" width="120" x="10" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-25" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-14" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Box trey&lt;span style=&quot;color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-align: start; text-wrap-mode: nowrap;&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20parent%3D%221%22%20style%3D%22rounded%3D0%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3B%22%20value%3D%22Implementation%22%20vertex%3D%221%22%3E%3CmxGeometry%20height%3D%2260%22%20width%3D%22120%22%20x%3D%22310%22%20y%3D%22280%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="-130" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-23" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-15" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Camera location" vertex="1">
+          <mxGeometry height="60" width="120" x="150" y="-30" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-22" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-16" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Screen" vertex="1">
+          <mxGeometry height="60" width="120" x="294" y="-20" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-42" edge="1" parent="1" source="pFolgnxLTXnJassSmeJK-41" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="pFolgnxLTXnJassSmeJK-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pFolgnxLTXnJassSmeJK-41" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Operator" vertex="1">
+          <mxGeometry height="60" width="120" x="-50" y="160" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
