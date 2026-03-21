@@ -1,5 +1,10 @@
 test_*
 *.pt
 *.jpg
+*.png
+*.csv
+*.xlsx
+log*
+.venv
 tmp/
 __pycache__/

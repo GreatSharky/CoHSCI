@@ -4,6 +4,7 @@ import os
 import numpy as np
 import logging
 from pathlib import Path
+import time
 
 from dataclasses import dataclass
 from messageq import MessageQueue
@@ -187,6 +188,7 @@ class Webcam():
 
 
 if __name__ == "__main__" or __name__ == "__debug__":
+    time.sleep(1)
     cam_ip = os.getenv("CAM_IP")
     cam = Webcam(cam_ip)
     cam.start()
