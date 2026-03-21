@@ -3,20 +3,22 @@ left_handed = false
     [commands.prompts]
         "nothing" = "Not a full hand" #0
         "right_hand" = "🤙" #1 "Shaka or hang loose" #right hand
-        "left_hand" = "Live long and prosper" #2 left hand
+        "left_hand" = "🖖" #2 left hand
         "left" = "✌️" #3 left
         "right" = "👌" #4 right
-        "forward" = "Only index finger is pointing up" #5 forward
+        "forward" = "☝️" #5 forward
         "backward" = "✊" #6 backward
         "up" = "👍" #7 up
         "down" = "👎" #8 down
+        #"open" = "🤘" #9
+        #"close" = "✋" #10
         "next_step" = "right"
         #"close" = "✋" #9 close
         #"open" = "Live long and prosper" #10 open
         #"🖕", #11 kill
         # "👊",
         # "🤟", #both
-        # "🤘",
+        # "🤘",☝️🖖
 
 [control]
 segment = true
@@ -25,25 +27,6 @@ poll_rate = 0.1
 
 [classifier]
 mdoel = "gemma3:12b"
-prompts = [
-    "There is no hand in the image.",
-    "Resembles the OK sign. The thumb and the index finger create a circle while the three other fingers are extended.", #Right
-    "Only the index finger points upwards and all the other fingers tucked down.", # Forward
-    "Resembles the V sign for victory or for peace. The index and middle finger are extended and apart while the three other fingers are down.", # Left
-#    "All five fingers are extended and apart from each other.",
-    "The thumb and the index finger forming an L shape while the other fingers are tucked down." , # Left hand
-#    "Index finger and the middle finger are extended together upwards. The thumb, ring finger and the pinky are tucked down.",
-    "All fingers are extended and together touching each other.  This sign is used to signal 'stop' or 'halt'.", # Close
-    "Resembles the 'Live Long and Posper' sign from Star Trek. All five fingers are extended but there is a gap between the middle and the ring finger.", # Open
-    #"Resembles the 'horns' sign. Thumb, index finger and the pinky are extended while the middle finger and the ring finger are tucked down.",
-    "The fingers are clenched together in to tight fist. This is gesture is used to signal solidarity and defiance.", # Down
-    "Resembles the 'shaka' sign where the thumb and the pinky are extended and the three middle fingers tucked.", # Right hand
-#    "The hand creates a C-like shape where the thumb and the other fingers are slightly curled and apart from each other.",
-#    "The thumb is extended outwards while the other figers are tucked down. ",
-    "Thumbs up gesture where the thumb is facing upwards and all other fingers are tucked in.", # Up
-    "Middle finger is extended while the other fingers are tucked down. This gesture is considered offensive." # Back
-    
-]
 emoji_prompts = [
     "Not a full hand", #0
     "🤙", #1 "Shaka or hang loose" #right hand
@@ -61,6 +44,24 @@ emoji_prompts = [
     # "🤟", #both
     # "🤘",
 ]
+    [classifier.prompts]
+        "nothing" = "There is no hand in the image."
+        "right_hand" = "Resembles the 'shaka' sign where the thumb and the pinky are extended and the three middle fingers tucked." # Right hand
+        "left_hand" = "Resembles the 'Live Long and Posper' sign from Star Trek. All five fingers are extended but there is a gap between the middle and the ring finger." # Open
+        "left" = "Resembles the V sign for victory or for peace. The index and middle finger are extended and apart while the three other fingers are down." # Left
+        "right" = "Resembles the OK sign. The thumb and the index finger create a circle while the three other fingers are extended." #Right
+        "forward" = "Only the index finger points upwards and all the other fingers tucked down." # Forward
+        "backward" = "The fingers are clenched together in to tight fist. This is gesture is used to signal solidarity and defiance." # Down
+        "up" = "Thumbs up gesture where the thumb is facing upwards and all other fingers are tucked in." # Up
+        "down" = "Thumbs down gesture where the thumb is facing down and all other fingers are tucked in."
+    #    "open" = "Resembles the 'horns' sign. Index finger and the pinky are extended while the middle finger and the ring finger are tucked down."
+    #    "close" = "All fingers are extended and together touching each other.  This sign is used to signal 'stop' or 'halt'." # Close
+    #    "The thumb and the index finger forming an L shape while the other fingers are tucked down." , # Left hand
+    #    "Index finger and the middle finger are extended together upwards. The thumb, ring finger and the pinky are tucked down.",
+    #    "The hand creates a C-like shape where the thumb and the other fingers are slightly curled and apart from each other.",
+    #    "The thumb is extended outwards while the other figers are tucked down. ",
+    #    "Middle finger is extended while the other fingers are tucked down. This gesture is considered offensive." # Back
+    #    "All five fingers are extended and apart from each other.",
 
 [robot]
 ip = "192.168.125.1"
@@ -70,7 +71,7 @@ port = 5000
 
 [validator]
 model = "gemma3:12b"
-system_prompt = "Give a score between 0 and 100 how well the description matches the image. Give only numerical answer."
+system_prompt = "Give a score between 0 and 100 how accurately the description/emote matches the image. Give only numerical answer."
 
 [webcam]
 time_to_cap = 40

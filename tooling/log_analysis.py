@@ -63,8 +63,36 @@ def analyse_logs(log_name):
     for key in df:
         print(key, len(df[key]))
 
+
+def time_stats_from_excel(filename, columns):
+    """
+    Reads all sheets from an Excel file and computes average and standard deviation
+    for specified time-formatted columns.
+
+    Returns:
+        dict: {sheet_name: {column_name: [mean, std]}}
+    """
+    # Read all sheets as a dict of DataFrames
+    sheets = pd.read_excel(filename, sheet_name=None)
+
+    results = {}
+
+    for sheet_name, df in sheets.items():
+        sheet_results = {}
+
+        for col in columns:
+            if col in df.columns:
+                df[col] = pd.to_timedelta(df[col], errors="coerce")
+                sheet_results[col] = [df[col].mean(), df[col].std()]
+
+        results[sheet_name] = sheet_results
+
+    return results
+
+
+
 if __name__ == "__main__":
-    for i in range(5,6):
+    for i in range(9,13):
         df = {
             "Segmentor start" : [], 
             "Segmentor end" : [], 

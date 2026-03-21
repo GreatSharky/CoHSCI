@@ -1,17 +1,17 @@
 {
     "commands" : [
         ["18069000100000000", "Move left arm"],
-        ["08069000200000000", "Install screw"],
+        ["08069000200000000", "Install one screw"],
         ["08069000300000000", "Move right arm"],
-        ["18069000400000000", "Install screws"],
+        ["18069000400000000", "Install four screws"],
         ["08069000500000000", "Move right arm"],
         ["18069000600000000", "Move left arm"],
-        ["08069000700000000", "Install screws"],
+        ["08069000700000000", "Install three screws"],
         ["18069000800000000", "Move left arm"],
         ["08069000900000000", "Move right arm"],
         ["18069001000000000", "Move left arm"],
         ["08069001100000000", "Move right arm"],
-        ["18069001200000000", "Install screws"],
+        ["18069001200000000", "Install  three screws"],
         ["18069001300000000", "Move left arm"],
         ["08069001400000000", "Assembly complete"]
     ]

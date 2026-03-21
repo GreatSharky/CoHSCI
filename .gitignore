@@ -4,5 +4,7 @@ test_*
 *.png
 *.csv
 *.xlsx
+log*
+.venv
 tmp/
 __pycache__/
