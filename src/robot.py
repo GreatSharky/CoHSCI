@@ -63,7 +63,7 @@ class Robot():
     
     def init_robot(self):
         self.robot = {
-            "hand" : None,
+            "hand" : "right_hand",
             "action" : None,
         }
         return
@@ -180,6 +180,8 @@ class Robot():
                     self.command_index += 1
                 else:
                     action = "assembly complete"
+            else:
+                action = "Nothing done, retry."
         return msg, action
     
     def change_step_size(self, direction):

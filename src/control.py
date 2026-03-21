@@ -96,7 +96,7 @@ class Control():
 
     def classifier_callback(self, ch, method, properties, body):
         if method != None:
-            logging.info(f"Classifier msg recieved: {body}")
+            logging.debug(f"Classifier msg recieved: {body}")
             # Classifier status changed
             # Possible classifier statuses: image recieved, classifing, waiting for validation,
             # validation failed, validated
@@ -151,11 +151,13 @@ class Control():
             # Possible robot status: action recieved, action started, action done#
             self.robot_status = body["status"]
             self.status_msg.update(body)
+            if "next step" in body and "previous_action" in self.status_msg:
+                del self.status_msg["previous_action"]
             return
     
     def segmentor_callback(self, ch, method, properties, body):
         if method != None:
-            logging.info(f"Segmentor msg recieved: {body}")
+            logging.debug(f"Segmentor msg recieved: {body}")
             # segmentor status changed
             # Possible segmentor statuses: image recieved, mask ready 
             # Could check if segmentation has smart amount of non black pixels and get the pixel value
@@ -176,7 +178,7 @@ class Control():
     
     def webcam_callback(self, ch, method, properties, body):
         if method != None:
-            logging.info(f"Webcam msg recieved: {body}")
+            logging.debug(f"Webcam msg recieved: {body}")
             # Webcam status changed
             # Possible webcam status: Capture made, Capture requested, User ready
             msg = body["status"]
